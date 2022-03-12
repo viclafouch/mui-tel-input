@@ -3,23 +3,41 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
     "lint": "tsc --noEmit && eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.5.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "dependencies": {
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.5.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "@types/react": "^17.0.33",
-    "@types/react-dom": "^17.0.10",
+    "@babel/core": "^7.17.5",
+    "@storybook/addon-actions": "^6.4.19",
+    "@storybook/addon-essentials": "^6.4.19",
+    "@storybook/addon-interactions": "^6.4.19",
+    "@storybook/addon-links": "^6.4.19",
+    "@storybook/react": "^6.4.19",
+    "@storybook/testing-library": "^0.0.9",
+    "@types/react": "^17.0.40",
+    "@types/react-dom": "^17.0.13",
     "@typescript-eslint/eslint-plugin": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
     "@viclafouch/eslint-config-viclafouch": "^3.4.0",
-    "@vitejs/plugin-react": "^1.0.7",
+    "@vitejs/plugin-react": "^1.2.0",
+    "babel-loader": "^8.2.3",
     "eslint": "^8.11.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^16.1.1",
@@ -32,6 +50,6 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "prettier": "^2.5.1",
     "typescript": "^4.6.2",
-    "vite": "^2.8.0"
+    "vite": "^2.8.6"
   }
 }
