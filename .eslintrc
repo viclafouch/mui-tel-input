@@ -12,7 +12,8 @@
         "devDependencies": [
           ".storybook/**",
           "stories/**",
-          "**/*.stories.tsx"
+          "**/*.stories.tsx",
+          "**/*.test.tsx"
         ]
       }
     ]

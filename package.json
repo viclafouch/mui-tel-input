@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "scripts": {
     "build": "tsc && vite build",
-    "lint": "tsc --noEmit && eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "tsc && eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "npm run lint -- --fix",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "test": "vitest"
   },
   "peerDependencies": {
     "@emotion/react": "^11.8.2",
@@ -20,7 +21,7 @@
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@mui/material": "^5.5.0",
-    "country-flag-icons": "^1.4.21",
+    "ramda": "^0.21.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
@@ -32,6 +33,10 @@
     "@storybook/addon-links": "^6.4.19",
     "@storybook/react": "^6.4.19",
     "@storybook/testing-library": "^0.0.9",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/ramda": "^0.28.1",
     "@types/react": "^17.0.40",
     "@types/react-dom": "^17.0.13",
     "@typescript-eslint/eslint-plugin": "^5.14.0",
@@ -51,6 +56,8 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "prettier": "^2.5.1",
     "typescript": "^4.6.2",
-    "vite": "^2.8.6"
+    "vite": "^2.8.6",
+    "vite-tsconfig-paths": "^3.4.1",
+    "vitest": "^0.6.0"
   }
 }
