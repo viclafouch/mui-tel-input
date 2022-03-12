@@ -1,0 +1,8 @@
+{
+  "extends": [
+    "@viclafouch/eslint-config-viclafouch/typescript"
+  ],
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  }
+}
