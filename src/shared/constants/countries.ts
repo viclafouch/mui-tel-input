@@ -13,6 +13,13 @@ export const COUNTRIES: readonly Country[] = [
     name: ISO_3166_ALPHA_2_MAPPINGS.FR,
     isoCode: 'FR',
     callingCode: 33,
+    format: '+.. ... .. .. ..',
+    regions: ['europe', 'european-union']
+  },
+  {
+    name: ISO_3166_ALPHA_2_MAPPINGS.BE,
+    isoCode: 'BE',
+    callingCode: 32,
     format: '+.. . .. .. .. ..',
     regions: ['europe', 'european-union']
   }

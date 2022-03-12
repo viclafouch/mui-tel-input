@@ -1,14 +1,18 @@
 import React from 'react'
 import IconButton, { IconButtonProps } from '@mui/material/IconButton'
+import Flag from '@components/Flag/Flag'
+import type { Country } from '@shared/constants/countries'
 
-import { Styled } from './FlagsButton.styled'
-
-export type FlagButtonProps = IconButtonProps
+export type FlagButtonProps = IconButtonProps & {
+  selectedCountry: Country
+}
 
 const FlagButton = (props: FlagButtonProps) => {
+  const { selectedCountry, ...iconButtonProps } = props
+
   return (
-    <IconButton {...props}>
-      <Styled.Flag />
+    <IconButton {...iconButtonProps}>
+      <Flag isoCode={selectedCountry.isoCode} />
     </IconButton>
   )
 }

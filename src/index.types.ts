@@ -6,4 +6,5 @@ type BaseTextFieldProps = Omit<TextFieldProps, 'InputProps'>
 
 export type MuiPhoneNumberProps = BaseTextFieldProps & {
   excludeCountries?: Iso3166Alpha2Code[]
+  defaultCountry?: Iso3166Alpha2Code
 }

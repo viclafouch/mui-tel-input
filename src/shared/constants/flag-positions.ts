@@ -5,5 +5,6 @@ export type FlagPosition = {
 }
 
 export const FLAG_POSITIONS: FlagPosition = {
-  FR: '29.752066%'
+  FR: '29.752066%',
+  BE: '8.264463%'
 }

@@ -17,9 +17,8 @@ const Styled = {
       backgroundImage: `url(${spritFlags32})`,
       backgroundSize: '100%',
       backgroundRepeat: 'no-repeat',
-      width: '32px',
-      height: '21px',
-      lineHeight: '32px',
+      width: '28px',
+      height: '19px',
       display: 'inline-block',
       backgroundPosition: `0 ${FLAG_POSITIONS[props.isoCode]}`,
       verticalAlign: 'text-top'
