@@ -1,12 +1,29 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { getCountryByIsoCode } from '@shared/helpers/country'
+import { render, screen } from '@testing-library/react'
 
 import FlagButton from './FlagButton'
 
 import '@testing-library/jest-dom'
 
-describe('Running Test for FlagButton', () => {
-  test('Test flag button', () => {
-    render(<FlagButton />)
+describe('Test components/FlagsButton', () => {
+  test('should have aria-expanded to true', () => {
+    render(
+      <FlagButton
+        isFlagsMenuOpened
+        selectedCountry={getCountryByIsoCode('FR')}
+      />
+    )
+    expect(screen.getByRole('button')).toHaveAttribute('aria-expanded', 'true')
+  })
+
+  test('should have aria-expanded to false', () => {
+    render(
+      <FlagButton
+        isFlagsMenuOpened={false}
+        selectedCountry={getCountryByIsoCode('FR')}
+      />
+    )
+    expect(screen.getByRole('button')).toHaveAttribute('aria-expanded', 'false')
   })
 })

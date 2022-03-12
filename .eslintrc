@@ -1,11 +1,15 @@
 {
-  "extends": [
-    "@viclafouch/eslint-config-viclafouch/typescript"
-  ],
+  "extends": ["@viclafouch/eslint-config-viclafouch/typescript"],
   "parserOptions": {
     "project": ["./tsconfig.json"]
   },
   "rules": {
+    "react/jsx-no-duplicate-props": [
+      "error",
+      {
+        "ignoreCase": false
+      }
+    ],
     "import/no-extraneous-dependencies": [
       "error",
       {
@@ -13,6 +17,7 @@
           ".storybook/**",
           "stories/**",
           "**/*.stories.tsx",
+          "**/*.test.ts",
           "**/*.test.tsx"
         ]
       }
