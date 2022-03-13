@@ -20,6 +20,7 @@
       "@assets/*": ["assets/*"],
       "@shared/*": ["shared/*"],
       "@components/*": ["components/*"],
+      "@ramda": ["ramda/index.ts"],
     }
   },
   "include": ["src"],

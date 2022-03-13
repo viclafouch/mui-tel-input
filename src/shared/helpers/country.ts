@@ -1,8 +1,8 @@
+import * as R from '@ramda'
 import { COUNTRIES, Country } from '@shared/constants/countries'
 import type { Iso3166Alpha2Code } from '@shared/constants/iso'
 import { DEFAULT_ISO_CODE } from '@shared/constants/iso'
 import { matchIsArray } from '@shared/helpers/array'
-import * as R from 'ramda'
 
 export function getDefaultCountry(defaultIsoCode = DEFAULT_ISO_CODE): Country {
   return R.find((country) => {

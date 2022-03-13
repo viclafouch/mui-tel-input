@@ -1,4 +1,4 @@
-import * as R from 'ramda'
+import * as R from '@ramda'
 
 export function getOnlyNumbers(value: string | number): string {
   return R.pipe(String, R.replace(/\D+/g, ''))(value)

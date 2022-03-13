@@ -14,6 +14,7 @@ module.exports = {
       '@assets': path.resolve(__dirname, '../src/assets'),
       '@shared': path.resolve(__dirname, '../src/shared'),
       '@components': path.resolve(__dirname, '../src/components'),
+      '@ramda': path.resolve(__dirname, '../src/ramda/index.ts'),
     }
     return config
   }

@@ -1,6 +1,7 @@
 import React from 'react'
 import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
+import * as R from '@ramda'
 import { Country } from '@shared/constants/countries'
 import {
   getCountryByCallingCode,
@@ -17,7 +18,6 @@ import { assocRefToPropRef } from '@shared/helpers/ref'
 import { getOnlyNumbers, numericToNumber } from '@shared/helpers/string'
 import { usePrevious } from '@shared/hooks/usePrevious'
 import { useStateWithCallback } from '@shared/hooks/useStateWithCallback'
-import * as R from 'ramda'
 
 import FlagButton from './components/FlagButton/FlagButton'
 import FlagsMenu from './components/FlagsMenu/FlagsMenu'
