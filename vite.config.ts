@@ -13,6 +13,9 @@ export default defineConfig({
     globals: true
   },
   build: {
+    sourcemap: true,
+    target: 'esnext',
+    minify: false,
     lib: {
       entry: path.resolve(__dirname, 'src/index.tsx'),
       name: 'Mui-phone-number',
@@ -20,6 +23,7 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
+        sourcemapExcludeSources: true,
         globals: {
           react: 'React',
           '@mui/material/InputAdornment': 'InputAdornment',
