@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 
 export function getOnlyNumbers(value: string | number): string {
-  return R.pipe(R.toString, R.replace(/\D+/g, ''))(value)
+  return R.pipe(String, R.replace(/\D+/g, ''))(value)
 }
 
 export function matchIsNumeric(text: unknown): boolean {

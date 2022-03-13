@@ -1,11 +1,12 @@
 import { COUNTRIES, Country } from '@shared/constants/countries'
 import type { Iso3166Alpha2Code } from '@shared/constants/iso'
+import { DEFAULT_ISO_CODE } from '@shared/constants/iso'
 import { matchIsArray } from '@shared/helpers/array'
 import * as R from 'ramda'
 
-export function getDefaultCountry(): Country {
+export function getDefaultCountry(defaultIsoCode = DEFAULT_ISO_CODE): Country {
   return R.find((country) => {
-    return country.isoCode === 'FR'
+    return country.isoCode === defaultIsoCode
   }, COUNTRIES) as Country
 }
 
@@ -37,14 +38,14 @@ export function filterCountries(
   options: FilterCountriesOptions
 ): readonly Country[] {
   const { onlyCountries, excludeCountries } = options
-  if (matchIsArray(onlyCountries)) {
+  if (matchIsArray(onlyCountries) && R.gt(R.length(onlyCountries), 0)) {
     return R.filter((item) => {
-      return R.includes(item.isoCode, onlyCountries)
+      return onlyCountries.includes(item.isoCode)
     }, countries)
   }
-  if (matchIsArray(excludeCountries)) {
+  if (matchIsArray(excludeCountries) && R.gt(R.length(excludeCountries), 0)) {
     return R.filter((item) => {
-      return !R.includes(item.isoCode, excludeCountries)
+      return !excludeCountries.includes(item.isoCode)
     }, countries)
   }
   return countries

@@ -4,14 +4,14 @@ import TextField from '@mui/material/TextField'
 import { COUNTRIES, Country } from '@shared/constants/countries'
 import {
   filterCountries,
+  getCountryByCallingCode,
   getCountryByIsoCode,
   getDefaultCountry
 } from '@shared/helpers/country'
-import { putCursorAtEnd } from '@shared/helpers/dom'
+import { putCursorAtEndOfInput } from '@shared/helpers/dom'
 import {
   buildValue,
   getCallingCode,
-  getCountryByCallingCode,
   matchStartsWithCallingCode
 } from '@shared/helpers/phone-number'
 import { assocRefToPropRef } from '@shared/helpers/ref'
@@ -85,7 +85,7 @@ const MuiPhoneNumber = (props: MuiPhoneNumberProps) => {
 
     if (
       !isIsoCodeEditable &&
-      !matchStartsWithCallingCode(value, selectedCountry.callingCode)
+      !matchStartsWithCallingCode(Number(value), selectedCountry.callingCode)
     ) {
       setCurrentValue({
         value: `+${selectedCountry.callingCode}`,
@@ -130,7 +130,7 @@ const MuiPhoneNumber = (props: MuiPhoneNumberProps) => {
           formattedInt: Number(getOnlyNumbers(country.callingCode))
         },
         () => {
-          putCursorAtEnd(inputRef.current as HTMLInputElement)
+          putCursorAtEndOfInput(inputRef.current as HTMLInputElement)
         }
       )
       setAnchorEl(null)
@@ -142,7 +142,7 @@ const MuiPhoneNumber = (props: MuiPhoneNumberProps) => {
     event: React.FocusEvent<HTMLInputElement, Element>
   ): void => {
     requestAnimationFrame(() => {
-      return putCursorAtEnd(inputRef.current as HTMLInputElement)
+      return putCursorAtEndOfInput(inputRef.current as HTMLInputElement)
     })
     onFocus?.(event)
   }
