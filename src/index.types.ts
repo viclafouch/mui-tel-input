@@ -1,4 +1,5 @@
 import type { TextFieldProps } from '@mui/material/TextField'
+import { Country } from '@shared/constants/countries'
 
 import type { Iso3166Alpha2Code } from './shared/constants/iso'
 
@@ -14,7 +15,9 @@ export type MuiPhoneNumberProps = BaseTextFieldProps & {
   isIsoCodeEditable?: boolean
 }
 
-export type CurrentValue = {
+export type State = {
   formattedInt: number | null
   value: string
+  country: Country
+  hasSelectCountry: boolean
 }

@@ -12,13 +12,16 @@ export const useStateWithCallback = <T>(
   const [state, setState] = React.useState<T>(initialState)
   const callbackRef = React.useRef<(updated: T) => void>()
 
-  const handleSetState = (
-    updatedState: React.SetStateAction<T>,
-    callback?: (updatedState: T) => void
-  ) => {
-    callbackRef.current = callback
-    setState(updatedState)
-  }
+  const handleSetState = React.useCallback(
+    (
+      updatedState: React.SetStateAction<T>,
+      callback?: (updatedState: T) => void
+    ) => {
+      callbackRef.current = callback
+      setState(updatedState)
+    },
+    []
+  )
 
   React.useEffect(() => {
     if (typeof callbackRef.current === 'function') {
