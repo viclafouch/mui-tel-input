@@ -11,9 +11,10 @@ export type MuiPhoneNumberProps = BaseTextFieldProps & {
   excludeCountries?: Iso3166Alpha2Code[]
   onlyCountries?: Iso3166Alpha2Code[]
   defaultCountry?: Iso3166Alpha2Code
+  isIsoCodeEditable?: boolean
 }
 
 export type CurrentValue = {
-  formattedInt: number
+  formattedInt: number | null
   value: string
 }

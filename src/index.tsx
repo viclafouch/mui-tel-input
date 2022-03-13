@@ -2,12 +2,21 @@ import React from 'react'
 import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
 import { COUNTRIES, Country } from '@shared/constants/countries'
-import { matchIsArray } from '@shared/helpers/array'
-import { getCountryByIsoCode, getDefaultCountry } from '@shared/helpers/country'
+import {
+  filterCountries,
+  getCountryByIsoCode,
+  getDefaultCountry
+} from '@shared/helpers/country'
 import { putCursorAtEnd } from '@shared/helpers/dom'
-import { buildValue } from '@shared/helpers/phone-number'
+import {
+  buildValue,
+  getCallingCode,
+  getCountryByCallingCode,
+  matchStartsWithCallingCode
+} from '@shared/helpers/phone-number'
 import { assocRefToPropRef } from '@shared/helpers/ref'
-import { getOnlyNumbers } from '@shared/helpers/string'
+import { getOnlyNumbers, numericToNumber } from '@shared/helpers/string'
+import { usePrevious } from '@shared/hooks/usePrevious'
 import { useStateWithCallback } from '@shared/hooks/useStateWithCallback'
 import * as R from 'ramda'
 
@@ -27,6 +36,7 @@ function getInitialCountry(
 
 const MuiPhoneNumber = (props: MuiPhoneNumberProps) => {
   const {
+    isIsoCodeEditable,
     onlyCountries,
     excludeCountries,
     defaultCountry,
@@ -50,19 +60,13 @@ const MuiPhoneNumber = (props: MuiPhoneNumberProps) => {
     value: `+${selectedCountry.callingCode}`,
     formattedInt: Number(getOnlyNumbers(selectedCountry.callingCode))
   })
+  const previousFormattedInt = usePrevious(currentValue.formattedInt)
 
   const countriesFiltered = React.useMemo<readonly Country[]>(() => {
-    if (matchIsArray(onlyCountries)) {
-      return R.filter((item) => {
-        return R.includes(item.isoCode, onlyCountries)
-      }, COUNTRIES)
-    }
-    if (matchIsArray(excludeCountries)) {
-      return R.filter((item) => {
-        return !R.includes(item.isoCode, excludeCountries)
-      }, COUNTRIES)
-    }
-    return COUNTRIES
+    return filterCountries(COUNTRIES, {
+      onlyCountries,
+      excludeCountries
+    })
   }, [excludeCountries, onlyCountries])
 
   const handleOpenFlagsMenu = (
@@ -77,19 +81,39 @@ const MuiPhoneNumber = (props: MuiPhoneNumberProps) => {
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
-    const { value } = event.target
-    const formattedInt = getOnlyNumbers(value)
+    const value = getOnlyNumbers(event.target.value)
 
-    if (!formattedInt.startsWith(R.toString(selectedCountry.callingCode))) {
+    if (
+      !isIsoCodeEditable &&
+      !matchStartsWithCallingCode(value, selectedCountry.callingCode)
+    ) {
       setCurrentValue({
         value: `+${selectedCountry.callingCode}`,
         formattedInt: selectedCountry.callingCode
       })
     } else {
-      setCurrentValue({
-        value: buildValue(formattedInt, selectedCountry),
-        formattedInt: Number(getOnlyNumbers(value))
-      })
+      const newFormattedInt = numericToNumber(value) || null
+      const previousCallingCode = previousFormattedInt
+        ? getCallingCode(previousFormattedInt)
+        : null
+      const currentCallingCode = getCallingCode(value)
+      if (currentCallingCode && currentCallingCode === previousCallingCode) {
+        setCurrentValue({
+          value: buildValue(value, selectedCountry),
+          formattedInt: newFormattedInt
+        })
+      } else {
+        const newCountry = currentCallingCode
+          ? getCountryByCallingCode(currentCallingCode)
+          : null
+        if (newCountry && newCountry !== selectedCountry) {
+          setSelectedCountry(newCountry)
+        }
+        setCurrentValue({
+          value: buildValue(value, newCountry || selectedCountry),
+          formattedInt: newFormattedInt
+        })
+      }
     }
   }
 

@@ -1,5 +1,26 @@
-import type { Country } from '@shared/constants/countries'
+import { COUNTRIES, Country } from '@shared/constants/countries'
 import * as R from 'ramda'
+
+export function getCallingCode(value: string | number): number | null {
+  const callingCode = R.pipe(String, R.slice(0, 2), Number)(value)
+  return callingCode || null
+}
+
+export function getCountryByCallingCode(
+  callingCode: Country['callingCode']
+): Country | null {
+  const newSelectedCountry = R.find((country) => {
+    return callingCode === country.callingCode
+  }, COUNTRIES)
+  return newSelectedCountry || null
+}
+
+export function matchStartsWithCallingCode(
+  value: string,
+  callingCode: Country['callingCode']
+): boolean {
+  return value.startsWith(R.toString(callingCode))
+}
 
 export function applyMaskToInputValue(
   value: string,
@@ -45,7 +66,10 @@ export function applyMaskToInputValue(
   ).formattedText
 }
 
-export function buildValue(inputValue: string, currentCountry: Country) {
+export function buildValue(
+  inputValue: string,
+  currentCountry: Country
+): string {
   return R.cond([
     [R.isEmpty, R.always('+')],
     [
