@@ -6,10 +6,10 @@ import {
   filterCountries,
   getCountryByCallingCode,
   getCountryByIsoCode,
-  getDefaultCountry
+  getFallbackCountry
 } from '../country'
 
-export const COUNTRIES: readonly Country[] = [
+const COUNTRIES: readonly Country[] = [
   {
     name: ISO_3166_ALPHA_2_MAPPINGS.FR,
     isoCode: 'FR',
@@ -27,12 +27,12 @@ export const COUNTRIES: readonly Country[] = [
 ]
 
 describe('helpers/country', () => {
-  describe('getDefaultCountry', () => {
+  describe('getFallbackCountry', () => {
     it('should return an object', () => {
-      expect(getDefaultCountry()).toBeTypeOf('object')
+      expect(getFallbackCountry()).toBeTypeOf('object')
     })
     it('should be the France country by default', () => {
-      expect(getDefaultCountry()).toEqual({
+      expect(getFallbackCountry()).toEqual({
         name: 'France',
         isoCode: 'FR',
         callingCode: 33,
@@ -42,7 +42,7 @@ describe('helpers/country', () => {
     })
 
     it('should be the correct country with an iso code', () => {
-      expect(getDefaultCountry('BE')).toEqual({
+      expect(getFallbackCountry('BE')).toEqual({
         name: 'Belgium',
         isoCode: 'BE',
         callingCode: 32,
@@ -54,10 +54,10 @@ describe('helpers/country', () => {
 
   describe('getCountryByIsoCode', () => {
     it('should return an object', () => {
-      expect(getCountryByIsoCode('FR')).toBeTypeOf('object')
+      expect(getCountryByIsoCode('FR', COUNTRIES)).toBeTypeOf('object')
     })
     it('should be the France country for iso FR', () => {
-      expect(getCountryByIsoCode('FR')).toEqual({
+      expect(getCountryByIsoCode('FR', COUNTRIES)).toEqual({
         name: 'France',
         isoCode: 'FR',
         callingCode: 33,
@@ -67,12 +67,20 @@ describe('helpers/country', () => {
     })
   })
 
+  describe('getCountryByValue', () => {
+    it.todo('getCountryByValue')
+  })
+
   describe('getCountryByCallingCode', () => {
     it('should return an object for a valid calling code', () => {
-      expect(getCountryByCallingCode(33)).toBeTypeOf('object')
+      expect(getCountryByCallingCode(33, COUNTRIES)).toBeTypeOf('object')
+    })
+
+    it('should return null for a country not listed', () => {
+      expect(getCountryByCallingCode(33, [])).toBeNull()
     })
     it('should return null for an invalid calling code', () => {
-      expect(getCountryByCallingCode(0)).toBeNull()
+      expect(getCountryByCallingCode(0, COUNTRIES)).toBeNull()
     })
   })
 

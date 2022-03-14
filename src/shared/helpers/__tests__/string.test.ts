@@ -1,32 +1,11 @@
-import { numericToNumber } from '@shared/helpers/string'
 import { expect } from 'vitest'
 
-import { getOnlyNumbers, matchIsNumeric } from '../string'
+import { matchIsNumeric, numericToNumber, stringToNumber } from '../string'
 
 // adds special assertions like toHaveTextContent
 import '@testing-library/jest-dom'
 
 describe('helpers/string', () => {
-  describe('getOnlyNumbers', () => {
-    it('should return a string', () => {
-      expect(getOnlyNumbers('')).toBeTypeOf('string')
-    })
-    it('should return the exact same value for numbers', () => {
-      expect(getOnlyNumbers('123')).toBe('123')
-    })
-
-    it('should return numbers without other non digits', () => {
-      expect(getOnlyNumbers('1a2b3/')).toBe('123')
-    })
-    it('should return strigified number', () => {
-      expect(getOnlyNumbers(0)).toBe('0')
-    })
-
-    it('should return empty string for non numbers', () => {
-      expect(getOnlyNumbers('+')).toBe('')
-    })
-  })
-
   describe('matchIsNumeric', () => {
     it('should return true for a valid numeric string', () => {
       expect(matchIsNumeric('12345')).toBe(true)
@@ -64,6 +43,19 @@ describe('helpers/string', () => {
 
     it('should return null for a non numeric value', () => {
       expect(numericToNumber('Hello world')).toBe(null)
+    })
+  })
+
+  describe('stringToNumber', () => {
+    it('should return number for a valid numeric', () => {
+      expect(stringToNumber('123')).toBe(123)
+    })
+    it('should return null for an invalid numeric', () => {
+      expect(stringToNumber('hello world')).toBe(null)
+    })
+
+    it('should return number without invalid numeric', () => {
+      expect(stringToNumber('12 hello 3')).toBe(123)
     })
   })
 })

@@ -3,29 +3,42 @@ import { COUNTRIES, Country } from '@shared/constants/countries'
 import type { Iso3166Alpha2Code } from '@shared/constants/iso'
 import { DEFAULT_ISO_CODE } from '@shared/constants/iso'
 import { matchIsArray } from '@shared/helpers/array'
+import { getCallingCode } from '@shared/helpers/phone-number'
 
-export function getDefaultCountry(defaultIsoCode = DEFAULT_ISO_CODE): Country {
+export function getFallbackCountry(isoCode = DEFAULT_ISO_CODE): Country {
   return R.find((country) => {
-    return country.isoCode === defaultIsoCode
+    return country.isoCode === isoCode
   }, COUNTRIES) as Country
 }
 
-export function getCountryByIsoCode(isoCode: Iso3166Alpha2Code): Country {
+export function getCountryByIsoCode(
+  isoCode: Iso3166Alpha2Code,
+  countries: readonly Country[]
+): Country | null {
   return (
     R.find((country) => {
       return R.identical(country.isoCode, isoCode)
-    }, COUNTRIES) || getDefaultCountry()
+    }, countries) || null
   )
 }
 
 export function getCountryByCallingCode(
-  callingCode: Country['callingCode']
+  callingCode: Country['callingCode'],
+  countries: readonly Country[]
 ): Country | null {
   return (
     R.find((country) => {
       return R.identical(country.callingCode, callingCode)
-    }, COUNTRIES) || null
+    }, countries) || null
   )
+}
+
+export function getCountryByValue(
+  value: string,
+  countries: readonly Country[]
+): Country | null {
+  const callingCode = getCallingCode(value)
+  return callingCode ? getCountryByCallingCode(callingCode, countries) : null
 }
 
 type FilterCountriesOptions = {

@@ -1,4 +1,5 @@
 import React from 'react'
+import { COUNTRIES, Country } from '@shared/constants/countries'
 import { getCountryByIsoCode } from '@shared/helpers/country'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
@@ -12,7 +13,7 @@ describe('components/FlagMenuItem', () => {
     const callback = vi.fn(() => {})
     render(
       <FlagMenuItem
-        country={getCountryByIsoCode('FR')}
+        country={getCountryByIsoCode('FR', COUNTRIES) as Country}
         onSelectCountry={callback}
       />
     )
@@ -24,7 +25,7 @@ describe('components/FlagMenuItem', () => {
     const callback = vi.fn(() => {})
     render(
       <FlagMenuItem
-        country={getCountryByIsoCode('FR')}
+        country={getCountryByIsoCode('FR', COUNTRIES) as Country}
         onSelectCountry={callback}
       />
     )

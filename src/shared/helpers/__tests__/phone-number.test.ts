@@ -4,10 +4,10 @@ import { expect } from 'vitest'
 
 import {
   applyMaskToInputValue,
-  buildValue,
   getCallingCode,
   matchIsValidCallingCode,
-  matchStartsWithCallingCode
+  matchStartsWithCallingCode,
+  numberToInputValue
 } from '../phone-number'
 
 import '@testing-library/jest-dom'
@@ -73,28 +73,28 @@ describe('helpers/phone-number', () => {
 
   describe('applyMaskToInputValue', () => {
     it('should return a string', () => {
-      expect(applyMaskToInputValue('', '')).toBeTypeOf('string')
+      expect(applyMaskToInputValue(123, '')).toBeTypeOf('string')
     })
 
     it('should return the correct style phone number completed', () => {
-      expect(applyMaskToInputValue('33269227363', '+.. ... .. .. ..')).toBe(
+      expect(applyMaskToInputValue(33269227363, '+.. ... .. .. ..')).toBe(
         '+33 269 22 73 63'
       )
     })
 
     it('should return portion of the correct style for a non completed value', () => {
-      expect(applyMaskToInputValue('33', '+.. ... .. .. ..')).toBe('+33')
+      expect(applyMaskToInputValue(33, '+.. ... .. .. ..')).toBe('+33')
     })
   })
 
-  describe('buildValue', () => {
+  describe('numberToInputValue', () => {
     it('should return a string', () => {
-      expect(buildValue('+33', country)).toBeTypeOf('string')
+      expect(numberToInputValue(33, country)).toBeTypeOf('string')
     })
 
     it('should return the exact same value for a country without format', () => {
       expect(
-        buildValue('32626922631', {
+        numberToInputValue(32626922631, {
           ...country,
           format: undefined
         })
@@ -102,11 +102,11 @@ describe('helpers/phone-number', () => {
     })
 
     it('should return the value with style of the country FR', () => {
-      expect(buildValue('33626922631', country)).toBe('+33 626 92 26 31')
+      expect(numberToInputValue(33626922631, country)).toBe('+33 626 92 26 31')
     })
 
     it('should return the value with style of the country BE', () => {
-      expect(buildValue('32626922631', country)).toBe('+32 626 92 26 31')
+      expect(numberToInputValue(32626922631, country)).toBe('+32 626 92 26 31')
     })
   })
 })

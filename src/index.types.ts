@@ -8,11 +8,19 @@ type BaseTextFieldProps = Omit<
   'onChange' | 'select' | 'type' | 'multiline'
 >
 
+export type Values = {
+  value: string
+  formattedInt: number | null
+  country: Country
+}
+
 export type MuiPhoneNumberProps = BaseTextFieldProps & {
   excludeCountries?: Iso3166Alpha2Code[]
   onlyCountries?: Iso3166Alpha2Code[]
   defaultCountry?: Iso3166Alpha2Code
   isIsoCodeEditable?: boolean
+  onChange?: (values: Values) => void
+  value?: string
 }
 
 export type State = {

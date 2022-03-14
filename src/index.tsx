@@ -3,33 +3,19 @@ import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
 import * as R from '@ramda'
 import { Country } from '@shared/constants/countries'
-import {
-  getCountryByCallingCode,
-  getCountryByIsoCode,
-  getDefaultCountry
-} from '@shared/helpers/country'
 import { putCursorAtEndOfInput } from '@shared/helpers/dom'
-import {
-  buildValue,
-  getCallingCode,
-  matchStartsWithCallingCode
-} from '@shared/helpers/phone-number'
+import { updateDefaultCountry } from '@shared/helpers/props'
 import { assocRefToPropRef } from '@shared/helpers/ref'
-import { getOnlyNumbers, numericToNumber } from '@shared/helpers/string'
-import { usePrevious } from '@shared/hooks/usePrevious'
+import {
+  getInitialState,
+  updateCountry,
+  updateInputValue
+} from '@shared/helpers/state'
 import { useStateWithCallback } from '@shared/hooks/useStateWithCallback'
 
 import FlagButton from './components/FlagButton/FlagButton'
 import FlagsMenu from './components/FlagsMenu/FlagsMenu'
 import type { MuiPhoneNumberProps, State } from './index.types'
-
-function getInitialCountry(
-  defaultCountry: MuiPhoneNumberProps['defaultCountry']
-) {
-  return defaultCountry
-    ? getCountryByIsoCode(defaultCountry)
-    : getDefaultCountry()
-}
 
 const MuiPhoneNumber = React.forwardRef(
   (props: MuiPhoneNumberProps, propRef: MuiPhoneNumberProps['ref']) => {
@@ -41,45 +27,29 @@ const MuiPhoneNumber = React.forwardRef(
       onDoubleClick,
       onFocus,
       onCopy,
+      value,
       inputProps,
       InputProps,
       inputRef: inputRefFromProps,
       disabled,
+      onChange,
       ...restTextFieldProps
     } = props
     const textFieldRef = React.useRef<HTMLDivElement>(null)
     const inputRef = React.useRef<HTMLInputElement>(null)
     const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null)
-    const [state, setState] = useStateWithCallback<State>(() => {
-      const initialCountry = getInitialCountry(defaultCountry)
-      return {
-        value: `+${initialCountry.callingCode}`,
-        formattedInt: initialCountry.callingCode,
-        country: getInitialCountry(defaultCountry),
-        hasSelectCountry: false
-      }
-    })
-    const previousFormattedInt = usePrevious(state.formattedInt)
-
+    const onChangeCallback = React.useRef(onChange)
     React.useEffect(() => {
-      const country = getInitialCountry(defaultCountry)
-      setState((prevState) => {
-        const isEmpty = prevState.formattedInt === prevState.country.callingCode
-        if (
-          prevState.hasSelectCountry ||
-          prevState.country === country ||
-          !isEmpty
-        ) {
-          return prevState
-        }
-        return {
-          hasSelectCountry: false,
-          value: `+${country.callingCode}`,
-          formattedInt: country.callingCode,
-          country
-        }
+      onChangeCallback.current = onChange
+    })
+    const [state, setState] = useStateWithCallback<State>(() => {
+      return getInitialState({
+        initialValue: value,
+        onlyCountries,
+        excludeCountries,
+        defaultCountry
       })
-    }, [defaultCountry, setState])
+    })
 
     const handleOpenFlagsMenu = (
       event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -90,75 +60,61 @@ const MuiPhoneNumber = React.forwardRef(
       }
     }
 
+    React.useEffect(() => {
+      setState(
+        (prevState) => {
+          return updateDefaultCountry(prevState, defaultCountry)
+        },
+        (newState) => {
+          onChangeCallback.current?.({
+            value: newState.value,
+            country: newState.country,
+            formattedInt: newState.formattedInt
+          })
+        }
+      )
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [defaultCountry, setState])
+
     const handleInputChange = (
       event: React.ChangeEvent<HTMLInputElement>
     ): void => {
-      const value = getOnlyNumbers(event.target.value)
-      const { country } = state
-
-      if (
-        !isIsoCodeEditable &&
-        !matchStartsWithCallingCode(Number(value), country.callingCode)
-      ) {
-        setState((prevState) => {
-          return {
-            ...prevState,
-            value: `+${country.callingCode}`,
-            formattedInt: country.callingCode
-          }
-        })
-      } else {
-        const newFormattedInt = numericToNumber(value) || null
-        const previousCallingCode = previousFormattedInt
-          ? getCallingCode(previousFormattedInt)
-          : null
-        const currentCallingCode = getCallingCode(value)
-        if (currentCallingCode && currentCallingCode === previousCallingCode) {
-          setState((prevState) => {
-            return {
-              ...prevState,
-              value: buildValue(value, country),
-              formattedInt: newFormattedInt
-            }
+      const inputValue = event.target.value
+      setState(
+        (prevState) => {
+          return updateInputValue(inputValue, prevState, {
+            isIsoCodeEditable,
+            excludeCountries,
+            onlyCountries
           })
-        } else {
-          const newCountry = currentCallingCode
-            ? getCountryByCallingCode(currentCallingCode)
-            : null
-          setState((prevState) => {
-            return {
-              ...prevState,
-              country: newCountry || prevState.country,
-              value: buildValue(value, newCountry || prevState.country),
-              formattedInt: newFormattedInt
-            }
+        },
+        (newState) => {
+          onChangeCallback.current?.({
+            value: newState.value,
+            country: newState.country,
+            formattedInt: newState.formattedInt
           })
         }
-      }
+      )
     }
 
     const handleSelectCountry = React.useCallback(
       (country: Country) => {
-        if (R.identical(country, state.country)) {
-          setAnchorEl(null)
-          return
-        }
         setState(
-          {
-            country,
-            value: `+${country.callingCode}`,
-            formattedInt: Number(getOnlyNumbers(country.callingCode)),
-            hasSelectCountry: true
+          (prevState) => {
+            return updateCountry(country, prevState)
           },
-          () => {
-            if (inputRef.current) {
-              putCursorAtEndOfInput(inputRef.current)
-            }
+          (newState) => {
+            onChangeCallback.current?.({
+              value: newState.value,
+              country: newState.country,
+              formattedInt: newState.formattedInt
+            })
           }
         )
         setAnchorEl(null)
       },
-      [setState, state.country]
+      [setState]
     )
 
     const handleFocus = (

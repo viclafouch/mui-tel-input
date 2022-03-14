@@ -1,6 +1,5 @@
 import React from 'react'
 import { COUNTRIES, Country } from '@shared/constants/countries'
-import { getCountryByIsoCode } from '@shared/helpers/country'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { expect, vi } from 'vitest'
 
@@ -12,16 +11,21 @@ function getAnchorEl() {
   return screen.getByText('My textfield')
 }
 
+const theCountry = {
+  name: 'France',
+  isoCode: 'FR',
+  callingCode: 33,
+  format: '+.. ... .. .. ..',
+  regions: ['europe', 'european-union']
+} as Country
+
 describe('components/FlagsMenu', () => {
   beforeAll(() => {
     document.body.innerHTML = `<div>My textfield</div>`
   })
   test('should render correctly', () => {
     render(
-      <FlagsMenu
-        selectedCountry={getCountryByIsoCode('FR')}
-        onSelectCountry={() => {}}
-      />
+      <FlagsMenu selectedCountry={theCountry} onSelectCountry={() => {}} />
     )
   })
 
@@ -29,7 +33,7 @@ describe('components/FlagsMenu', () => {
     render(
       <FlagsMenu
         anchorEl={getAnchorEl()}
-        selectedCountry={getCountryByIsoCode('FR')}
+        selectedCountry={theCountry}
         onSelectCountry={() => {}}
       />
     )
@@ -39,7 +43,7 @@ describe('components/FlagsMenu', () => {
     render(
       <FlagsMenu
         anchorEl={getAnchorEl()}
-        selectedCountry={getCountryByIsoCode('FR')}
+        selectedCountry={theCountry}
         onSelectCountry={() => {}}
       />
     )
@@ -53,13 +57,13 @@ describe('components/FlagsMenu', () => {
     render(
       <FlagsMenu
         anchorEl={getAnchorEl()}
-        selectedCountry={getCountryByIsoCode('FR')}
+        selectedCountry={theCountry}
         onSelectCountry={callback}
       />
     )
     fireEvent.click(screen.getByText('France'))
     expect(callback).toBeCalledTimes(1)
-    expect(callback).toHaveBeenLastCalledWith(getCountryByIsoCode('FR'))
+    expect(callback).toHaveBeenLastCalledWith(theCountry)
   })
 
   test('should list onlyCountries', () => {
@@ -67,7 +71,7 @@ describe('components/FlagsMenu', () => {
       <FlagsMenu
         onlyCountries={['FR']}
         anchorEl={getAnchorEl()}
-        selectedCountry={getCountryByIsoCode('FR')}
+        selectedCountry={theCountry}
         onSelectCountry={() => {}}
       />
     )
@@ -81,7 +85,7 @@ describe('components/FlagsMenu', () => {
       <FlagsMenu
         excludeCountries={['FR']}
         anchorEl={getAnchorEl()}
-        selectedCountry={getCountryByIsoCode('FR')}
+        selectedCountry={theCountry}
         onSelectCountry={() => {}}
       />
     )

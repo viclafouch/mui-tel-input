@@ -27,9 +27,10 @@ export function matchStartsWithCallingCode(
 }
 
 export function applyMaskToInputValue(
-  value: string,
+  number: number,
   format: NonNullable<Country['format']>
 ): string {
+  const lettersSplitted = R.pipe(String, R.split(''))(number)
   const maskCharacters = R.split('', format)
 
   return R.reduce(
@@ -64,32 +65,22 @@ export function applyMaskToInputValue(
     },
     {
       formattedText: '',
-      remainingLetters: R.split('', value)
+      remainingLetters: lettersSplitted
     },
     maskCharacters
   ).formattedText
 }
 
-export function buildValue(
-  inputValue: string,
-  currentCountry: Country
+export function numberToInputValue(
+  number: number | null,
+  country: Country
 ): string {
-  return R.cond([
-    [R.isEmpty, R.always('+')],
-    [
-      () => {
-        return R.isNil(currentCountry.format)
-      },
-      R.always(inputValue)
-    ],
-    [
-      R.T,
-      () => {
-        return applyMaskToInputValue(
-          inputValue,
-          currentCountry.format as string
-        )
-      }
-    ]
-  ])(inputValue)
+  if (number === null) {
+    return country.format
+      ? applyMaskToInputValue(country.callingCode, country.format)
+      : `${country.callingCode}`
+  }
+  return country.format
+    ? applyMaskToInputValue(number, country.format)
+    : `${number}`
 }
