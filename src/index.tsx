@@ -151,7 +151,9 @@ const MuiPhoneNumber = React.forwardRef(
             hasSelectCountry: true
           },
           () => {
-            putCursorAtEndOfInput(inputRef.current as HTMLInputElement)
+            if (inputRef.current) {
+              putCursorAtEndOfInput(inputRef.current)
+            }
           }
         )
         setAnchorEl(null)
@@ -163,7 +165,9 @@ const MuiPhoneNumber = React.forwardRef(
       event: React.FocusEvent<HTMLInputElement, Element>
     ): void => {
       requestAnimationFrame(() => {
-        return putCursorAtEndOfInput(inputRef.current as HTMLInputElement)
+        if (inputRef.current) {
+          putCursorAtEndOfInput(inputRef.current)
+        }
       })
       onFocus?.(event)
     }

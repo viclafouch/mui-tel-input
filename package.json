@@ -7,7 +7,9 @@
   },
   "homepage": "https://github.com/viclafouch/mui-phone-number",
   "version": "0.0.0",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/mui-phone-number.umd.js",
   "module": "./dist/mui-phone-number.es.js",
   "types": "./dist/index.d.ts",
@@ -51,9 +53,9 @@
     "react-dom": "^17.0.0"
   },
   "dependencies": {
-    "@emotion/react": "^11.8.2",
-    "@emotion/styled": "^11.8.1",
-    "@mui/material": "^5.5.0",
+    "@emotion/react": "^11.0.0",
+    "@emotion/styled": "^11.0.0",
+    "@mui/material": "^5.0.0",
     "ramda": "^0.21.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
@@ -68,7 +70,7 @@
     "@storybook/testing-library": "^0.0.9",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
-    "@testing-library/user-event": "^13.5.0",
+    "@testing-library/user-event": "^14.0.0-beta.13",
     "@types/ramda": "^0.28.1",
     "@types/react": "^17.0.40",
     "@types/react-dom": "^17.0.13",
