@@ -9,7 +9,11 @@ export type FlagProps = {
 
 const Flag = (props: FlagProps) => {
   const { isoCode } = props
-  return <Styled.Flag data-testid={isoCode} isoCode={isoCode} />
+  return (
+    <Styled.Flag data-testid={isoCode} isoCode={isoCode}>
+      <Styled.Span>{isoCode}</Styled.Span>
+    </Styled.Flag>
+  )
 }
 
 export default Flag

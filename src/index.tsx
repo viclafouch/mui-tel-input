@@ -4,18 +4,20 @@ import TextField from '@mui/material/TextField'
 import * as R from '@ramda'
 import { Country } from '@shared/constants/countries'
 import { putCursorAtEndOfInput } from '@shared/helpers/dom'
-import { updateDefaultCountry } from '@shared/helpers/props'
 import { assocRefToPropRef } from '@shared/helpers/ref'
 import {
   getInitialState,
   updateCountry,
   updateInputValue
 } from '@shared/helpers/state'
+import { usePrevious } from '@shared/hooks/usePrevious'
 import { useStateWithCallback } from '@shared/hooks/useStateWithCallback'
 
 import FlagButton from './components/FlagButton/FlagButton'
 import FlagsMenu from './components/FlagsMenu/FlagsMenu'
 import type { MuiPhoneNumberProps, State } from './index.types'
+
+const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 
 const MuiPhoneNumber = React.forwardRef(
   (props: MuiPhoneNumberProps, propRef: MuiPhoneNumberProps['ref']) => {
@@ -35,12 +37,26 @@ const MuiPhoneNumber = React.forwardRef(
       onChange,
       ...restTextFieldProps
     } = props
+    const previousValue = usePrevious(value)
+    const previousDefaultCountry = usePrevious(defaultCountry)
+    const isControlled = value !== undefined
+    const originIsControlledRef = React.useRef(isControlled)
     const textFieldRef = React.useRef<HTMLDivElement>(null)
     const inputRef = React.useRef<HTMLInputElement>(null)
     const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null)
     const onChangeCallback = React.useRef(onChange)
+    const currentOptionsRef = React.useRef({
+      excludeCountries,
+      onlyCountries,
+      isIsoCodeEditable
+    })
     React.useEffect(() => {
       onChangeCallback.current = onChange
+      currentOptionsRef.current = {
+        excludeCountries,
+        onlyCountries,
+        isIsoCodeEditable
+      }
     })
     const [state, setState] = useStateWithCallback<State>(() => {
       return getInitialState({
@@ -61,20 +77,40 @@ const MuiPhoneNumber = React.forwardRef(
     }
 
     React.useEffect(() => {
-      setState(
-        (prevState) => {
-          return updateDefaultCountry(prevState, defaultCountry)
-        },
-        (newState) => {
-          onChangeCallback.current?.({
-            value: newState.value,
-            country: newState.country,
-            formattedInt: newState.formattedInt
+      if (
+        (previousValue && previousValue !== value) ||
+        (previousDefaultCountry && previousDefaultCountry !== defaultCountry)
+      ) {
+        setState((prevState) => {
+          if (value === '' || value === undefined) {
+            return getInitialState({
+              initialValue: '',
+              excludeCountries: currentOptionsRef.current.excludeCountries,
+              onlyCountries: currentOptionsRef.current.onlyCountries,
+              defaultCountry
+            })
+          }
+          return updateInputValue(value, prevState, {
+            excludeCountries: currentOptionsRef.current.excludeCountries,
+            isIsoCodeEditable: currentOptionsRef.current.isIsoCodeEditable,
+            onlyCountries: currentOptionsRef.current.onlyCountries
           })
-        }
-      )
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [defaultCountry, setState])
+        })
+      }
+    }, [value, setState, previousValue, defaultCountry, previousDefaultCountry])
+
+    React.useEffect(() => {
+      if (!IS_PRODUCTION && originIsControlledRef.current !== isControlled) {
+        // eslint-disable-next-line no-console
+        console.error(
+          `"Mui Phone Number" is changed from ${
+            originIsControlledRef.current
+              ? 'uncontrolled to controlled'
+              : 'controlled to uncontrolled'
+          }.`
+        )
+      }
+    }, [isControlled])
 
     const handleInputChange = (
       event: React.ChangeEvent<HTMLInputElement>
@@ -89,11 +125,16 @@ const MuiPhoneNumber = React.forwardRef(
           })
         },
         (newState) => {
-          onChangeCallback.current?.({
-            value: newState.value,
-            country: newState.country,
-            formattedInt: newState.formattedInt
-          })
+          if (newState.value !== value) {
+            onChangeCallback.current?.(
+              {
+                value: newState.value,
+                country: newState.country,
+                formattedInt: newState.formattedInt
+              },
+              'input'
+            )
+          }
         }
       )
     }
@@ -105,11 +146,14 @@ const MuiPhoneNumber = React.forwardRef(
             return updateCountry(country, prevState)
           },
           (newState) => {
-            onChangeCallback.current?.({
-              value: newState.value,
-              country: newState.country,
-              formattedInt: newState.formattedInt
-            })
+            onChangeCallback.current?.(
+              {
+                value: newState.value,
+                country: newState.country,
+                formattedInt: newState.formattedInt
+              },
+              'country'
+            )
           }
         )
         setAnchorEl(null)

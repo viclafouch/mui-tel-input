@@ -23,6 +23,17 @@ const Styled = {
       backgroundPosition: `0 ${FLAG_POSITIONS[props.isoCode]}`,
       verticalAlign: 'text-top'
     }
+  }),
+  Span: styled('span')(() => {
+    return {
+      width: '1px',
+      clip: 'rect(0 0 0 0)',
+      clipPath: 'inset(100%)',
+      height: '1px',
+      overflow: 'hidden',
+      position: 'absolute',
+      whiteSpace: 'nowrap'
+    }
   })
 }
 

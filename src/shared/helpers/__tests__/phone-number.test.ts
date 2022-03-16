@@ -92,6 +92,19 @@ describe('helpers/phone-number', () => {
       expect(numberToInputValue(33, country)).toBeTypeOf('string')
     })
 
+    it('should return the calling code formatted', () => {
+      expect(numberToInputValue(null, country)).toBe('+33')
+    })
+
+    it('should return the calling code non formatted', () => {
+      expect(
+        numberToInputValue(null, {
+          ...country,
+          format: undefined
+        })
+      ).toBe('33')
+    })
+
     it('should return the exact same value for a country without format', () => {
       expect(
         numberToInputValue(32626922631, {

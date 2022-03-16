@@ -20,7 +20,12 @@ const FlagMenuItem = (props: FlagMenuItemProps) => {
   }
 
   return (
-    <MenuItem {...menuItemProps} onClick={handleClick} role="option">
+    <MenuItem
+      {...menuItemProps}
+      onClick={handleClick}
+      role="option"
+      data-testid={`option-${country.isoCode}`}
+    >
       <Styled.ListItemIcon>
         <Flag isoCode={country.isoCode} />
       </Styled.ListItemIcon>

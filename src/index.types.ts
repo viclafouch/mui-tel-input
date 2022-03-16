@@ -14,12 +14,14 @@ export type Values = {
   country: Country
 }
 
+export type ReasonChanged = 'country' | 'input'
+
 export type MuiPhoneNumberProps = BaseTextFieldProps & {
   excludeCountries?: Iso3166Alpha2Code[]
   onlyCountries?: Iso3166Alpha2Code[]
   defaultCountry?: Iso3166Alpha2Code
   isIsoCodeEditable?: boolean
-  onChange?: (values: Values) => void
+  onChange?: (values: Values, reason: ReasonChanged) => void
   value?: string
 }
 

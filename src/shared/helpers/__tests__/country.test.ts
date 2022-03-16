@@ -1,11 +1,12 @@
 import { Country } from '@shared/constants/countries'
+import { ISO_3166_ALPHA_2_MAPPINGS } from '@shared/constants/iso'
 import { expect } from 'vitest'
 
-import { ISO_3166_ALPHA_2_MAPPINGS } from '../../constants/iso'
 import {
   filterCountries,
   getCountryByCallingCode,
   getCountryByIsoCode,
+  getCountryByValue,
   getFallbackCountry
 } from '../country'
 
@@ -56,6 +57,11 @@ describe('helpers/country', () => {
     it('should return an object', () => {
       expect(getCountryByIsoCode('FR', COUNTRIES)).toBeTypeOf('object')
     })
+
+    it('should return null for a non country', () => {
+      expect(getCountryByIsoCode('FR', [])).toBe(null)
+    })
+
     it('should be the France country for iso FR', () => {
       expect(getCountryByIsoCode('FR', COUNTRIES)).toEqual({
         name: 'France',
@@ -68,7 +74,33 @@ describe('helpers/country', () => {
   })
 
   describe('getCountryByValue', () => {
-    it.todo('getCountryByValue')
+    it('should return a country for a valid value', () => {
+      expect(getCountryByValue('+33626922635', COUNTRIES)).toBeTypeOf('object')
+    })
+
+    it('should return null for an invalid value', () => {
+      expect(getCountryByValue('+31626922635', COUNTRIES)).toBe(null)
+    })
+
+    it('should return a country for a value with spaces', () => {
+      expect(getCountryByValue('+33 626 92 26 35', COUNTRIES)).toEqual({
+        name: 'France',
+        isoCode: 'FR',
+        callingCode: 33,
+        format: '+.. ... .. .. ..',
+        regions: ['europe', 'european-union']
+      })
+    })
+
+    it('should return a country for a value without +', () => {
+      expect(getCountryByValue('32626922635', COUNTRIES)).toEqual({
+        name: 'Belgium',
+        isoCode: 'BE',
+        callingCode: 32,
+        format: '+.. . .. .. .. ..',
+        regions: ['europe', 'european-union']
+      })
+    })
   })
 
   describe('getCountryByCallingCode', () => {
