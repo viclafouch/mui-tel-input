@@ -1,6 +1,7 @@
 import * as R from '@ramda'
-import { COUNTRIES, Country } from '@shared/constants/countries'
-import { Iso3166Alpha2Code } from '@shared/constants/iso'
+import type { Country } from '@shared/constants/countries'
+import { COUNTRIES } from '@shared/constants/countries'
+import type { Iso3166Alpha2Code } from '@shared/constants/iso'
 import {
   filterCountries,
   getCountryByCallingCode,

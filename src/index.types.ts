@@ -1,31 +1,36 @@
 import type { TextFieldProps } from '@mui/material/TextField'
-import { Country } from '@shared/constants/countries'
 
+import type { Country } from './shared/constants/countries'
 import type { Iso3166Alpha2Code } from './shared/constants/iso'
+
+export type { Country, Iso3166Alpha2Code }
 
 type BaseTextFieldProps = Omit<
   TextFieldProps,
   'onChange' | 'select' | 'type' | 'multiline'
 >
 
-export type Values = {
+export interface MuiPhoneNumberValues {
   value: string
   formattedInt: number | null
   country: Country
 }
 
-export type ReasonChanged = 'country' | 'input'
+export type MuiPhoneNumberReason = 'country' | 'input'
 
-export type MuiPhoneNumberProps = BaseTextFieldProps & {
+export interface MuiPhoneNumberProps extends BaseTextFieldProps {
   excludeCountries?: Iso3166Alpha2Code[]
   onlyCountries?: Iso3166Alpha2Code[]
   defaultCountry?: Iso3166Alpha2Code
   isIsoCodeEditable?: boolean
-  onChange?: (values: Values, reason: ReasonChanged) => void
+  onChange?: (
+    values: MuiPhoneNumberValues,
+    reason: MuiPhoneNumberReason
+  ) => void
   value?: string
 }
 
-export type State = {
+export interface State {
   formattedInt: number | null
   value: string
   country: Country

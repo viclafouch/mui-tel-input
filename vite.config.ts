@@ -15,7 +15,12 @@ export default defineConfig({
   build: {
     sourcemap: true,
     target: 'esnext',
-    minify: false,
+    minify: true,
+    terserOptions: {
+      format: {
+        comments: false
+      }
+    },
     lib: {
       entry: path.resolve(__dirname, 'src/index.tsx'),
       name: 'Mui-phone-number',
@@ -45,7 +50,7 @@ export default defineConfig({
     react(),
     tsconfigPaths(),
     dts({
-      include: ['src/index.tsx'],
+      exclude: ['src/components/**/*'],
       insertTypesEntry: true
     })
   ]

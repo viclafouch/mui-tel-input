@@ -1,5 +1,6 @@
 import * as R from '@ramda'
-import { COUNTRIES, Country } from '@shared/constants/countries'
+import type { Country } from '@shared/constants/countries'
+import { COUNTRIES } from '@shared/constants/countries'
 import type { Iso3166Alpha2Code } from '@shared/constants/iso'
 import { DEFAULT_ISO_CODE } from '@shared/constants/iso'
 import { matchIsArray } from '@shared/helpers/array'

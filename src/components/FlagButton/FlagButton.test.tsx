@@ -1,5 +1,5 @@
 import React from 'react'
-import { Country } from '@shared/constants/countries'
+import type { Country } from '@shared/constants/countries'
 import { render, screen } from '@testing-library/react'
 
 import FlagButton from './FlagButton'

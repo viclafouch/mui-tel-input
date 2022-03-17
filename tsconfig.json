@@ -23,7 +23,7 @@
       "@ramda": ["ramda/index.ts"],
     }
   },
-  "include": ["src"],
-  "exclude": ["vite.config.ts"],
+  "include": ["src/**/*"],
+  "exclude": ["vite.config.ts", "coverage", "dist"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

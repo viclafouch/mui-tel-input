@@ -1,5 +1,5 @@
 import * as R from '@ramda'
-import { Country } from '@shared/constants/countries'
+import type { Country } from '@shared/constants/countries'
 
 import { matchIsNumeric } from './string'
 

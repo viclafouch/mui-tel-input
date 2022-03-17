@@ -1,4 +1,5 @@
-import { COUNTRIES, Country } from '@shared/constants/countries'
+import type { Country } from '@shared/constants/countries'
+import { COUNTRIES } from '@shared/constants/countries'
 import {
   getCountryByIsoCode,
   getFallbackCountry

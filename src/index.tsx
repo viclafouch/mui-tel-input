@@ -2,7 +2,6 @@ import React from 'react'
 import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
 import * as R from '@ramda'
-import { Country } from '@shared/constants/countries'
 import { putCursorAtEndOfInput } from '@shared/helpers/dom'
 import { assocRefToPropRef } from '@shared/helpers/ref'
 import {
@@ -15,9 +14,24 @@ import { useStateWithCallback } from '@shared/hooks/useStateWithCallback'
 
 import FlagButton from './components/FlagButton/FlagButton'
 import FlagsMenu from './components/FlagsMenu/FlagsMenu'
-import type { MuiPhoneNumberProps, State } from './index.types'
+import type {
+  Country,
+  Iso3166Alpha2Code,
+  MuiPhoneNumberProps,
+  MuiPhoneNumberReason,
+  MuiPhoneNumberValues,
+  State
+} from './index.types'
 
-const IS_PRODUCTION = process.env.NODE_ENV === 'production'
+export type {
+  MuiPhoneNumberProps,
+  Country,
+  Iso3166Alpha2Code,
+  MuiPhoneNumberValues,
+  MuiPhoneNumberReason
+}
+
+const IS_PRODUCTION = process?.env?.NODE_ENV === 'production'
 
 const MuiPhoneNumber = React.forwardRef(
   (props: MuiPhoneNumberProps, propRef: MuiPhoneNumberProps['ref']) => {

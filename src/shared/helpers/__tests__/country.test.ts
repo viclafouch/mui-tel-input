@@ -1,4 +1,4 @@
-import { Country } from '@shared/constants/countries'
+import type { Country } from '@shared/constants/countries'
 import { ISO_3166_ALPHA_2_MAPPINGS } from '@shared/constants/iso'
 import { expect } from 'vitest'
 

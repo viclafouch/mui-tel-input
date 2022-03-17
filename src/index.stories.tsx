@@ -2,7 +2,7 @@ import React from 'react'
 import { ISO_3166_ALPHA_2_MAPPINGS } from '@shared/constants/iso'
 import { action } from '@storybook/addon-actions'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import { ReasonChanged, Values } from 'index.types'
+import { MuiPhoneNumberReason, MuiPhoneNumberValues } from 'index.types'
 
 import MuiPhoneNumber from './index'
 
@@ -32,7 +32,9 @@ export default {
 export const Primary: ComponentStory<typeof MuiPhoneNumber> = (args) => {
   const [state, setState] = React.useState<string>('')
 
-  const handleChange = (...changedArgs: [Values, ReasonChanged]) => {
+  const handleChange = (
+    ...changedArgs: [MuiPhoneNumberValues, MuiPhoneNumberReason]
+  ) => {
     action('onChange')(...changedArgs)
     setState(changedArgs[0].value)
   }
