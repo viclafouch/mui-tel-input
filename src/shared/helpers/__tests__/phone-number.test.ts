@@ -105,13 +105,13 @@ describe('helpers/phone-number', () => {
       ).toBe('33')
     })
 
-    it('should return the exact same value for a country without format', () => {
+    it('should return the exact same value with a + for a country without format', () => {
       expect(
         numberToInputValue(32626922631, {
           ...country,
           format: undefined
         })
-      ).toBe('32626922631')
+      ).toBe('+32626922631')
     })
 
     it('should return the value with style of the country FR', () => {

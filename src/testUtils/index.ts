@@ -11,8 +11,12 @@ export function getInputElement(): HTMLInputElement {
   return screen.getByRole('textbox')
 }
 
+export function getButtonElement(): HTMLButtonElement {
+  return screen.getByRole('button')
+}
+
 export function expectButtonIsFlagOf(isoCode: Iso3166Alpha2Code) {
-  expect(screen.getByRole('button')).toHaveTextContent(isoCode)
+  expect(getButtonElement()).toHaveTextContent(isoCode)
 }
 
 export async function typeInInputElement(
@@ -24,8 +28,7 @@ export async function typeInInputElement(
 }
 
 export function selectCountry(isoCode: Iso3166Alpha2Code): void {
-  const button = screen.getByRole('button')
-  fireEvent.click(button)
+  fireEvent.click(getButtonElement())
   fireEvent.click(screen.getByTestId(`option-${isoCode}`))
 }
 

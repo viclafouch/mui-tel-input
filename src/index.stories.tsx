@@ -14,7 +14,23 @@ export default {
       options: Object.keys(ISO_3166_ALPHA_2_MAPPINGS),
       control: { type: 'select' }
     },
+    langOfCountryName: {
+      options: Object.keys(ISO_3166_ALPHA_2_MAPPINGS),
+      control: { type: 'select' }
+    },
     isIsoCodeEditable: {
+      options: [true, false],
+      control: { type: 'boolean' }
+    },
+    disableDropdown: {
+      options: [true, false],
+      control: { type: 'boolean' }
+    },
+    disableFormatting: {
+      options: [true, false],
+      control: { type: 'boolean' }
+    },
+    focusOnSelectCountry: {
       options: [true, false],
       control: { type: 'boolean' }
     },
@@ -39,12 +55,5 @@ export const Primary: ComponentStory<typeof MuiPhoneNumber> = (args) => {
     setState(changedArgs[0].value)
   }
 
-  return (
-    <MuiPhoneNumber
-      {...args}
-      isIsoCodeEditable
-      value={state}
-      onChange={handleChange}
-    />
-  )
+  return <MuiPhoneNumber {...args} value={state} onChange={handleChange} />
 }

@@ -49,6 +49,10 @@ const MuiPhoneNumber = React.forwardRef(
       inputRef: inputRefFromProps,
       disabled,
       onChange,
+      disableDropdown,
+      disableFormatting,
+      focusOnSelectCountry,
+      langOfCountryName,
       ...restTextFieldProps
     } = props
     const previousValue = usePrevious(value)
@@ -62,14 +66,16 @@ const MuiPhoneNumber = React.forwardRef(
     const currentOptionsRef = React.useRef({
       excludeCountries,
       onlyCountries,
-      isIsoCodeEditable
+      isIsoCodeEditable,
+      disableFormatting
     })
     React.useEffect(() => {
       onChangeCallback.current = onChange
       currentOptionsRef.current = {
         excludeCountries,
         onlyCountries,
-        isIsoCodeEditable
+        isIsoCodeEditable,
+        disableFormatting
       }
     })
     const [state, setState] = useStateWithCallback<State>(() => {
@@ -85,33 +91,65 @@ const MuiPhoneNumber = React.forwardRef(
       event: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ): void => {
       event.preventDefault()
-      if (!disabled) {
+      if (!disabled || !disableDropdown) {
         setAnchorEl(textFieldRef.current)
       }
     }
 
     React.useEffect(() => {
-      if (
-        (previousValue && previousValue !== value) ||
-        (previousDefaultCountry && previousDefaultCountry !== defaultCountry)
-      ) {
+      if (previousValue && previousValue !== value) {
         setState((prevState) => {
           if (value === '' || value === undefined) {
             return getInitialState({
               initialValue: '',
               excludeCountries: currentOptionsRef.current.excludeCountries,
               onlyCountries: currentOptionsRef.current.onlyCountries,
+              disableFormatting: currentOptionsRef.current.disableFormatting,
               defaultCountry
             })
           }
           return updateInputValue(value, prevState, {
             excludeCountries: currentOptionsRef.current.excludeCountries,
             isIsoCodeEditable: currentOptionsRef.current.isIsoCodeEditable,
-            onlyCountries: currentOptionsRef.current.onlyCountries
+            onlyCountries: currentOptionsRef.current.onlyCountries,
+            disableFormatting: currentOptionsRef.current.disableFormatting
           })
         })
       }
-    }, [value, setState, previousValue, defaultCountry, previousDefaultCountry])
+    }, [value, setState, previousValue, defaultCountry])
+
+    React.useEffect(() => {
+      if (
+        previousDefaultCountry &&
+        previousDefaultCountry !== defaultCountry &&
+        !state.hasSelectCountry
+      ) {
+        setState(
+          getInitialState({
+            initialValue: '',
+            excludeCountries: currentOptionsRef.current.excludeCountries,
+            onlyCountries: currentOptionsRef.current.onlyCountries,
+            disableFormatting: currentOptionsRef.current.disableFormatting,
+            defaultCountry
+          }),
+          (newState) => {
+            onChangeCallback.current?.(
+              {
+                value: newState.value,
+                country: newState.country,
+                formattedInt: newState.formattedInt
+              },
+              'country'
+            )
+          }
+        )
+      }
+    }, [
+      state.hasSelectCountry,
+      setState,
+      defaultCountry,
+      previousDefaultCountry
+    ])
 
     React.useEffect(() => {
       if (!IS_PRODUCTION && originIsControlledRef.current !== isControlled) {
@@ -135,7 +173,8 @@ const MuiPhoneNumber = React.forwardRef(
           return updateInputValue(inputValue, prevState, {
             isIsoCodeEditable,
             excludeCountries,
-            onlyCountries
+            onlyCountries,
+            disableFormatting
           })
         },
         (newState) => {
@@ -153,11 +192,17 @@ const MuiPhoneNumber = React.forwardRef(
       )
     }
 
+    const focusInputElement = () => {
+      if (inputRef.current) {
+        inputRef.current.focus()
+      }
+    }
+
     const handleSelectCountry = React.useCallback(
       (country: Country) => {
         setState(
           (prevState) => {
-            return updateCountry(country, prevState)
+            return updateCountry(country, prevState, { disableFormatting })
           },
           (newState) => {
             onChangeCallback.current?.(
@@ -170,9 +215,12 @@ const MuiPhoneNumber = React.forwardRef(
             )
           }
         )
+        if (focusOnSelectCountry) {
+          focusInputElement()
+        }
         setAnchorEl(null)
       },
-      [setState]
+      [setState, disableFormatting, focusOnSelectCountry]
     )
 
     const handleFocus = (
@@ -258,20 +306,24 @@ const MuiPhoneNumber = React.forwardRef(
                   selectedCountry={state.country}
                   onClick={handleOpenFlagsMenu}
                   disabled={disabled}
+                  disableDropdown={Boolean(disableDropdown)}
                 />
               </InputAdornment>
             )
           }}
           {...restTextFieldProps}
         />
-        <FlagsMenu
-          onlyCountries={onlyCountries}
-          excludeCountries={excludeCountries}
-          anchorEl={anchorEl}
-          selectedCountry={state.country}
-          onClose={handleCloseFlagsMenu}
-          onSelectCountry={handleSelectCountry}
-        />
+        {!disableDropdown ? (
+          <FlagsMenu
+            onlyCountries={onlyCountries}
+            excludeCountries={excludeCountries}
+            anchorEl={anchorEl}
+            selectedCountry={state.country}
+            onClose={handleCloseFlagsMenu}
+            langOfCountryName={langOfCountryName}
+            onSelectCountry={handleSelectCountry}
+          />
+        ) : null}
       </>
     )
   }

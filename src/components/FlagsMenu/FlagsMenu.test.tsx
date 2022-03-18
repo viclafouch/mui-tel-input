@@ -77,7 +77,7 @@ describe('components/FlagsMenu', () => {
     )
     const options = screen.getAllByRole('option')
     expect(options.length).toBe(1)
-    expect(options[0].id).toBe('country-France')
+    expect(options[0].id).toBe('country-FR')
   })
 
   test('should exclude countries', () => {

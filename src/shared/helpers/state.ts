@@ -22,11 +22,17 @@ type GetInitialStateParams = {
   onlyCountries?: Iso3166Alpha2Code[]
   excludeCountries?: Iso3166Alpha2Code[]
   initialValue?: string
+  disableFormatting?: boolean
 }
 
 export function getInitialState(params: GetInitialStateParams = {}): State {
-  const { defaultCountry, onlyCountries, excludeCountries, initialValue } =
-    params
+  const {
+    defaultCountry,
+    onlyCountries,
+    excludeCountries,
+    initialValue,
+    disableFormatting
+  } = params
   const filteredCountries = filterCountries(COUNTRIES, {
     onlyCountries,
     excludeCountries
@@ -40,7 +46,9 @@ export function getInitialState(params: GetInitialStateParams = {}): State {
   if (countryByValue) {
     const onlyNumbers = initialValue ? stringToNumber(initialValue) : null
     return {
-      value: numberToInputValue(onlyNumbers, countryByValue),
+      value: numberToInputValue(onlyNumbers, countryByValue, {
+        disableFormatting
+      }),
       formattedInt: onlyNumbers,
       country: countryByValue,
       hasSelectCountry: false
@@ -56,7 +64,8 @@ export function getInitialState(params: GetInitialStateParams = {}): State {
     return {
       value: numberToInputValue(
         theDefaultCountry.callingCode,
-        theDefaultCountry
+        theDefaultCountry,
+        { disableFormatting }
       ),
       formattedInt: theDefaultCountry.callingCode,
       country: theDefaultCountry,
@@ -67,7 +76,9 @@ export function getInitialState(params: GetInitialStateParams = {}): State {
   // We don't have any country selected now, let's get a fallback
   const fallbackCountry = filteredCountries[0] || getFallbackCountry()
   return {
-    value: numberToInputValue(fallbackCountry.callingCode, fallbackCountry),
+    value: numberToInputValue(fallbackCountry.callingCode, fallbackCountry, {
+      disableFormatting
+    }),
     formattedInt: fallbackCountry.callingCode,
     country: fallbackCountry,
     hasSelectCountry: false
@@ -78,6 +89,7 @@ type UpdateInputValueOptions = {
   isIsoCodeEditable: boolean | undefined
   onlyCountries?: Iso3166Alpha2Code[]
   excludeCountries?: Iso3166Alpha2Code[]
+  disableFormatting?: boolean
 }
 
 export function updateInputValue(
@@ -85,7 +97,12 @@ export function updateInputValue(
   prevState: State,
   options: UpdateInputValueOptions
 ): State {
-  const { isIsoCodeEditable, onlyCountries, excludeCountries } = options
+  const {
+    isIsoCodeEditable,
+    onlyCountries,
+    excludeCountries,
+    disableFormatting
+  } = options
 
   if (!isIsoCodeEditable) {
     const mustStartsWith = numberToInputValue(
@@ -123,7 +140,9 @@ export function updateInputValue(
   if (currentCallingCode && currentCallingCode === previousCallingCode) {
     return {
       ...prevState,
-      value: numberToInputValue(onlyNumbers, prevState.country),
+      value: numberToInputValue(onlyNumbers, prevState.country, {
+        disableFormatting
+      }),
       formattedInt: onlyNumbers
     }
   }
@@ -154,14 +173,21 @@ export function updateInputValue(
   return {
     ...prevState,
     country: newCountry,
-    value: numberToInputValue(onlyNumbers, newCountry),
+    value: numberToInputValue(onlyNumbers, newCountry, { disableFormatting }),
     formattedInt: onlyNumbers
   }
 }
 
-export function updateCountry(country: Country, prevState: State): State {
+export function updateCountry(
+  country: Country,
+  prevState: State,
+  options: { disableFormatting?: boolean } = {}
+): State {
+  const { disableFormatting } = options
   if (R.identical(country, prevState.country)) {
-    const mustStartsWith = numberToInputValue(country.callingCode, country)
+    const mustStartsWith = numberToInputValue(country.callingCode, country, {
+      disableFormatting
+    })
     if (!prevState.value.startsWith(mustStartsWith)) {
       return {
         ...prevState,
@@ -173,7 +199,9 @@ export function updateCountry(country: Country, prevState: State): State {
   }
   return {
     country,
-    value: numberToInputValue(country.callingCode, country),
+    value: numberToInputValue(country.callingCode, country, {
+      disableFormatting
+    }),
     formattedInt: country.callingCode,
     hasSelectCountry: true
   }

@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import {
   closeFlagsMenu,
   expectButtonIsFlagOf,
+  getButtonElement,
   getInputElement,
   selectCountry,
   typeInInputElement
@@ -26,12 +27,17 @@ describe('components/MuiPhoneNumber', () => {
       expect(inputElement.value).toBe('+33')
     })
 
-    test('should update if the prop changes', () => {
+    test('should not displayed the button if disableDropdown is true', () => {
+      render(<MuiPhoneNumber disableDropdown defaultCountry="FR" />)
+      const button = screen.queryByRole('button')
+      expect(button).toBe(null)
+    })
+
+    test('should update if the defaultCountry prop changes', () => {
       const { rerender } = render(<MuiPhoneNumber defaultCountry="FR" />)
-      const inputElement = getInputElement()
-      expect(inputElement.value).toBe('+33')
+      expect(getInputElement().value).toBe('+33')
       rerender(<MuiPhoneNumber defaultCountry="BE" />)
-      expect(inputElement.value).toBe('+32')
+      expect(getInputElement().value).toBe('+32')
     })
 
     test('should assign ref object', () => {
@@ -45,6 +51,7 @@ describe('components/MuiPhoneNumber', () => {
       render(<MuiPhoneNumber ref={ref} />)
       expect(ref).toHaveBeenCalled()
     })
+
     test('should fire the onDoubleClick prop', () => {
       const callback = vi.fn(() => {})
       render(<MuiPhoneNumber onDoubleClick={callback} />)
@@ -89,6 +96,30 @@ describe('components/MuiPhoneNumber', () => {
       expectButtonIsFlagOf('FR')
     })
 
+    test('should call onChange when the default country changes without selecting another', () => {
+      const callbackOnChange = vi.fn(() => {})
+      const { rerender } = render(
+        <MuiPhoneNumber defaultCountry="FR" onChange={callbackOnChange} />
+      )
+      rerender(
+        <MuiPhoneNumber defaultCountry="BE" onChange={callbackOnChange} />
+      )
+      expect(callbackOnChange).toHaveBeenCalledWith(
+        {
+          formattedInt: 32,
+          value: '+32',
+          country: {
+            name: 'Belgium',
+            isoCode: 'BE',
+            callingCode: 32,
+            format: '+.. . .. .. .. ..',
+            regions: ['europe', 'european-union']
+          }
+        },
+        'country'
+      )
+    })
+
     test('should call onChange when select a different country', () => {
       const callbackOnChange = vi.fn(() => {})
       render(
@@ -113,6 +144,19 @@ describe('components/MuiPhoneNumber', () => {
         },
         'country'
       )
+    })
+
+    test('should auto focus when focusOnSelectCountry is true and select country', () => {
+      render(<MuiPhoneNumber defaultCountry="BE" focusOnSelectCountry />)
+      selectCountry('FR')
+      // eslint-disable-next-line testing-library/no-node-access
+      expect(document.activeElement).toBe(getInputElement())
+    })
+
+    test('should be disabled when disabled props is true', () => {
+      render(<MuiPhoneNumber disabled />)
+      expect(getInputElement()).toBeDisabled()
+      expect(getButtonElement()).toBeDisabled()
     })
   })
 
@@ -228,17 +272,6 @@ describe('components/MuiPhoneNumber', () => {
     expectButtonIsFlagOf('BE')
   })
 
-  test('should not change the value if the defaultCountry change', () => {
-    const { rerender } = render(
-      <MuiPhoneNumber defaultCountry="BE" value="+328732" isIsoCodeEditable />
-    )
-    rerender(
-      <MuiPhoneNumber defaultCountry="FR" value="+328732" isIsoCodeEditable />
-    )
-    expect(getInputElement().value).toBe('+32 8 73 2')
-    expectButtonIsFlagOf('BE')
-  })
-
   test('should change the country if prop value has changed with new country', () => {
     const { rerender } = render(
       <MuiPhoneNumber defaultCountry="BE" value="+328732" isIsoCodeEditable />
@@ -251,17 +284,13 @@ describe('components/MuiPhoneNumber', () => {
 
   test('should open flags on button clicked', () => {
     render(<MuiPhoneNumber />)
-    const button = screen.getByRole('button')
-    fireEvent.click(button)
+    fireEvent.click(getButtonElement())
     expect(screen.getByRole('listbox')).toBeTruthy()
   })
 
   test('should close flags on country selected', () => {
     render(<MuiPhoneNumber />)
-    const button = screen.getByRole('button')
-    fireEvent.click(button)
-    const options = screen.getAllByRole('option')
-    fireEvent.click(options[0])
+    selectCountry('FR')
     expect(screen.queryByRole('listbox')).toBeFalsy()
   })
 
@@ -290,13 +319,13 @@ describe('components/MuiPhoneNumber', () => {
   test('should open flags menu', () => {
     render(<MuiPhoneNumber />)
     expect(screen.queryByRole('presentation')).toBeFalsy()
-    fireEvent.click(screen.getByRole('button'))
+    fireEvent.click(getButtonElement())
     expect(screen.getByRole('presentation')).toBeTruthy()
   })
 
   test('should close flags menu', async () => {
     render(<MuiPhoneNumber />)
-    fireEvent.click(screen.getByRole('button'))
+    fireEvent.click(getButtonElement())
     expect(screen.getByRole('presentation')).toBeTruthy()
     await closeFlagsMenu()
     expect(screen.queryByRole('presentation')).toBeFalsy()

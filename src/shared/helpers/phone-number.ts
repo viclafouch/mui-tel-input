@@ -1,6 +1,7 @@
 import * as R from '@ramda'
 import type { Country } from '@shared/constants/countries'
 
+import { getFormattedFormat } from './country'
 import { matchIsNumeric } from './string'
 
 export function matchIsValidCallingCode(callingCode: number) {
@@ -71,16 +72,22 @@ export function applyMaskToInputValue(
   ).formattedText
 }
 
+type NumberToInputValueOpts = {
+  disableFormatting?: boolean
+}
+
 export function numberToInputValue(
   number: number | null,
-  country: Country
+  country: Country,
+  options: NumberToInputValueOpts = {}
 ): string {
+  const format = country.format
+    ? getFormattedFormat(country.format, options.disableFormatting)
+    : null
   if (number === null) {
-    return country.format
-      ? applyMaskToInputValue(country.callingCode, country.format)
+    return format
+      ? applyMaskToInputValue(country.callingCode, format)
       : `${country.callingCode}`
   }
-  return country.format
-    ? applyMaskToInputValue(number, country.format)
-    : `${number}`
+  return format ? applyMaskToInputValue(number, format) : `+${number}`
 }

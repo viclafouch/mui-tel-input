@@ -9,15 +9,18 @@ import { Styled } from './FlagsMenuItem.styled'
 export type FlagMenuItemProps = MenuItemProps & {
   country: Country
   onSelectCountry: (country: Country) => void
+  displayNames: Intl.DisplayNames
 }
 
 const FlagMenuItem = (props: FlagMenuItemProps) => {
-  const { country, onSelectCountry, ...menuItemProps } = props
+  const { country, onSelectCountry, displayNames, ...menuItemProps } = props
 
   const handleClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     event.preventDefault()
     onSelectCountry(country)
   }
+
+  const countryName = displayNames.of(country.isoCode)
 
   return (
     <MenuItem
@@ -29,7 +32,7 @@ const FlagMenuItem = (props: FlagMenuItemProps) => {
       <Styled.ListItemIcon>
         <Flag isoCode={country.isoCode} />
       </Styled.ListItemIcon>
-      <Styled.ListItemText>{country.name}</Styled.ListItemText>
+      <Styled.ListItemText>{countryName}</Styled.ListItemText>
       <Typography variant="body2" color="text.secondary">
         +{country.callingCode}
       </Typography>

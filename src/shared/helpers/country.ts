@@ -64,3 +64,10 @@ export function filterCountries(
   }
   return countries
 }
+
+export function getFormattedFormat(format: string, clean?: boolean): string {
+  if (!clean) {
+    return format
+  }
+  return format.replaceAll(' ', '')
+}

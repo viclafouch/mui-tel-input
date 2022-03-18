@@ -6,10 +6,32 @@ import type { Country } from '@shared/constants/countries'
 export type FlagButtonProps = IconButtonProps & {
   selectedCountry: Country
   isFlagsMenuOpened: boolean
+  disableDropdown?: boolean
 }
 
 const FlagButton = (props: FlagButtonProps) => {
-  const { selectedCountry, isFlagsMenuOpened, ...iconButtonProps } = props
+  const {
+    selectedCountry,
+    isFlagsMenuOpened,
+    disableDropdown,
+    ...iconButtonProps
+  } = props
+
+  if (disableDropdown) {
+    return (
+      <IconButton
+        tabIndex={-1}
+        // eslint-disable-next-line jsx-a11y/aria-role
+        role=""
+        disableRipple
+        // @ts-ignore
+        sx={{ pointerEvents: 'none' }}
+        component="span"
+      >
+        <Flag isoCode={selectedCountry.isoCode} />
+      </IconButton>
+    )
+  }
 
   return (
     <IconButton
@@ -22,6 +44,10 @@ const FlagButton = (props: FlagButtonProps) => {
       <Flag isoCode={selectedCountry.isoCode} />
     </IconButton>
   )
+}
+
+FlagButton.defaultProps = {
+  disableDropdown: false
 }
 
 export default FlagButton

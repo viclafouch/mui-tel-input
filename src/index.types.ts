@@ -23,6 +23,10 @@ export interface MuiPhoneNumberProps extends BaseTextFieldProps {
   onlyCountries?: Iso3166Alpha2Code[]
   defaultCountry?: Iso3166Alpha2Code
   isIsoCodeEditable?: boolean
+  focusOnSelectCountry?: boolean
+  disableDropdown?: boolean
+  langOfCountryName?: Iso3166Alpha2Code
+  disableFormatting?: boolean
   onChange?: (
     values: MuiPhoneNumberValues,
     reason: MuiPhoneNumberReason
