@@ -23,8 +23,8 @@ export default defineConfig({
     },
     lib: {
       entry: path.resolve(__dirname, 'src/index.tsx'),
-      name: 'Mui-phone-number',
-      fileName: format => `mui-phone-number.${format}.js`
+      name: 'Mui-tel-input',
+      fileName: format => `mui-tel-input.${format}.js`
     },
     rollupOptions: {
       output: {

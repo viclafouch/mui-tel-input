@@ -1,27 +1,27 @@
 {
-  "name": "mui-phone-number",
+  "name": "mui-tel-input",
   "author": "Victor de la Fouchardiere <victor.delafouchardiere@gmail.com> (https://github.com/viclafouch)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/viclafouch/mui-phone-number/issues"
+    "url": "https://github.com/viclafouch/mui-tel-input/issues"
   },
-  "homepage": "https://github.com/viclafouch/mui-phone-number",
+  "homepage": "https://github.com/viclafouch/mui-tel-input",
   "version": "0.0.0",
   "files": [
     "dist"
   ],
-  "main": "./dist/mui-phone-number.umd.js",
-  "module": "./dist/mui-phone-number.es.js",
+  "main": "./dist/mui-tel-input.umd.js",
+  "module": "./dist/mui-tel-input.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/mui-phone-number.es.js",
-      "require": "./dist/mui-phone-number.umd.js"
+      "import": "./dist/mui-tel-input.es.js",
+      "require": "./dist/mui-tel-input.umd.js"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/viclafouch/mui-phone-number.git"
+    "url": "git+https://github.com/viclafouch/mui-tel-input.git"
   },
   "keywords": [
     "react",

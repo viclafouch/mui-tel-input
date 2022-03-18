@@ -11,50 +11,50 @@ import {
 } from 'testUtils'
 import { vi } from 'vitest'
 
-import MuiPhoneNumber from './index'
+import MuiTelInput from './index'
 
 import '@testing-library/jest-dom'
 
-describe('components/MuiPhoneNumber', () => {
+describe('components/MuiTelInput', () => {
   test('should render correctly', () => {
-    render(<MuiPhoneNumber />)
+    render(<MuiTelInput />)
   })
 
   describe('props component', () => {
     test('should displayed the correct default calling code', () => {
-      render(<MuiPhoneNumber defaultCountry="FR" />)
+      render(<MuiTelInput defaultCountry="FR" />)
       const inputElement = getInputElement()
       expect(inputElement.value).toBe('+33')
     })
 
     test('should not displayed the button if disableDropdown is true', () => {
-      render(<MuiPhoneNumber disableDropdown defaultCountry="FR" />)
+      render(<MuiTelInput disableDropdown defaultCountry="FR" />)
       const button = screen.queryByRole('button')
       expect(button).toBe(null)
     })
 
     test('should update if the defaultCountry prop changes', () => {
-      const { rerender } = render(<MuiPhoneNumber defaultCountry="FR" />)
+      const { rerender } = render(<MuiTelInput defaultCountry="FR" />)
       expect(getInputElement().value).toBe('+33')
-      rerender(<MuiPhoneNumber defaultCountry="BE" />)
+      rerender(<MuiTelInput defaultCountry="BE" />)
       expect(getInputElement().value).toBe('+32')
     })
 
     test('should assign ref object', () => {
       const ref = React.createRef<HTMLDivElement>()
-      render(<MuiPhoneNumber ref={ref} />)
+      render(<MuiTelInput ref={ref} />)
       expect(ref.current).toBeTruthy()
     })
 
     test('should call ref function', () => {
       const ref = vi.fn(() => {})
-      render(<MuiPhoneNumber ref={ref} />)
+      render(<MuiTelInput ref={ref} />)
       expect(ref).toHaveBeenCalled()
     })
 
     test('should fire the onDoubleClick prop', () => {
       const callback = vi.fn(() => {})
-      render(<MuiPhoneNumber onDoubleClick={callback} />)
+      render(<MuiTelInput onDoubleClick={callback} />)
       const input = screen.getByRole('textbox')
       fireEvent.doubleClick(input)
       expect(callback).toHaveBeenCalledTimes(1)
@@ -62,7 +62,7 @@ describe('components/MuiPhoneNumber', () => {
 
     test('should fire the onFocus prop', () => {
       const callback = vi.fn(() => {})
-      render(<MuiPhoneNumber onFocus={callback} />)
+      render(<MuiTelInput onFocus={callback} />)
       const input = screen.getByRole('textbox')
       fireEvent.focus(input)
       expect(callback).toHaveBeenCalledTimes(1)
@@ -70,26 +70,26 @@ describe('components/MuiPhoneNumber', () => {
 
     test('should assign inputRef', () => {
       const ref = React.createRef<HTMLDivElement>()
-      render(<MuiPhoneNumber inputRef={ref} />)
+      render(<MuiTelInput inputRef={ref} />)
       expect(ref.current).toBeTruthy()
     })
 
     test('should assign InputProps.ref', () => {
       const ref = React.createRef<HTMLDivElement>()
       const InputProps = { inputRef: ref }
-      render(<MuiPhoneNumber InputProps={InputProps} />)
+      render(<MuiTelInput InputProps={InputProps} />)
       expect(InputProps.inputRef.current).toBeTruthy()
     })
 
     test('should display calling code if isIsoCodeEditable is false', async () => {
-      render(<MuiPhoneNumber defaultCountry="FR" isIsoCodeEditable={false} />)
+      render(<MuiTelInput defaultCountry="FR" isIsoCodeEditable={false} />)
       const inputElement = getInputElement()
       await userEvent.clear(inputElement)
       expect(inputElement.value).toBe('+33')
     })
 
     test('should display "+" if isoCodeEditable is true and user clears input', async () => {
-      render(<MuiPhoneNumber defaultCountry="FR" isIsoCodeEditable />)
+      render(<MuiTelInput defaultCountry="FR" isIsoCodeEditable />)
       const inputElement = getInputElement()
       await userEvent.clear(inputElement)
       expect(inputElement.value).toBe('+')
@@ -99,11 +99,9 @@ describe('components/MuiPhoneNumber', () => {
     test('should call onChange when the default country changes without selecting another', () => {
       const callbackOnChange = vi.fn(() => {})
       const { rerender } = render(
-        <MuiPhoneNumber defaultCountry="FR" onChange={callbackOnChange} />
+        <MuiTelInput defaultCountry="FR" onChange={callbackOnChange} />
       )
-      rerender(
-        <MuiPhoneNumber defaultCountry="BE" onChange={callbackOnChange} />
-      )
+      rerender(<MuiTelInput defaultCountry="BE" onChange={callbackOnChange} />)
       expect(callbackOnChange).toHaveBeenCalledWith(
         {
           formattedInt: 32,
@@ -123,7 +121,7 @@ describe('components/MuiPhoneNumber', () => {
     test('should call onChange when select a different country', () => {
       const callbackOnChange = vi.fn(() => {})
       render(
-        <MuiPhoneNumber
+        <MuiTelInput
           defaultCountry="FR"
           onChange={callbackOnChange}
           isIsoCodeEditable
@@ -147,14 +145,14 @@ describe('components/MuiPhoneNumber', () => {
     })
 
     test('should auto focus when focusOnSelectCountry is true and select country', () => {
-      render(<MuiPhoneNumber defaultCountry="BE" focusOnSelectCountry />)
+      render(<MuiTelInput defaultCountry="BE" focusOnSelectCountry />)
       selectCountry('FR')
       // eslint-disable-next-line testing-library/no-node-access
       expect(document.activeElement).toBe(getInputElement())
     })
 
     test('should be disabled when disabled props is true', () => {
-      render(<MuiPhoneNumber disabled />)
+      render(<MuiTelInput disabled />)
       expect(getInputElement()).toBeDisabled()
       expect(getButtonElement()).toBeDisabled()
     })
@@ -163,7 +161,7 @@ describe('components/MuiPhoneNumber', () => {
   test('should not call onChange when select the same country', () => {
     const callbackOnChange = vi.fn(() => {})
     render(
-      <MuiPhoneNumber
+      <MuiTelInput
         defaultCountry="BE"
         onChange={callbackOnChange}
         isIsoCodeEditable
@@ -176,7 +174,7 @@ describe('components/MuiPhoneNumber', () => {
   test('should not call onChange on mount with a prop value', () => {
     const callbackOnChange = vi.fn(() => {})
     render(
-      <MuiPhoneNumber
+      <MuiTelInput
         defaultCountry="BE"
         value="+328732"
         onChange={callbackOnChange}
@@ -189,7 +187,7 @@ describe('components/MuiPhoneNumber', () => {
   test('should not call onChange if prop value has changed', () => {
     const callbackOnChange = vi.fn(() => {})
     const { rerender } = render(
-      <MuiPhoneNumber
+      <MuiTelInput
         defaultCountry="BE"
         value="+328732"
         onChange={callbackOnChange}
@@ -197,7 +195,7 @@ describe('components/MuiPhoneNumber', () => {
       />
     )
     rerender(
-      <MuiPhoneNumber
+      <MuiTelInput
         defaultCountry="BE"
         value="+328732767"
         onChange={callbackOnChange}
@@ -210,7 +208,7 @@ describe('components/MuiPhoneNumber', () => {
   test('should call onChange when user type a number', async () => {
     const callbackOnChange = vi.fn(() => {})
     render(
-      <MuiPhoneNumber
+      <MuiTelInput
         defaultCountry="BE"
         onChange={callbackOnChange}
         isIsoCodeEditable
@@ -223,7 +221,7 @@ describe('components/MuiPhoneNumber', () => {
   test('should call onChange when user type a number', async () => {
     const callbackOnChange = vi.fn(() => {})
     render(
-      <MuiPhoneNumber
+      <MuiTelInput
         defaultCountry="BE"
         onChange={callbackOnChange}
         isIsoCodeEditable
@@ -248,60 +246,56 @@ describe('components/MuiPhoneNumber', () => {
 
   test('should change the input value if value prop has changed', () => {
     const { rerender } = render(
-      <MuiPhoneNumber defaultCountry="BE" value="+328732" isIsoCodeEditable />
+      <MuiTelInput defaultCountry="BE" value="+328732" isIsoCodeEditable />
     )
     const inputElement = getInputElement()
     expect(inputElement.value).toBe('+32 8 73 2')
     rerender(
-      <MuiPhoneNumber
-        defaultCountry="BE"
-        value="+328732767"
-        isIsoCodeEditable
-      />
+      <MuiTelInput defaultCountry="BE" value="+328732767" isIsoCodeEditable />
     )
     expect(inputElement.value).toBe('+32 8 73 27 67')
   })
 
   test('should reset the input value with defaultCountry if prop value became empty', () => {
     const { rerender } = render(
-      <MuiPhoneNumber defaultCountry="BE" value="+328732" isIsoCodeEditable />
+      <MuiTelInput defaultCountry="BE" value="+328732" isIsoCodeEditable />
     )
     selectCountry('FR')
-    rerender(<MuiPhoneNumber defaultCountry="BE" value="" isIsoCodeEditable />)
+    rerender(<MuiTelInput defaultCountry="BE" value="" isIsoCodeEditable />)
     expect(getInputElement().value).toBe('+32')
     expectButtonIsFlagOf('BE')
   })
 
   test('should change the country if prop value has changed with new country', () => {
     const { rerender } = render(
-      <MuiPhoneNumber defaultCountry="BE" value="+328732" isIsoCodeEditable />
+      <MuiTelInput defaultCountry="BE" value="+328732" isIsoCodeEditable />
     )
     rerender(
-      <MuiPhoneNumber defaultCountry="BE" value="+338732" isIsoCodeEditable />
+      <MuiTelInput defaultCountry="BE" value="+338732" isIsoCodeEditable />
     )
     expectButtonIsFlagOf('FR')
   })
 
   test('should open flags on button clicked', () => {
-    render(<MuiPhoneNumber />)
+    render(<MuiTelInput />)
     fireEvent.click(getButtonElement())
     expect(screen.getByRole('listbox')).toBeTruthy()
   })
 
   test('should close flags on country selected', () => {
-    render(<MuiPhoneNumber />)
+    render(<MuiTelInput />)
     selectCountry('FR')
     expect(screen.queryByRole('listbox')).toBeFalsy()
   })
 
   test('should display in correct format FR number', async () => {
-    render(<MuiPhoneNumber defaultCountry="FR" />)
+    render(<MuiTelInput defaultCountry="FR" />)
     const { result } = await typeInInputElement('626922631')
     expect(result).toBe('+33 626 92 26 31')
   })
 
   test('should reset value when country changes', async () => {
-    render(<MuiPhoneNumber defaultCountry="FR" />)
+    render(<MuiTelInput defaultCountry="FR" />)
     await typeInInputElement('626922631')
     selectCountry('BE')
     expect(getInputElement().value).toBe('+32')
@@ -309,7 +303,7 @@ describe('components/MuiPhoneNumber', () => {
   })
 
   test('should select all input on double click', () => {
-    render(<MuiPhoneNumber />)
+    render(<MuiTelInput />)
     const inputElement = getInputElement()
     fireEvent.doubleClick(inputElement)
     expect(inputElement.selectionStart).toBe(0)
@@ -317,14 +311,14 @@ describe('components/MuiPhoneNumber', () => {
   })
 
   test('should open flags menu', () => {
-    render(<MuiPhoneNumber />)
+    render(<MuiTelInput />)
     expect(screen.queryByRole('presentation')).toBeFalsy()
     fireEvent.click(getButtonElement())
     expect(screen.getByRole('presentation')).toBeTruthy()
   })
 
   test('should close flags menu', async () => {
-    render(<MuiPhoneNumber />)
+    render(<MuiTelInput />)
     fireEvent.click(getButtonElement())
     expect(screen.getByRole('presentation')).toBeTruthy()
     await closeFlagsMenu()
@@ -332,7 +326,7 @@ describe('components/MuiPhoneNumber', () => {
   })
 
   test('should change flag if isoCodeEditable is true and user changes calling code', async () => {
-    render(<MuiPhoneNumber defaultCountry="FR" isIsoCodeEditable />)
+    render(<MuiTelInput defaultCountry="FR" isIsoCodeEditable />)
     const inputElement = getInputElement()
     await userEvent.clear(inputElement)
     const { result } = await typeInInputElement('32')
@@ -342,22 +336,22 @@ describe('components/MuiPhoneNumber', () => {
 
   test('should reset value to calling code if the prop value become empty', async () => {
     const { rerender } = render(
-      <MuiPhoneNumber defaultCountry="BE" value="+328732" isIsoCodeEditable />
+      <MuiTelInput defaultCountry="BE" value="+328732" isIsoCodeEditable />
     )
     const inputElement = getInputElement()
     await userEvent.clear(inputElement)
-    rerender(<MuiPhoneNumber defaultCountry="BE" value="" isIsoCodeEditable />)
+    rerender(<MuiTelInput defaultCountry="BE" value="" isIsoCodeEditable />)
     expect(getInputElement().value).toBe('+32')
     expectButtonIsFlagOf('BE')
   })
 
   test('should reset value to calling code if the prop value become empty AND the defaultCountry change', async () => {
     const { rerender } = render(
-      <MuiPhoneNumber defaultCountry="BE" value="+328732" isIsoCodeEditable />
+      <MuiTelInput defaultCountry="BE" value="+328732" isIsoCodeEditable />
     )
     const inputElement = getInputElement()
     await userEvent.clear(inputElement)
-    rerender(<MuiPhoneNumber defaultCountry="FR" value="" isIsoCodeEditable />)
+    rerender(<MuiTelInput defaultCountry="FR" value="" isIsoCodeEditable />)
     expect(getInputElement().value).toBe('+33')
     expectButtonIsFlagOf('FR')
   })
@@ -365,10 +359,10 @@ describe('components/MuiPhoneNumber', () => {
   test('should display console error if component become controlled => uncontrolled', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     const { rerender } = render(
-      <MuiPhoneNumber defaultCountry="BE" value="+328732" isIsoCodeEditable />
+      <MuiTelInput defaultCountry="BE" value="+328732" isIsoCodeEditable />
     )
     rerender(
-      <MuiPhoneNumber defaultCountry="FR" value={undefined} isIsoCodeEditable />
+      <MuiTelInput defaultCountry="FR" value={undefined} isIsoCodeEditable />
     )
     expect(consoleSpy).toHaveBeenCalled()
   })
@@ -376,10 +370,10 @@ describe('components/MuiPhoneNumber', () => {
   test('should display console error if component become uncontrolled => controlled', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     const { rerender } = render(
-      <MuiPhoneNumber defaultCountry="FR" value={undefined} isIsoCodeEditable />
+      <MuiTelInput defaultCountry="FR" value={undefined} isIsoCodeEditable />
     )
     rerender(
-      <MuiPhoneNumber defaultCountry="BE" value="+328732" isIsoCodeEditable />
+      <MuiTelInput defaultCountry="BE" value="+328732" isIsoCodeEditable />
     )
     expect(consoleSpy).toHaveBeenCalled()
   })
@@ -390,7 +384,7 @@ describe('components/MuiPhoneNumber', () => {
   //     writeToClipboard: true
   //   })
   //   const callback = vi.fn(() => {})
-  //   render(<MuiPhoneNumber onCopy={callback} />)
+  //   render(<MuiTelInput onCopy={callback} />)
   //   const input = screen.getByRole('textbox')
   //   fireEvent.focus(input)
   //   await user.click(input)

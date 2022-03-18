@@ -17,24 +17,24 @@ import FlagsMenu from './components/FlagsMenu/FlagsMenu'
 import type {
   Country,
   Iso3166Alpha2Code,
-  MuiPhoneNumberProps,
-  MuiPhoneNumberReason,
-  MuiPhoneNumberValues,
+  MuiTelInputProps,
+  MuiTelInputReason,
+  MuiTelInputValues,
   State
 } from './index.types'
 
 export type {
-  MuiPhoneNumberProps,
+  MuiTelInputProps,
   Country,
   Iso3166Alpha2Code,
-  MuiPhoneNumberValues,
-  MuiPhoneNumberReason
+  MuiTelInputValues,
+  MuiTelInputReason
 }
 
 const IS_PRODUCTION = process?.env?.NODE_ENV === 'production'
 
-const MuiPhoneNumber = React.forwardRef(
-  (props: MuiPhoneNumberProps, propRef: MuiPhoneNumberProps['ref']) => {
+const MuiTelInput = React.forwardRef(
+  (props: MuiTelInputProps, propRef: MuiTelInputProps['ref']) => {
     const {
       isIsoCodeEditable,
       onlyCountries,
@@ -329,4 +329,4 @@ const MuiPhoneNumber = React.forwardRef(
   }
 )
 
-export default MuiPhoneNumber
+export default MuiTelInput

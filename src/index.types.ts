@@ -10,15 +10,15 @@ type BaseTextFieldProps = Omit<
   'onChange' | 'select' | 'type' | 'multiline'
 >
 
-export interface MuiPhoneNumberValues {
+export interface MuiTelInputValues {
   value: string
   formattedInt: number | null
   country: Country
 }
 
-export type MuiPhoneNumberReason = 'country' | 'input'
+export type MuiTelInputReason = 'country' | 'input'
 
-export interface MuiPhoneNumberProps extends BaseTextFieldProps {
+export interface MuiTelInputProps extends BaseTextFieldProps {
   excludeCountries?: Iso3166Alpha2Code[]
   onlyCountries?: Iso3166Alpha2Code[]
   defaultCountry?: Iso3166Alpha2Code
@@ -27,10 +27,7 @@ export interface MuiPhoneNumberProps extends BaseTextFieldProps {
   disableDropdown?: boolean
   langOfCountryName?: Iso3166Alpha2Code
   disableFormatting?: boolean
-  onChange?: (
-    values: MuiPhoneNumberValues,
-    reason: MuiPhoneNumberReason
-  ) => void
+  onChange?: (values: MuiTelInputValues, reason: MuiTelInputReason) => void
   value?: string
 }
 

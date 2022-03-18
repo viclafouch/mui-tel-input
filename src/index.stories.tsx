@@ -2,13 +2,13 @@ import React from 'react'
 import { ISO_3166_ALPHA_2_MAPPINGS } from '@shared/constants/iso'
 import { action } from '@storybook/addon-actions'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import { MuiPhoneNumberReason, MuiPhoneNumberValues } from 'index.types'
+import { MuiTelInputReason, MuiTelInputValues } from 'index.types'
 
-import MuiPhoneNumber from './index'
+import MuiTelInput from './index'
 
 export default {
-  title: 'MuiPhoneNumber',
-  component: MuiPhoneNumber,
+  title: 'MuiTelInput',
+  component: MuiTelInput,
   argTypes: {
     defaultCountry: {
       options: Object.keys(ISO_3166_ALPHA_2_MAPPINGS),
@@ -43,17 +43,17 @@ export default {
       control: { type: 'object' }
     }
   }
-} as ComponentMeta<typeof MuiPhoneNumber>
+} as ComponentMeta<typeof MuiTelInput>
 
-export const Primary: ComponentStory<typeof MuiPhoneNumber> = (args) => {
+export const Primary: ComponentStory<typeof MuiTelInput> = (args) => {
   const [state, setState] = React.useState<string>('')
 
   const handleChange = (
-    ...changedArgs: [MuiPhoneNumberValues, MuiPhoneNumberReason]
+    ...changedArgs: [MuiTelInputValues, MuiTelInputReason]
   ) => {
     action('onChange')(...changedArgs)
     setState(changedArgs[0].value)
   }
 
-  return <MuiPhoneNumber {...args} value={state} onChange={handleChange} />
+  return <MuiTelInput {...args} value={state} onChange={handleChange} />
 }
