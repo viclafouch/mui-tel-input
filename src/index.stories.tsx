@@ -1,8 +1,7 @@
 import React from 'react'
-import { ISO_3166_ALPHA_2_MAPPINGS } from '@shared/constants/iso'
+import { ISO_CODES } from '@shared/constants/countries'
 import { action } from '@storybook/addon-actions'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import { MuiTelInputReason, MuiTelInputValues } from 'index.types'
 
 import MuiTelInput from './index'
 
@@ -11,11 +10,11 @@ export default {
   component: MuiTelInput,
   argTypes: {
     defaultCountry: {
-      options: Object.keys(ISO_3166_ALPHA_2_MAPPINGS),
+      options: ISO_CODES,
       control: { type: 'select' }
     },
     langOfCountryName: {
-      options: Object.keys(ISO_3166_ALPHA_2_MAPPINGS),
+      options: ISO_CODES,
       control: { type: 'select' }
     },
     isIsoCodeEditable: {
@@ -35,25 +34,31 @@ export default {
       control: { type: 'boolean' }
     },
     excludeCountries: {
-      options: Object.keys(ISO_3166_ALPHA_2_MAPPINGS),
+      options: ISO_CODES,
       control: { type: 'object' }
     },
     onlyCountries: {
-      options: Object.keys(ISO_3166_ALPHA_2_MAPPINGS),
+      options: ISO_CODES,
       control: { type: 'object' }
     }
   }
 } as ComponentMeta<typeof MuiTelInput>
 
 export const Primary: ComponentStory<typeof MuiTelInput> = (args) => {
+  const { value, ...rest } = args
   const [state, setState] = React.useState<string>('')
 
-  const handleChange = (
-    ...changedArgs: [MuiTelInputValues, MuiTelInputReason]
-  ) => {
-    action('onChange')(...changedArgs)
-    setState(changedArgs[0].value)
+  const handleChange = (newValue: string) => {
+    action('onChange')(newValue)
+    setState(newValue)
   }
 
-  return <MuiTelInput {...args} value={state} onChange={handleChange} />
+  return (
+    <MuiTelInput
+      defaultCountry="FR"
+      value={state}
+      onChange={handleChange}
+      {...rest}
+    />
+  )
 }

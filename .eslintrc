@@ -7,13 +7,7 @@
     "project": ["./tsconfig.json"]
   },
   "rules": {
-    "no-restricted-imports": [
-      "error",
-      {
-        "name": "ramda",
-        "message": "Please use @ramda instead for tree shaking."
-      }
-    ],
+    "react-hooks/exhaustive-deps": 1,
     "react/jsx-no-duplicate-props": [
       "error",
       {

@@ -1,73 +1,29 @@
-import * as R from '@ramda'
-import type { Country } from '@shared/constants/countries'
-import { COUNTRIES } from '@shared/constants/countries'
-import type { Iso3166Alpha2Code } from '@shared/constants/iso'
-import { DEFAULT_ISO_CODE } from '@shared/constants/iso'
+import { COUNTRIES, Iso3166Alpha2Code } from '@shared/constants/countries'
 import { matchIsArray } from '@shared/helpers/array'
-import { getCallingCode } from '@shared/helpers/phone-number'
-
-export function getFallbackCountry(isoCode = DEFAULT_ISO_CODE): Country {
-  return R.find((country) => {
-    return country.isoCode === isoCode
-  }, COUNTRIES) as Country
-}
-
-export function getCountryByIsoCode(
-  isoCode: Iso3166Alpha2Code,
-  countries: readonly Country[]
-): Country | null {
-  return (
-    R.find((country) => {
-      return R.identical(country.isoCode, isoCode)
-    }, countries) || null
-  )
-}
-
-export function getCountryByCallingCode(
-  callingCode: Country['callingCode'],
-  countries: readonly Country[]
-): Country | null {
-  return (
-    R.find((country) => {
-      return R.identical(country.callingCode, callingCode)
-    }, countries) || null
-  )
-}
-
-export function getCountryByValue(
-  value: string,
-  countries: readonly Country[]
-): Country | null {
-  const callingCode = getCallingCode(value)
-  return callingCode ? getCountryByCallingCode(callingCode, countries) : null
-}
 
 type FilterCountriesOptions = {
   onlyCountries?: readonly Iso3166Alpha2Code[]
   excludeCountries?: readonly Iso3166Alpha2Code[]
 }
 
-export function filterCountries(
-  countries: readonly Country[],
-  options: FilterCountriesOptions
-): readonly Country[] {
-  const { onlyCountries, excludeCountries } = options
-  if (matchIsArray(onlyCountries) && R.gt(R.length(onlyCountries), 0)) {
-    return R.filter((item) => {
-      return onlyCountries.includes(item.isoCode)
-    }, countries)
-  }
-  if (matchIsArray(excludeCountries) && R.gt(R.length(excludeCountries), 0)) {
-    return R.filter((item) => {
-      return !excludeCountries.includes(item.isoCode)
-    }, countries)
-  }
-  return countries
+export function getCallingCodeOfCountry(isoCode: Iso3166Alpha2Code): string {
+  return COUNTRIES[isoCode][0] as string
 }
 
-export function getFormattedFormat(format: string, clean?: boolean): string {
-  if (!clean) {
-    return format
+export function filterCountries(
+  countries: readonly Iso3166Alpha2Code[],
+  options: FilterCountriesOptions
+): readonly Iso3166Alpha2Code[] {
+  const { onlyCountries, excludeCountries } = options
+  if (matchIsArray(onlyCountries) && onlyCountries.length > 0) {
+    return countries.filter((isoCode) => {
+      return onlyCountries.includes(isoCode)
+    })
   }
-  return format.replaceAll(' ', '')
+  if (matchIsArray(excludeCountries) && excludeCountries.length > 0) {
+    return countries.filter((isoCode) => {
+      return !excludeCountries.includes(isoCode)
+    })
+  }
+  return countries
 }

@@ -1,5 +1,6 @@
 import React from 'react'
-import * as R from '@ramda'
+
+import { matchIsObject } from './object'
 
 export function assocRefToPropRef(
   ref: unknown,
@@ -7,7 +8,7 @@ export function assocRefToPropRef(
 ): void {
   if (typeof propRef === 'function') {
     propRef(ref)
-  } else if (propRef && R.is(Object, propRef) && 'current' in propRef) {
+  } else if (propRef && matchIsObject(propRef) && 'current' in propRef) {
     // @ts-ignore
     // eslint-disable-next-line no-param-reassign
     propRef.current = ref

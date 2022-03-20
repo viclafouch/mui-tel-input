@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { Iso3166Alpha2Code } from '@shared/constants/iso'
+import { Iso3166Alpha2Code } from '@shared/constants/countries'
 import {
   fireEvent,
   screen,

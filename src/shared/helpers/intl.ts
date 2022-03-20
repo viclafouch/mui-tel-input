@@ -9,7 +9,7 @@ export function getDisplayNames(lang = DEFAULT_LANG): Intl.DisplayNames {
       process.env.NODE_ENV !== 'production'
     ) {
       // eslint-disable-next-line no-console
-      console.error(error, process.env.NODE_ENV)
+      console.error(error)
     }
     return new Intl.DisplayNames(DEFAULT_LANG, DISPLAY_NAMES_OPTIONS)
   }

@@ -1,24 +1,23 @@
 import React from 'react'
 import Menu, { MenuProps } from '@mui/material/Menu'
 import FlagMenuItem from '@components/FlagMenuItem/FlagMenuItem'
-import { COUNTRIES, Country } from '@shared/constants/countries'
-import { Iso3166Alpha2Code } from '@shared/constants/iso'
+import { ISO_CODES, Iso3166Alpha2Code } from '@shared/constants/countries'
 import { DEFAULT_LANG } from '@shared/constants/lang'
 import { filterCountries } from '@shared/helpers/country'
 import { getDisplayNames } from '@shared/helpers/intl'
 
 export type FlagsMenuProps = Pick<MenuProps, 'anchorEl' | 'onClose'> & {
-  selectedCountry: Country
+  isoCode: Iso3166Alpha2Code | null
   onlyCountries?: Iso3166Alpha2Code[]
   excludeCountries?: Iso3166Alpha2Code[]
-  langOfCountryName?: Iso3166Alpha2Code
-  onSelectCountry: (country: Country) => void
+  langOfCountryName?: string
+  onSelectCountry: (isoCode: Iso3166Alpha2Code) => void
 }
 
 const FlagsMenu = (props: FlagsMenuProps) => {
   const {
     anchorEl,
-    selectedCountry,
+    isoCode,
     onSelectCountry,
     excludeCountries,
     onlyCountries,
@@ -26,8 +25,8 @@ const FlagsMenu = (props: FlagsMenuProps) => {
     ...rest
   } = props
 
-  const countriesFiltered = React.useMemo<readonly Country[]>(() => {
-    return filterCountries(COUNTRIES, {
+  const countriesFiltered = React.useMemo(() => {
+    return filterCountries(ISO_CODES, {
       onlyCountries,
       excludeCountries
     })
@@ -42,20 +41,20 @@ const FlagsMenu = (props: FlagsMenuProps) => {
       id="select-country"
       MenuListProps={{
         role: 'listbox',
-        'aria-activedescendant': `country-${selectedCountry.isoCode}`,
+        'aria-activedescendant': `country-$isoCode}`,
         'aria-labelledby': 'select-country'
       }}
       {...rest}
     >
-      {countriesFiltered.map((country) => {
+      {countriesFiltered.map((isoCodeItem) => {
         return (
           <FlagMenuItem
             onSelectCountry={onSelectCountry}
-            key={country.isoCode}
-            country={country}
+            key={isoCodeItem}
+            isoCode={isoCodeItem}
             displayNames={displayNames}
-            selected={country.isoCode === selectedCountry.isoCode}
-            id={`country-${country.isoCode}`}
+            selected={isoCodeItem === isoCode}
+            id={`country-${isoCodeItem}`}
           />
         )
       })}

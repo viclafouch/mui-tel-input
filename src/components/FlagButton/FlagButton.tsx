@@ -1,21 +1,17 @@
 import React from 'react'
 import IconButton, { IconButtonProps } from '@mui/material/IconButton'
 import Flag from '@components/Flag/Flag'
-import type { Country } from '@shared/constants/countries'
+import type { Iso3166Alpha2Code } from '@shared/constants/countries'
 
 export type FlagButtonProps = IconButtonProps & {
-  selectedCountry: Country
+  isoCode: Iso3166Alpha2Code | null
   isFlagsMenuOpened: boolean
   disableDropdown?: boolean
 }
 
 const FlagButton = (props: FlagButtonProps) => {
-  const {
-    selectedCountry,
-    isFlagsMenuOpened,
-    disableDropdown,
-    ...iconButtonProps
-  } = props
+  const { isoCode, isFlagsMenuOpened, disableDropdown, ...iconButtonProps } =
+    props
 
   if (disableDropdown) {
     return (
@@ -28,7 +24,7 @@ const FlagButton = (props: FlagButtonProps) => {
         sx={{ pointerEvents: 'none' }}
         component="span"
       >
-        <Flag isoCode={selectedCountry.isoCode} />
+        <Flag isoCode={isoCode} />
       </IconButton>
     )
   }
@@ -41,7 +37,7 @@ const FlagButton = (props: FlagButtonProps) => {
       aria-controls={isFlagsMenuOpened ? 'select-country' : undefined}
       aria-expanded={isFlagsMenuOpened ? 'true' : 'false'}
     >
-      <Flag isoCode={selectedCountry.isoCode} />
+      <Flag isoCode={isoCode} />
     </IconButton>
   )
 }

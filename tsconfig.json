@@ -19,8 +19,7 @@
     "paths": {
       "@assets/*": ["assets/*"],
       "@shared/*": ["shared/*"],
-      "@components/*": ["components/*"],
-      "@ramda": ["ramda/index.ts"],
+      "@components/*": ["components/*"]
     }
   },
   "include": ["src/**/*"],

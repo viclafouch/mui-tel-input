@@ -1,42 +1,25 @@
 import React from 'react'
 import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
-import * as R from '@ramda'
+import FlagButton from '@components/FlagButton/FlagButton'
+import FlagsMenu from '@components/FlagsMenu/FlagsMenu'
+import { Iso3166Alpha2Code } from '@shared/constants/countries'
 import { putCursorAtEndOfInput } from '@shared/helpers/dom'
 import { assocRefToPropRef } from '@shared/helpers/ref'
-import {
-  getInitialState,
-  updateCountry,
-  updateInputValue
-} from '@shared/helpers/state'
-import { usePrevious } from '@shared/hooks/usePrevious'
-import { useStateWithCallback } from '@shared/hooks/useStateWithCallback'
+import usePhoneDigits from '@shared/hooks/usePhoneDigits'
 
-import FlagButton from './components/FlagButton/FlagButton'
-import FlagsMenu from './components/FlagsMenu/FlagsMenu'
 import type {
-  Country,
-  Iso3166Alpha2Code,
   MuiTelInputProps,
   MuiTelInputReason,
-  MuiTelInputValues,
-  State
+  MuiTelInputValues
 } from './index.types'
 
-export type {
-  MuiTelInputProps,
-  Country,
-  Iso3166Alpha2Code,
-  MuiTelInputValues,
-  MuiTelInputReason
-}
-
-const IS_PRODUCTION = process?.env?.NODE_ENV === 'production'
+export type { MuiTelInputProps, MuiTelInputValues, MuiTelInputReason }
 
 const MuiTelInput = React.forwardRef(
   (props: MuiTelInputProps, propRef: MuiTelInputProps['ref']) => {
     const {
-      isIsoCodeEditable,
+      forceCallingCode,
       onlyCountries,
       excludeCountries,
       defaultCountry,
@@ -55,18 +38,12 @@ const MuiTelInput = React.forwardRef(
       langOfCountryName,
       ...restTextFieldProps
     } = props
-    const previousValue = usePrevious(value)
-    const previousDefaultCountry = usePrevious(defaultCountry)
-    const isControlled = value !== undefined
-    const originIsControlledRef = React.useRef(isControlled)
     const textFieldRef = React.useRef<HTMLDivElement>(null)
-    const inputRef = React.useRef<HTMLInputElement>(null)
     const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null)
     const onChangeCallback = React.useRef(onChange)
     const currentOptionsRef = React.useRef({
       excludeCountries,
       onlyCountries,
-      isIsoCodeEditable,
       disableFormatting
     })
     React.useEffect(() => {
@@ -74,18 +51,16 @@ const MuiTelInput = React.forwardRef(
       currentOptionsRef.current = {
         excludeCountries,
         onlyCountries,
-        isIsoCodeEditable,
         disableFormatting
       }
     })
-    const [state, setState] = useStateWithCallback<State>(() => {
-      return getInitialState({
-        initialValue: value,
-        onlyCountries,
-        excludeCountries,
-        defaultCountry
+    const { onInputChange, onCountryChange, inputRef, isoCode, inputValue } =
+      usePhoneDigits({
+        defaultCountry,
+        value,
+        onChange,
+        forceCallingCode
       })
-    })
 
     const handleOpenFlagsMenu = (
       event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -96,132 +71,19 @@ const MuiTelInput = React.forwardRef(
       }
     }
 
-    React.useEffect(() => {
-      if (previousValue && previousValue !== value) {
-        setState((prevState) => {
-          if (value === '' || value === undefined) {
-            return getInitialState({
-              initialValue: '',
-              excludeCountries: currentOptionsRef.current.excludeCountries,
-              onlyCountries: currentOptionsRef.current.onlyCountries,
-              disableFormatting: currentOptionsRef.current.disableFormatting,
-              defaultCountry
-            })
-          }
-          return updateInputValue(value, prevState, {
-            excludeCountries: currentOptionsRef.current.excludeCountries,
-            isIsoCodeEditable: currentOptionsRef.current.isIsoCodeEditable,
-            onlyCountries: currentOptionsRef.current.onlyCountries,
-            disableFormatting: currentOptionsRef.current.disableFormatting
-          })
-        })
-      }
-    }, [value, setState, previousValue, defaultCountry])
-
-    React.useEffect(() => {
-      if (
-        previousDefaultCountry &&
-        previousDefaultCountry !== defaultCountry &&
-        !state.hasSelectCountry
-      ) {
-        setState(
-          getInitialState({
-            initialValue: '',
-            excludeCountries: currentOptionsRef.current.excludeCountries,
-            onlyCountries: currentOptionsRef.current.onlyCountries,
-            disableFormatting: currentOptionsRef.current.disableFormatting,
-            defaultCountry
-          }),
-          (newState) => {
-            onChangeCallback.current?.(
-              {
-                value: newState.value,
-                country: newState.country,
-                formattedInt: newState.formattedInt
-              },
-              'country'
-            )
-          }
-        )
-      }
-    }, [
-      state.hasSelectCountry,
-      setState,
-      defaultCountry,
-      previousDefaultCountry
-    ])
-
-    React.useEffect(() => {
-      if (!IS_PRODUCTION && originIsControlledRef.current !== isControlled) {
-        // eslint-disable-next-line no-console
-        console.error(
-          `"Mui Phone Number" is changed from ${
-            originIsControlledRef.current
-              ? 'uncontrolled to controlled'
-              : 'controlled to uncontrolled'
-          }.`
-        )
-      }
-    }, [isControlled])
-
-    const handleInputChange = (
-      event: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-      const inputValue = event.target.value
-      setState(
-        (prevState) => {
-          return updateInputValue(inputValue, prevState, {
-            isIsoCodeEditable,
-            excludeCountries,
-            onlyCountries,
-            disableFormatting
-          })
-        },
-        (newState) => {
-          if (newState.value !== value) {
-            onChangeCallback.current?.(
-              {
-                value: newState.value,
-                country: newState.country,
-                formattedInt: newState.formattedInt
-              },
-              'input'
-            )
-          }
-        }
-      )
-    }
-
     const focusInputElement = () => {
       if (inputRef.current) {
         inputRef.current.focus()
       }
     }
 
-    const handleSelectCountry = React.useCallback(
-      (country: Country) => {
-        setState(
-          (prevState) => {
-            return updateCountry(country, prevState, { disableFormatting })
-          },
-          (newState) => {
-            onChangeCallback.current?.(
-              {
-                value: newState.value,
-                country: newState.country,
-                formattedInt: newState.formattedInt
-              },
-              'country'
-            )
-          }
-        )
-        if (focusOnSelectCountry) {
-          focusInputElement()
-        }
-        setAnchorEl(null)
-      },
-      [setState, disableFormatting, focusOnSelectCountry]
-    )
+    const handleChangeCountry = (newCountry: Iso3166Alpha2Code) => {
+      setAnchorEl(null)
+      onCountryChange(newCountry)
+      if (focusOnSelectCountry) {
+        focusInputElement()
+      }
+    }
 
     const handleFocus = (
       event: React.FocusEvent<HTMLInputElement, Element>
@@ -251,9 +113,9 @@ const MuiTelInput = React.forwardRef(
       }
       const currentSelection = window.getSelection()
       if (currentSelection) {
-        const valueWithoutSpaces = R.pipe((sel: Selection) => {
-          return sel.toString()
-        }, R.replace(/\s/g, ''))(currentSelection)
+        const valueWithoutSpaces = currentSelection
+          .toString()
+          .replaceAll(' ', '')
         event.clipboardData.setData('text/plain', valueWithoutSpaces)
         event.preventDefault()
       }
@@ -287,11 +149,11 @@ const MuiTelInput = React.forwardRef(
         <TextField
           type="tel"
           disabled={disabled}
-          value={state.value}
+          value={inputValue}
           ref={handleRef}
           onDoubleClick={handleDoubleClick}
           inputRef={handleRefInput}
-          onChange={handleInputChange}
+          onChange={onInputChange}
           inputProps={{
             onCopy: handleCopy,
             ...inputProps
@@ -303,7 +165,7 @@ const MuiTelInput = React.forwardRef(
               <InputAdornment position="start">
                 <FlagButton
                   isFlagsMenuOpened={Boolean(anchorEl)}
-                  selectedCountry={state.country}
+                  isoCode={isoCode}
                   onClick={handleOpenFlagsMenu}
                   disabled={disabled}
                   disableDropdown={Boolean(disableDropdown)}
@@ -318,10 +180,10 @@ const MuiTelInput = React.forwardRef(
             onlyCountries={onlyCountries}
             excludeCountries={excludeCountries}
             anchorEl={anchorEl}
-            selectedCountry={state.country}
+            isoCode={isoCode}
             onClose={handleCloseFlagsMenu}
             langOfCountryName={langOfCountryName}
-            onSelectCountry={handleSelectCountry}
+            onSelectCountry={handleChangeCountry}
           />
         ) : null}
       </>

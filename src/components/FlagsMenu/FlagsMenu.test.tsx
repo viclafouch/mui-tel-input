@@ -1,5 +1,5 @@
 import React from 'react'
-import { COUNTRIES, Country } from '@shared/constants/countries'
+import { ISO_CODES, Iso3166Alpha2Code } from '@shared/constants/countries'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { expect, vi } from 'vitest'
 
@@ -11,29 +11,19 @@ function getAnchorEl() {
   return screen.getByText('My textfield')
 }
 
-const theCountry = {
-  name: 'France',
-  isoCode: 'FR',
-  callingCode: 33,
-  format: '+.. ... .. .. ..',
-  regions: ['europe', 'european-union']
-} as Country
-
 describe('components/FlagsMenu', () => {
   beforeAll(() => {
     document.body.innerHTML = `<div>My textfield</div>`
   })
   test('should render correctly', () => {
-    render(
-      <FlagsMenu selectedCountry={theCountry} onSelectCountry={() => {}} />
-    )
+    render(<FlagsMenu isoCode="FR" onSelectCountry={() => {}} />)
   })
 
   test('should displayed when anchorEl is valid', () => {
     render(
       <FlagsMenu
         anchorEl={getAnchorEl()}
-        selectedCountry={theCountry}
+        isoCode="FR"
         onSelectCountry={() => {}}
       />
     )
@@ -43,27 +33,27 @@ describe('components/FlagsMenu', () => {
     render(
       <FlagsMenu
         anchorEl={getAnchorEl()}
-        selectedCountry={theCountry}
+        isoCode="FR"
         onSelectCountry={() => {}}
       />
     )
-    expect(screen.getAllByRole('option').length).toBe(COUNTRIES.length)
+    expect(screen.getAllByRole('option').length).toBe(ISO_CODES.length)
   })
 
   test('should fire onSelectCountry', () => {
-    const callback = vi.fn((country: Country) => {
+    const callback = vi.fn((country: Iso3166Alpha2Code) => {
       return country
     })
     render(
       <FlagsMenu
         anchorEl={getAnchorEl()}
-        selectedCountry={theCountry}
+        isoCode="FR"
         onSelectCountry={callback}
       />
     )
     fireEvent.click(screen.getByText('France'))
     expect(callback).toBeCalledTimes(1)
-    expect(callback).toHaveBeenLastCalledWith(theCountry)
+    expect(callback).toHaveBeenLastCalledWith('FR')
   })
 
   test('should list onlyCountries', () => {
@@ -71,7 +61,7 @@ describe('components/FlagsMenu', () => {
       <FlagsMenu
         onlyCountries={['FR']}
         anchorEl={getAnchorEl()}
-        selectedCountry={theCountry}
+        isoCode="FR"
         onSelectCountry={() => {}}
       />
     )
@@ -85,7 +75,7 @@ describe('components/FlagsMenu', () => {
       <FlagsMenu
         excludeCountries={['FR']}
         anchorEl={getAnchorEl()}
-        selectedCountry={theCountry}
+        isoCode="FR"
         onSelectCountry={() => {}}
       />
     )
