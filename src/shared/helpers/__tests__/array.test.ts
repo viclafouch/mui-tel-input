@@ -1,6 +1,6 @@
 import { expect } from 'vitest'
 
-import { matchIsArray } from '../array'
+import { getFirstIntersection, matchIsArray } from '../array'
 
 describe('helpers/array', () => {
   describe('matchIsArray', () => {
@@ -21,6 +21,16 @@ describe('helpers/array', () => {
       { value: undefined }
     ])('should return false for `$value`', ({ value }) => {
       expect(matchIsArray(value)).toBe(false)
+    })
+  })
+
+  describe('getFirstIntersection', () => {
+    it('should return the first intersction', () => {
+      expect(getFirstIntersection([2], [2])).toBe(2)
+    })
+
+    it('should return null', () => {
+      expect(getFirstIntersection([2], [])).toBe(null)
     })
   })
 })

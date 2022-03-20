@@ -5,7 +5,7 @@ const Styled = {
     return {
       display: 'inline-block',
       backgroundSize: 'cover',
-      '--CountryFlagIcon-height': '1em',
+      '--CountryFlagIcon-height': '0.8em',
       height: 'var(--CountryFlagIcon-height)',
       width: 'calc(var(--CountryFlagIcon-height)*3/2)'
     }

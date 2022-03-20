@@ -6,6 +6,7 @@ import FlagsMenu from '@components/FlagsMenu/FlagsMenu'
 import { Iso3166Alpha2Code } from '@shared/constants/countries'
 import { putCursorAtEndOfInput } from '@shared/helpers/dom'
 import { assocRefToPropRef } from '@shared/helpers/ref'
+import { useMismatchProps } from '@shared/hooks/useMissmatch'
 import usePhoneDigits from '@shared/hooks/usePhoneDigits'
 
 import type {
@@ -36,30 +37,22 @@ const MuiTelInput = React.forwardRef(
       disableFormatting,
       focusOnSelectCountry,
       langOfCountryName,
+      MenuProps,
       ...restTextFieldProps
     } = props
     const textFieldRef = React.useRef<HTMLDivElement>(null)
     const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null)
-    const onChangeCallback = React.useRef(onChange)
-    const currentOptionsRef = React.useRef({
-      excludeCountries,
-      onlyCountries,
-      disableFormatting
-    })
-    React.useEffect(() => {
-      onChangeCallback.current = onChange
-      currentOptionsRef.current = {
-        excludeCountries,
-        onlyCountries,
-        disableFormatting
-      }
-    })
+
+    useMismatchProps(props)
+
     const { onInputChange, onCountryChange, inputRef, isoCode, inputValue } =
       usePhoneDigits({
         defaultCountry,
         value,
         onChange,
-        forceCallingCode
+        forceCallingCode,
+        excludeCountries,
+        onlyCountries
       })
 
     const handleOpenFlagsMenu = (
@@ -71,13 +64,13 @@ const MuiTelInput = React.forwardRef(
       }
     }
 
-    const focusInputElement = () => {
+    const focusInputElement = (): void => {
       if (inputRef.current) {
         inputRef.current.focus()
       }
     }
 
-    const handleChangeCountry = (newCountry: Iso3166Alpha2Code) => {
+    const handleChangeCountry = (newCountry: Iso3166Alpha2Code): void => {
       setAnchorEl(null)
       onCountryChange(newCountry)
       if (focusOnSelectCountry) {
@@ -121,7 +114,7 @@ const MuiTelInput = React.forwardRef(
       }
     }
 
-    const handleRefInput = (ref: React.RefObject<HTMLInputElement>) => {
+    const handleRefInput = (ref: React.RefObject<HTMLInputElement>): void => {
       // @ts-ignore
       inputRef.current = ref
       if (InputProps?.inputRef) {
@@ -132,7 +125,7 @@ const MuiTelInput = React.forwardRef(
       }
     }
 
-    const handleRef = (ref: HTMLDivElement | null) => {
+    const handleRef = (ref: HTMLDivElement | null): void => {
       // @ts-ignore
       textFieldRef.current = ref
       if (propRef) {
@@ -184,6 +177,7 @@ const MuiTelInput = React.forwardRef(
             onClose={handleCloseFlagsMenu}
             langOfCountryName={langOfCountryName}
             onSelectCountry={handleChangeCountry}
+            {...MenuProps}
           />
         ) : null}
       </>

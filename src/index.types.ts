@@ -1,3 +1,4 @@
+import type { MenuProps } from '@mui/material/Menu'
 import type { TextFieldProps } from '@mui/material/TextField'
 import { Iso3166Alpha2Code } from '@shared/constants/countries'
 
@@ -24,6 +25,7 @@ export interface MuiTelInputProps extends BaseTextFieldProps {
   disableFormatting?: boolean
   onChange?: (value: string) => void
   value: string
+  MenuProps?: Partial<MenuProps>
 }
 
 export interface State {

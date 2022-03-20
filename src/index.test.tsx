@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import {
   closeFlagsMenu,
   expectButtonIsFlagOf,
+  expectButtonNotIsFlagOf,
   getButtonElement,
   getInputElement,
   selectCountry,
@@ -302,6 +303,34 @@ describe('components/MuiTelInput', () => {
     rerender(<MuiTelWrapper defaultCountry="FR" value="" />)
     expect(getInputElement().value).toBe('+33')
     expectButtonIsFlagOf('FR')
+  })
+
+  test('should not accept FR value if is an exclude country', async () => {
+    render(<MuiTelWrapper excludeCountries={['FR']} />)
+    await typeInInputElement('+33 6 26')
+    expectButtonNotIsFlagOf('FR')
+  })
+
+  test('should not displayed excluded countries in the list', () => {
+    render(<MuiTelWrapper excludeCountries={['FR', 'BE']} />)
+    fireEvent.click(getButtonElement())
+    expect(screen.queryByTestId('option-FR')).toBeFalsy()
+    expect(screen.queryByTestId('option-BE')).toBeFalsy()
+  })
+
+  test('should not accept FR value if is not an only country', async () => {
+    render(<MuiTelWrapper onlyCountries={['BE']} />)
+    await typeInInputElement('+33 6 26')
+    expectButtonNotIsFlagOf('FR')
+  })
+
+  test('should only displayed only countries', () => {
+    render(<MuiTelWrapper onlyCountries={['FR', 'BE', 'GB']} />)
+    fireEvent.click(getButtonElement())
+    expect(screen.getByTestId('option-FR')).toBeTruthy()
+    expect(screen.getByTestId('option-BE')).toBeTruthy()
+    expect(screen.getByTestId('option-GB')).toBeTruthy()
+    expect(screen.getAllByRole('option').length).toBe(3)
   })
 
   /** Copy doesn't work in user-event@beta */

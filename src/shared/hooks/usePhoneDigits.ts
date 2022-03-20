@@ -8,6 +8,8 @@ type UsePhoneDigitsParams = {
   onChange?: (value: string) => void
   defaultCountry?: Iso3166Alpha2Code
   forceCallingCode?: boolean
+  excludeCountries?: Iso3166Alpha2Code[]
+  onlyCountries?: Iso3166Alpha2Code[]
 }
 
 type State = {
@@ -41,11 +43,31 @@ export function getInitialState(params: GetInitialStateParams): State {
   }
 }
 
+type Filters = {
+  excludeCountries?: Iso3166Alpha2Code[]
+  onlyCountries?: Iso3166Alpha2Code[]
+}
+
+function matchIsIsoCodeAccepted(
+  isoCode: Iso3166Alpha2Code,
+  filters: Filters
+): boolean {
+  if (filters?.excludeCountries && filters.excludeCountries.includes(isoCode)) {
+    return false
+  }
+  if (filters?.onlyCountries && !filters.onlyCountries.includes(isoCode)) {
+    return false
+  }
+  return true
+}
+
 export default function usePhoneDigits({
   value,
   onChange,
   defaultCountry,
-  forceCallingCode
+  forceCallingCode,
+  onlyCountries,
+  excludeCountries
 }: UsePhoneDigitsParams) {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [previousDefaultCountry, setPreviousDefaultCountry] = React.useState<
@@ -67,6 +89,16 @@ export default function usePhoneDigits({
     let newIsoCode = asYouType.getCountry() || null
     if (forceCallingCode && !newIsoCode && state.isoCode) {
       newValue = `+${getCallingCodeOfCountry(state.isoCode)}`
+      newIsoCode = state.isoCode
+    }
+    if (
+      newIsoCode &&
+      !matchIsIsoCodeAccepted(newIsoCode, {
+        onlyCountries,
+        excludeCountries
+      })
+    ) {
+      newValue = state.inputValue
       newIsoCode = state.isoCode
     }
     setPreviousValue(newValue)
@@ -103,7 +135,7 @@ export default function usePhoneDigits({
         isoCode
       })
     }
-  }, [defaultCountry, previousDefaultCountry])
+  }, [defaultCountry, previousDefaultCountry, onChange])
 
   const onCountryChange = (newCountry: Iso3166Alpha2Code): void => {
     if (newCountry === state.isoCode) {

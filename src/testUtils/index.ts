@@ -19,6 +19,10 @@ export function expectButtonIsFlagOf(isoCode: Iso3166Alpha2Code) {
   expect(getButtonElement()).toHaveTextContent(isoCode)
 }
 
+export function expectButtonNotIsFlagOf(isoCode: Iso3166Alpha2Code) {
+  expect(getButtonElement()).not.toHaveTextContent(isoCode)
+}
+
 export async function typeInInputElement(
   value: string
 ): Promise<{ result: string }> {

@@ -6,7 +6,7 @@ import { DEFAULT_LANG } from '@shared/constants/lang'
 import { filterCountries } from '@shared/helpers/country'
 import { getDisplayNames } from '@shared/helpers/intl'
 
-export type FlagsMenuProps = Pick<MenuProps, 'anchorEl' | 'onClose'> & {
+export type FlagsMenuProps = Partial<MenuProps> & {
   isoCode: Iso3166Alpha2Code | null
   onlyCountries?: Iso3166Alpha2Code[]
   excludeCountries?: Iso3166Alpha2Code[]
@@ -41,7 +41,7 @@ const FlagsMenu = (props: FlagsMenuProps) => {
       id="select-country"
       MenuListProps={{
         role: 'listbox',
-        'aria-activedescendant': `country-$isoCode}`,
+        'aria-activedescendant': isoCode ? `country-${isoCode}` : '',
         'aria-labelledby': 'select-country'
       }}
       {...rest}
