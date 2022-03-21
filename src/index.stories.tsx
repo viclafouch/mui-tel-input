@@ -40,6 +40,10 @@ export default {
     onlyCountries: {
       options: ISO_CODES,
       control: { type: 'object' }
+    },
+    preferredCountries: {
+      options: ISO_CODES,
+      control: { type: 'object' }
     }
   }
 } as ComponentMeta<typeof MuiTelInput>
@@ -55,9 +59,11 @@ export const Primary: ComponentStory<typeof MuiTelInput> = (args) => {
 
   return (
     <MuiTelInput
-      defaultCountry="VE"
-      continents={['EU']}
       value={state}
+      defaultCountry="BE"
+      preferredCountries={['FR', 'BE', 'VE']}
+      excludedCountries={['FR']}
+      placeholder="Toto"
       onChange={handleChange}
       {...rest}
     />

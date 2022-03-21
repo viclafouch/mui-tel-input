@@ -306,13 +306,13 @@ describe('components/MuiTelInput', () => {
   })
 
   test('should not accept FR value if is an exclude country', async () => {
-    render(<MuiTelWrapper excludeCountries={['FR']} />)
+    render(<MuiTelWrapper excludedCountries={['FR']} />)
     await typeInInputElement('+33 6 26')
     expectButtonNotIsFlagOf('FR')
   })
 
   test('should not displayed excluded countries in the list', () => {
-    render(<MuiTelWrapper excludeCountries={['FR', 'BE']} />)
+    render(<MuiTelWrapper excludedCountries={['FR', 'BE']} />)
     fireEvent.click(getButtonElement())
     expect(screen.queryByTestId('option-FR')).toBeFalsy()
     expect(screen.queryByTestId('option-BE')).toBeFalsy()

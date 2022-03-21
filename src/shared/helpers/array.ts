@@ -1,5 +1,9 @@
-export function matchIsArray(value: unknown): value is unknown[] {
-  return Array.isArray(value)
+export function matchIsArray(
+  value: unknown,
+  filled?: boolean
+): value is unknown[] {
+  const isArray = Array.isArray(value)
+  return filled ? isArray && value.length > 0 : isArray
 }
 
 export function getFirstIntersection<T extends unknown[]>(

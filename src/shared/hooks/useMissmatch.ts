@@ -6,28 +6,31 @@ import { log } from '@shared/helpers/log'
 import { MuiTelInputProps } from '../../index.types'
 
 export function useMismatchProps(props: MuiTelInputProps) {
-  const { defaultCountry, onlyCountries, excludeCountries, continents } = props
+  const { defaultCountry, onlyCountries, excludedCountries, continents } = props
 
   React.useEffect(() => {
-    if (onlyCountries && excludeCountries) {
-      const intersection = getFirstIntersection(onlyCountries, excludeCountries)
+    if (onlyCountries && excludedCountries) {
+      const intersection = getFirstIntersection(
+        onlyCountries,
+        excludedCountries
+      )
       if (intersection) {
         log(
-          `[mui-tel-input] Not expected to have the country ${intersection} to be included in the 'onlyCountries' AND 'excludeCountries' props`
+          `[mui-tel-input] Not expected to have the country ${intersection} to be included in the 'onlyCountries' AND 'excludedCountries' props`
         )
       }
     }
-  }, [onlyCountries, excludeCountries])
+  }, [onlyCountries, excludedCountries])
 
   React.useEffect(() => {
     if (defaultCountry) {
-      if (excludeCountries && excludeCountries.includes(defaultCountry)) {
+      if (excludedCountries && excludedCountries.includes(defaultCountry)) {
         log(
-          `[mui-tel-input] Not expected to have the 'defaultCountry' (${defaultCountry}) prop excluded by the 'excludeCountries' prop`
+          `[mui-tel-input] Not expected to have the 'defaultCountry' (${defaultCountry}) prop excluded by the 'excludedCountries' prop`
         )
       }
     }
-  }, [defaultCountry, excludeCountries])
+  }, [defaultCountry, excludedCountries])
 
   React.useEffect(() => {
     if (defaultCountry) {

@@ -1,6 +1,7 @@
 import React from 'react'
 import { ContinentCode } from '@shared/constants/continents'
 import { COUNTRIES, Iso3166Alpha2Code } from '@shared/constants/countries'
+import { matchIsArray } from '@shared/helpers/array'
 import {
   getCallingCodeOfCountry,
   matchContinentsIncludeCountry
@@ -12,7 +13,7 @@ type UsePhoneDigitsParams = {
   onChange?: (value: string) => void
   defaultCountry?: Iso3166Alpha2Code
   forceCallingCode?: boolean
-  excludeCountries?: Iso3166Alpha2Code[]
+  excludedCountries?: Iso3166Alpha2Code[]
   onlyCountries?: Iso3166Alpha2Code[]
   continents?: ContinentCode[]
 }
@@ -49,7 +50,7 @@ export function getInitialState(params: GetInitialStateParams): State {
 }
 
 type Filters = {
-  excludeCountries?: Iso3166Alpha2Code[]
+  excludedCountries?: Iso3166Alpha2Code[]
   onlyCountries?: Iso3166Alpha2Code[]
   continents?: ContinentCode[]
 }
@@ -58,15 +59,19 @@ function matchIsIsoCodeAccepted(
   isoCode: Iso3166Alpha2Code,
   filters: Filters
 ): boolean {
-  if (filters?.excludeCountries && filters.excludeCountries.includes(isoCode)) {
+  const { excludedCountries, onlyCountries, continents } = filters
+  if (
+    matchIsArray(excludedCountries, true) &&
+    excludedCountries.includes(isoCode)
+  ) {
     return false
   }
-  if (filters?.onlyCountries && !filters.onlyCountries.includes(isoCode)) {
+  if (matchIsArray(onlyCountries) && !onlyCountries.includes(isoCode)) {
     return false
   }
   if (
-    filters.continents &&
-    !matchContinentsIncludeCountry(filters.continents, isoCode)
+    matchIsArray(continents) &&
+    !matchContinentsIncludeCountry(continents, isoCode)
   ) {
     return false
   }
@@ -79,7 +84,7 @@ export default function usePhoneDigits({
   defaultCountry,
   forceCallingCode,
   onlyCountries,
-  excludeCountries,
+  excludedCountries,
   continents
 }: UsePhoneDigitsParams) {
   const inputRef = React.useRef<HTMLInputElement>(null)
@@ -109,7 +114,7 @@ export default function usePhoneDigits({
       newIsoCode &&
       !matchIsIsoCodeAccepted(newIsoCode, {
         onlyCountries,
-        excludeCountries,
+        excludedCountries,
         continents
       })
     ) {

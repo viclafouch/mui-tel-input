@@ -9,7 +9,8 @@ import { getDisplayNames } from '@shared/helpers/intl'
 export type FlagsListProps = {
   isoCode: Iso3166Alpha2Code | null
   onlyCountries?: Iso3166Alpha2Code[]
-  excludeCountries?: Iso3166Alpha2Code[]
+  excludedCountries?: Iso3166Alpha2Code[]
+  preferredCountries?: Iso3166Alpha2Code[]
   langOfCountryName?: string
   continents?: ContinentCode[]
   onSelectCountry: (isoCode: Iso3166Alpha2Code) => void
@@ -19,18 +20,20 @@ const FlagsList = (props: FlagsListProps) => {
   const {
     isoCode,
     onSelectCountry,
-    excludeCountries,
+    excludedCountries,
     onlyCountries,
     langOfCountryName,
-    continents
+    continents,
+    preferredCountries
   } = props
 
   // Don't need to refilter when the list is already displayed
   const [countriesFiltered] = React.useState(() => {
     return filterCountries(ISO_CODES, {
       onlyCountries,
-      excludeCountries,
-      continents
+      excludedCountries,
+      continents,
+      preferredCountries
     })
   })
 
@@ -64,8 +67,9 @@ const FlagsList = (props: FlagsListProps) => {
 
 FlagsList.defaultProps = {
   onlyCountries: [],
-  excludeCountries: [],
+  excludedCountries: [],
   continents: [],
+  preferredCountries: [],
   langOfCountryName: DEFAULT_LANG
 }
 

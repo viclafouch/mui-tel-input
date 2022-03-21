@@ -18,7 +18,7 @@ describe('helpers/country', () => {
       expect(
         filterCountries(COUNTRIES, {
           onlyCountries: [],
-          excludeCountries: []
+          excludedCountries: []
         })
       ).toBe(COUNTRIES)
     })
@@ -26,7 +26,7 @@ describe('helpers/country', () => {
     it('should remove FR when exclude FR', () => {
       expect(
         filterCountries(COUNTRIES, {
-          excludeCountries: ['FR']
+          excludedCountries: ['FR']
         })
       ).toEqual(['BE', 'US', 'VE'])
     })
@@ -42,7 +42,7 @@ describe('helpers/country', () => {
       expect(
         filterCountries(COUNTRIES, {
           onlyCountries: ['BE'],
-          excludeCountries: ['BE']
+          excludedCountries: ['BE']
         })
       ).toEqual(['BE'])
     })
@@ -59,7 +59,7 @@ describe('helpers/country', () => {
       expect(
         filterCountries(COUNTRIES, {
           continents: ['EU', 'SA'],
-          excludeCountries: ['BE', 'FR', 'VE']
+          excludedCountries: ['BE', 'FR', 'VE']
         }).length
       ).toBe(64)
     })

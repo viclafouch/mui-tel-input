@@ -8,7 +8,8 @@ import { DEFAULT_LANG } from '@shared/constants/lang'
 export type FlagsMenuProps = Partial<MenuProps> & {
   isoCode: Iso3166Alpha2Code | null
   onlyCountries?: Iso3166Alpha2Code[]
-  excludeCountries?: Iso3166Alpha2Code[]
+  excludedCountries?: Iso3166Alpha2Code[]
+  preferredCountries?: Iso3166Alpha2Code[]
   langOfCountryName?: string
   continents?: ContinentCode[]
   onSelectCountry: (isoCode: Iso3166Alpha2Code) => void
@@ -19,10 +20,11 @@ const FlagsMenu = (props: FlagsMenuProps) => {
     anchorEl,
     isoCode,
     onSelectCountry,
-    excludeCountries,
+    excludedCountries,
     onlyCountries,
     langOfCountryName,
     continents,
+    preferredCountries,
     ...rest
   } = props
 
@@ -40,7 +42,8 @@ const FlagsMenu = (props: FlagsMenuProps) => {
     >
       <FlagsList
         onlyCountries={onlyCountries}
-        excludeCountries={excludeCountries}
+        excludedCountries={excludedCountries}
+        preferredCountries={preferredCountries}
         continents={continents}
         isoCode={isoCode}
         langOfCountryName={langOfCountryName}
@@ -52,8 +55,9 @@ const FlagsMenu = (props: FlagsMenuProps) => {
 
 FlagsMenu.defaultProps = {
   onlyCountries: [],
-  excludeCountries: [],
+  excludedCountries: [],
   continents: [],
+  preferredCountries: [],
   langOfCountryName: DEFAULT_LANG
 }
 

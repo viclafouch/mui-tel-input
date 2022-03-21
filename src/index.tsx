@@ -22,7 +22,7 @@ const MuiTelInput = React.forwardRef(
     const {
       forceCallingCode,
       onlyCountries,
-      excludeCountries,
+      excludedCountries,
       defaultCountry,
       onDoubleClick,
       onFocus,
@@ -38,6 +38,7 @@ const MuiTelInput = React.forwardRef(
       focusOnSelectCountry,
       langOfCountryName,
       continents,
+      preferredCountries,
       MenuProps,
       ...restTextFieldProps
     } = props
@@ -52,7 +53,7 @@ const MuiTelInput = React.forwardRef(
         value,
         onChange,
         forceCallingCode,
-        excludeCountries,
+        excludedCountries,
         onlyCountries,
         continents
       })
@@ -173,10 +174,11 @@ const MuiTelInput = React.forwardRef(
         {!disableDropdown ? (
           <FlagsMenu
             onlyCountries={onlyCountries}
-            excludeCountries={excludeCountries}
+            excludedCountries={excludedCountries}
             continents={continents}
             anchorEl={anchorEl}
             isoCode={isoCode}
+            preferredCountries={preferredCountries}
             onClose={handleCloseFlagsMenu}
             langOfCountryName={langOfCountryName}
             onSelectCountry={handleChangeCountry}

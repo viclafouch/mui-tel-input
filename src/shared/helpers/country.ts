@@ -4,7 +4,8 @@ import { matchIsArray } from '@shared/helpers/array'
 
 type FilterCountriesOptions = {
   onlyCountries?: readonly Iso3166Alpha2Code[]
-  excludeCountries?: readonly Iso3166Alpha2Code[]
+  excludedCountries?: readonly Iso3166Alpha2Code[]
+  preferredCountries?: readonly Iso3166Alpha2Code[]
   continents?: readonly ContinentCode[]
 }
 
@@ -12,32 +13,67 @@ export function getCallingCodeOfCountry(isoCode: Iso3166Alpha2Code): string {
   return COUNTRIES[isoCode][0] as string
 }
 
+export function sortedPreferredCountries(
+  countries: readonly Iso3166Alpha2Code[],
+  preferredCountries: readonly Iso3166Alpha2Code[]
+): readonly Iso3166Alpha2Code[] {
+  return [...new Set(preferredCountries.concat(countries))]
+}
+
+export function getCountriesOfContinents(
+  continents: readonly ContinentCode[]
+): readonly Iso3166Alpha2Code[] {
+  return continents.flatMap((continentCode) => {
+    return CONTINENTS[continentCode]
+  })
+}
+
+export function getOnlyCountries(
+  countries: readonly Iso3166Alpha2Code[],
+  onlyCountries: readonly Iso3166Alpha2Code[]
+): readonly Iso3166Alpha2Code[] {
+  return countries.filter((isoCode) => {
+    return onlyCountries.includes(isoCode)
+  })
+}
+
+export function excludeCountries(
+  countries: readonly Iso3166Alpha2Code[],
+  excludedCountries?: readonly Iso3166Alpha2Code[]
+): readonly Iso3166Alpha2Code[] {
+  if (matchIsArray(excludedCountries, true)) {
+    return countries.filter((isoCode) => {
+      return !excludedCountries.includes(isoCode)
+    })
+  }
+  return countries
+}
+
 export function filterCountries(
   countries: readonly Iso3166Alpha2Code[],
   options: FilterCountriesOptions
 ): readonly Iso3166Alpha2Code[] {
-  const { onlyCountries, excludeCountries, continents } = options
-  if (matchIsArray(onlyCountries) && onlyCountries.length > 0) {
-    return countries.filter((isoCode) => {
-      return onlyCountries.includes(isoCode)
-    })
+  const { onlyCountries, excludedCountries, continents, preferredCountries } =
+    options
+
+  if (matchIsArray(onlyCountries, true)) {
+    const filteredCountries = getOnlyCountries(countries, onlyCountries)
+    return matchIsArray(preferredCountries, true)
+      ? sortedPreferredCountries(filteredCountries, preferredCountries)
+      : filteredCountries
   }
 
-  let countriesFiltered = countries
+  const theCountries = matchIsArray(continents, true)
+    ? getCountriesOfContinents(continents)
+    : countries
 
-  if (matchIsArray(continents) && continents.length > 0) {
-    countriesFiltered = continents.flatMap((continentCode) => {
-      return CONTINENTS[continentCode]
-    })
-  }
+  const sortedCountries = matchIsArray(preferredCountries, true)
+    ? sortedPreferredCountries(theCountries, preferredCountries)
+    : theCountries
 
-  if (matchIsArray(excludeCountries) && excludeCountries.length > 0) {
-    return countriesFiltered.filter((isoCode) => {
-      return !excludeCountries.includes(isoCode)
-    })
-  }
-
-  return countriesFiltered
+  return matchIsArray(excludedCountries, true)
+    ? excludeCountries(sortedCountries, excludedCountries)
+    : sortedCountries
 }
 
 export function matchContinentsIncludeCountry(

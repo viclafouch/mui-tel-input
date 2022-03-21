@@ -16,8 +16,9 @@ export interface MuiTelInputValues {
 export type MuiTelInputReason = 'country' | 'input'
 
 export interface MuiTelInputProps extends BaseTextFieldProps {
-  excludeCountries?: Iso3166Alpha2Code[]
+  excludedCountries?: Iso3166Alpha2Code[]
   onlyCountries?: Iso3166Alpha2Code[]
+  preferredCountries?: Iso3166Alpha2Code[]
   defaultCountry?: Iso3166Alpha2Code
   forceCallingCode?: boolean
   focusOnSelectCountry?: boolean

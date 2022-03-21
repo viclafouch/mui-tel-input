@@ -11,7 +11,7 @@ describe('components/FlagsList', () => {
   test('should render correctly', () => {
     render(
       <FlagsList
-        excludeCountries={['FR']}
+        excludedCountries={['FR']}
         isoCode="FR"
         onSelectCountry={() => {}}
       />
@@ -49,7 +49,7 @@ describe('components/FlagsList', () => {
   test('should exclude countries', () => {
     render(
       <FlagsList
-        excludeCountries={['FR']}
+        excludedCountries={['FR']}
         isoCode="FR"
         onSelectCountry={() => {}}
       />
@@ -60,7 +60,7 @@ describe('components/FlagsList', () => {
   test('should display EU countries except FR', () => {
     render(
       <FlagsList
-        excludeCountries={['FR']}
+        excludedCountries={['FR']}
         continents={['EU']}
         isoCode="FR"
         onSelectCountry={() => {}}
@@ -82,5 +82,33 @@ describe('components/FlagsList', () => {
     )
     expect(screen.getByText('Venezuela')).toBeTruthy()
     expect(screen.getAllByRole('option').length).toBe(1)
+  })
+
+  test('should highlight preferred countries and in good order', () => {
+    render(
+      <FlagsList
+        preferredCountries={['FR', 'BE', 'VE']}
+        isoCode="FR"
+        onSelectCountry={() => {}}
+      />
+    )
+    const options = screen.getAllByRole('option')
+    expect(options[0]).toHaveTextContent('FR')
+    expect(options[1]).toHaveTextContent('BE')
+    expect(options[2]).toHaveTextContent('VE')
+  })
+
+  test('should highlight preferred countries not excluded', () => {
+    render(
+      <FlagsList
+        preferredCountries={['FR', 'BE', 'VE']}
+        excludedCountries={['FR']}
+        isoCode="FR"
+        onSelectCountry={() => {}}
+      />
+    )
+    const options = screen.getAllByRole('option')
+    expect(options[0]).toHaveTextContent('BE')
+    expect(options[1]).toHaveTextContent('VE')
   })
 })
