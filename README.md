@@ -3,26 +3,6 @@
   <p>A phone number input designed for the framework <a href="https://mui.com/">MUI</a> </p>
 </div>
 
----
-
-## Table of Contents
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Error Recovery](#error-recovery)
-- [API](#api)
-  - [`ErrorBoundary` props](#errorboundary-props)
-  - [`useErrorHandler(error?: unknown)`](#useerrorhandlererror-unknown)
-- [Issues](#issues)
-  - [🐛 Bugs](#-bugs)
-  - [💡 Feature Requests](#-feature-requests)
-- [LICENSE](#license)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 ## Installation
 
 This module is distributed via [npm][npm] which is bundled with [node][node] and
