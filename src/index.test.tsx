@@ -106,11 +106,11 @@ describe('components/MuiTelInput', () => {
       expect(inputElement.value).toBe('+33')
     })
 
-    test('should display "+" if forceCallingCode is false and user clears input', async () => {
+    test('should display empty value if forceCallingCode is false and user clears input', async () => {
       render(<MuiTelWrapper defaultCountry="FR" forceCallingCode={false} />)
       const inputElement = getInputElement()
       await userEvent.clear(inputElement)
-      expect(inputElement.value).toBe('+')
+      expect(inputElement.value).toBe('')
     })
 
     test('should call onChange when the default country changes without selecting another', () => {

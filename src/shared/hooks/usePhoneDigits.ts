@@ -96,7 +96,8 @@ export default function usePhoneDigits({
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     let inputVal = event.target.value
-    inputVal = inputVal.startsWith('+') ? inputVal : `+${inputVal}`
+    inputVal =
+      inputVal.startsWith('+') || inputVal === '' ? inputVal : `+${inputVal}`
     const asYouType = new AsYouType()
     let newValue = asYouType.input(inputVal)
     let newIsoCode = asYouType.getCountry() || null
