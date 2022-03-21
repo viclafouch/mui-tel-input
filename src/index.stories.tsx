@@ -53,5 +53,13 @@ export const Primary: ComponentStory<typeof MuiTelInput> = (args) => {
     setState(newValue)
   }
 
-  return <MuiTelInput value={state} onChange={handleChange} {...rest} />
+  return (
+    <MuiTelInput
+      defaultCountry="VE"
+      continents={['EU']}
+      value={state}
+      onChange={handleChange}
+      {...rest}
+    />
+  )
 }

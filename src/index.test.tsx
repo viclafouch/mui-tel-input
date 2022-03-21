@@ -1,6 +1,9 @@
 import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { vi } from 'vitest'
+
+import MuiTelInput, { MuiTelInputProps } from './index'
 import {
   closeFlagsMenu,
   expectButtonIsFlagOf,
@@ -9,10 +12,7 @@ import {
   getInputElement,
   selectCountry,
   typeInInputElement
-} from 'testUtils'
-import { vi } from 'vitest'
-
-import MuiTelInput, { MuiTelInputProps } from './index'
+} from './testUtils'
 
 import '@testing-library/jest-dom'
 
@@ -333,6 +333,19 @@ describe('components/MuiTelInput', () => {
     expect(screen.getAllByRole('option').length).toBe(3)
   })
 
+  test('should only displayed only continents countries', () => {
+    render(<MuiTelWrapper continents={['EU']} />)
+    fireEvent.click(getButtonElement())
+    expect(screen.getAllByRole('option').length).toBe(53)
+  })
+
+  test('should not accept FR number when continents not include EU', async () => {
+    render(<MuiTelWrapper continents={['SA']} />)
+    await typeInInputElement('+33 6 26')
+    expectButtonNotIsFlagOf('FR')
+    expect(getInputElement().value).toBe('+3')
+  })
+
   /** Copy doesn't work in user-event@beta */
   // test('should fire the onCopy prop', async () => {
   //   const user = userEvent.setup({
@@ -341,10 +354,8 @@ describe('components/MuiTelInput', () => {
   //   const callback = vi.fn(() => {})
   //   render(<MuiTelWrapper onCopy={callback} />)
   //   const input = screen.getByRole('textbox')
-  //   fireEvent.focus(input)
-  //   await user.click(input)
-  //   const toto = await user.copy()
+  //   fireEvent.doubleClick(input)
+  //   await user.copy()
   //   expect(callback).toHaveBeenCalledTimes(1)
   // })
-  // test.todo('should copy phone numbers in the correct format')
 })

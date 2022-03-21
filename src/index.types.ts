@@ -1,10 +1,11 @@
 import type { MenuProps } from '@mui/material/Menu'
 import type { TextFieldProps } from '@mui/material/TextField'
+import { ContinentCode } from '@shared/constants/continents'
 import { Iso3166Alpha2Code } from '@shared/constants/countries'
 
 type BaseTextFieldProps = Omit<
   TextFieldProps,
-  'onChange' | 'select' | 'type' | 'multiline'
+  'onChange' | 'select' | 'type' | 'multiline' | 'defaultValue'
 >
 
 export interface MuiTelInputValues {
@@ -23,6 +24,7 @@ export interface MuiTelInputProps extends BaseTextFieldProps {
   disableDropdown?: boolean
   langOfCountryName?: string
   disableFormatting?: boolean
+  continents?: ContinentCode[]
   onChange?: (value: string) => void
   value: string
   MenuProps?: Partial<MenuProps>

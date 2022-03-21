@@ -1,7 +1,7 @@
 import React from 'react'
-import { FLAGS_SVG } from '@assets/flags-svg'
 import unknownFlag from '@assets/unknown-flag.png'
 import type { Iso3166Alpha2Code } from '@shared/constants/countries'
+import { FLAGS_SVG } from '@shared/constants/flags'
 
 import { Styled } from './Flag.styled'
 

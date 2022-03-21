@@ -37,6 +37,7 @@ const MuiTelInput = React.forwardRef(
       disableFormatting,
       focusOnSelectCountry,
       langOfCountryName,
+      continents,
       MenuProps,
       ...restTextFieldProps
     } = props
@@ -52,7 +53,8 @@ const MuiTelInput = React.forwardRef(
         onChange,
         forceCallingCode,
         excludeCountries,
-        onlyCountries
+        onlyCountries,
+        continents
       })
 
     const handleOpenFlagsMenu = (
@@ -172,6 +174,7 @@ const MuiTelInput = React.forwardRef(
           <FlagsMenu
             onlyCountries={onlyCountries}
             excludeCountries={excludeCountries}
+            continents={continents}
             anchorEl={anchorEl}
             isoCode={isoCode}
             onClose={handleCloseFlagsMenu}

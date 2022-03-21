@@ -3,7 +3,7 @@ import { expect } from 'vitest'
 
 import { filterCountries } from '../country'
 
-const COUNTRIES: readonly Iso3166Alpha2Code[] = ['FR', 'BE', 'US']
+const COUNTRIES: readonly Iso3166Alpha2Code[] = ['FR', 'BE', 'US', 'VE']
 
 describe('helpers/country', () => {
   describe('filterCountries', () => {
@@ -28,7 +28,7 @@ describe('helpers/country', () => {
         filterCountries(COUNTRIES, {
           excludeCountries: ['FR']
         })
-      ).toEqual(['BE', 'US'])
+      ).toEqual(['BE', 'US', 'VE'])
     })
     it('should only contain FR when only FR', () => {
       expect(
@@ -45,6 +45,32 @@ describe('helpers/country', () => {
           excludeCountries: ['BE']
         })
       ).toEqual(['BE'])
+    })
+
+    it('should only contain EU and SA countries', () => {
+      expect(
+        filterCountries(COUNTRIES, {
+          continents: ['EU', 'SA']
+        }).length
+      ).toBe(67)
+    })
+
+    it('should only contain EU and SA countries except excluded countries', () => {
+      expect(
+        filterCountries(COUNTRIES, {
+          continents: ['EU', 'SA'],
+          excludeCountries: ['BE', 'FR', 'VE']
+        }).length
+      ).toBe(64)
+    })
+
+    it('should only contain onlyCountries even with continents filled', () => {
+      expect(
+        filterCountries(COUNTRIES, {
+          continents: ['EU', 'SA'],
+          onlyCountries: ['BE', 'FR', 'VE']
+        })
+      ).toEqual(['FR', 'BE', 'VE'])
     })
   })
 })

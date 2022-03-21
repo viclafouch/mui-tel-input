@@ -1,6 +1,10 @@
 import React from 'react'
+import { ContinentCode } from '@shared/constants/continents'
 import { COUNTRIES, Iso3166Alpha2Code } from '@shared/constants/countries'
-import { getCallingCodeOfCountry } from '@shared/helpers/country'
+import {
+  getCallingCodeOfCountry,
+  matchContinentsIncludeCountry
+} from '@shared/helpers/country'
 import { AsYouType } from 'libphonenumber-js'
 
 type UsePhoneDigitsParams = {
@@ -10,6 +14,7 @@ type UsePhoneDigitsParams = {
   forceCallingCode?: boolean
   excludeCountries?: Iso3166Alpha2Code[]
   onlyCountries?: Iso3166Alpha2Code[]
+  continents?: ContinentCode[]
 }
 
 type State = {
@@ -46,6 +51,7 @@ export function getInitialState(params: GetInitialStateParams): State {
 type Filters = {
   excludeCountries?: Iso3166Alpha2Code[]
   onlyCountries?: Iso3166Alpha2Code[]
+  continents?: ContinentCode[]
 }
 
 function matchIsIsoCodeAccepted(
@@ -58,6 +64,12 @@ function matchIsIsoCodeAccepted(
   if (filters?.onlyCountries && !filters.onlyCountries.includes(isoCode)) {
     return false
   }
+  if (
+    filters.continents &&
+    !matchContinentsIncludeCountry(filters.continents, isoCode)
+  ) {
+    return false
+  }
   return true
 }
 
@@ -67,7 +79,8 @@ export default function usePhoneDigits({
   defaultCountry,
   forceCallingCode,
   onlyCountries,
-  excludeCountries
+  excludeCountries,
+  continents
 }: UsePhoneDigitsParams) {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [previousDefaultCountry, setPreviousDefaultCountry] = React.useState<
@@ -95,7 +108,8 @@ export default function usePhoneDigits({
       newIsoCode &&
       !matchIsIsoCodeAccepted(newIsoCode, {
         onlyCountries,
-        excludeCountries
+        excludeCountries,
+        continents
       })
     ) {
       newValue = state.inputValue
