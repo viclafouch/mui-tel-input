@@ -6,7 +6,7 @@ import FlagsMenu from '@components/FlagsMenu/FlagsMenu'
 import { Iso3166Alpha2Code } from '@shared/constants/countries'
 import { putCursorAtEndOfInput } from '@shared/helpers/dom'
 import { assocRefToPropRef } from '@shared/helpers/ref'
-import { useMismatchProps } from '@shared/hooks/useMissmatch'
+import { useMismatchProps } from '@shared/hooks/useMissmatchProps'
 import usePhoneDigits from '@shared/hooks/usePhoneDigits'
 
 import type {
