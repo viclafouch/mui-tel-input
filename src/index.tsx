@@ -15,6 +15,8 @@ import type {
   MuiTelInputValues
 } from './index.types'
 
+export { isValidPhoneNumber } from 'libphonenumber-js'
+
 export type { MuiTelInputProps, MuiTelInputValues, MuiTelInputReason }
 
 const MuiTelInput = React.forwardRef(
@@ -190,4 +192,4 @@ const MuiTelInput = React.forwardRef(
   }
 )
 
-export default MuiTelInput
+export { MuiTelInput }

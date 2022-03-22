@@ -16,7 +16,7 @@ npm install --save mui-tel-input
 
 ```jsx
 import React from 'react'
-import MuiTelInput from 'mui-tel-input'
+import { MuiTelInput } from 'mui-tel-input'
 
 const MyComponent = () => {
   const [value, setValue] = React.useState('')
@@ -26,6 +26,32 @@ const MyComponent = () => {
   }
 
   return <MuiTelInput value={value} onChange={handleChange} />
+}
+```
+
+### Phone number validation
+
+```jsx
+import React from 'react'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import { MuiTelInput, isValidPhoneNumber } from 'mui-tel-input'
+
+const MyComponent = () => {
+  const [value, setValue] = React.useState('')
+  const [isValid, setIsValid] = React.useState(false)
+
+  const handleChange = (newValue) => {
+    setIsValid(isValidPhoneNumber(newValue))
+    setValue(newValue)
+  }
+
+  return (
+    <Box>
+      <Typography>This is valid ? {isValid ? 'yes' : 'no'}</Typography>
+      <MuiTelInput value={value} onChange={handleChange} />
+    </Box>
+  )
 }
 ```
 

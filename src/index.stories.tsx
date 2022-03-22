@@ -3,7 +3,7 @@ import { ISO_CODES } from '@shared/constants/countries'
 import { action } from '@storybook/addon-actions'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 
-import MuiTelInput from './index'
+import { MuiTelInput } from './index'
 
 export default {
   title: 'MuiTelInput',
@@ -60,10 +60,7 @@ export const Primary: ComponentStory<typeof MuiTelInput> = (args) => {
   return (
     <MuiTelInput
       value={state}
-      defaultCountry="BE"
-      preferredCountries={['FR', 'BE', 'VE']}
-      excludedCountries={['FR']}
-      placeholder="Toto"
+      defaultCountry="US"
       onChange={handleChange}
       {...rest}
     />
