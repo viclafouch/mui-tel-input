@@ -5,6 +5,6 @@ export const COUNTRIES = metadatas.countries
 
 export const ISO_CODES = getKeys(COUNTRIES)
 
-export type Iso3166Alpha2Code = typeof ISO_CODES[number]
+export type MuiTelInputCountry = typeof ISO_CODES[number]
 
-export const DEFAULT_ISO_CODE: Iso3166Alpha2Code = 'FR'
+export const DEFAULT_ISO_CODE: MuiTelInputCountry = 'FR'

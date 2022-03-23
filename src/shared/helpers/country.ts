@@ -1,46 +1,46 @@
-import { ContinentCode, CONTINENTS } from '@shared/constants/continents'
-import { COUNTRIES, Iso3166Alpha2Code } from '@shared/constants/countries'
+import { CONTINENTS, MuiTelInputContinent } from '@shared/constants/continents'
+import { COUNTRIES, MuiTelInputCountry } from '@shared/constants/countries'
 import { matchIsArray } from '@shared/helpers/array'
 
 type FilterCountriesOptions = {
-  onlyCountries?: readonly Iso3166Alpha2Code[]
-  excludedCountries?: readonly Iso3166Alpha2Code[]
-  preferredCountries?: readonly Iso3166Alpha2Code[]
-  continents?: readonly ContinentCode[]
+  onlyCountries?: readonly MuiTelInputCountry[]
+  excludedCountries?: readonly MuiTelInputCountry[]
+  preferredCountries?: readonly MuiTelInputCountry[]
+  continents?: readonly MuiTelInputContinent[]
 }
 
-export function getCallingCodeOfCountry(isoCode: Iso3166Alpha2Code): string {
+export function getCallingCodeOfCountry(isoCode: MuiTelInputCountry): string {
   return COUNTRIES[isoCode][0] as string
 }
 
 export function sortedPreferredCountries(
-  countries: readonly Iso3166Alpha2Code[],
-  preferredCountries: readonly Iso3166Alpha2Code[]
-): readonly Iso3166Alpha2Code[] {
+  countries: readonly MuiTelInputCountry[],
+  preferredCountries: readonly MuiTelInputCountry[]
+): readonly MuiTelInputCountry[] {
   return [...new Set(preferredCountries.concat(countries))]
 }
 
 export function getCountriesOfContinents(
-  continents: readonly ContinentCode[]
-): readonly Iso3166Alpha2Code[] {
+  continents: readonly MuiTelInputContinent[]
+): readonly MuiTelInputCountry[] {
   return continents.flatMap((continentCode) => {
     return CONTINENTS[continentCode]
   })
 }
 
 export function getOnlyCountries(
-  countries: readonly Iso3166Alpha2Code[],
-  onlyCountries: readonly Iso3166Alpha2Code[]
-): readonly Iso3166Alpha2Code[] {
+  countries: readonly MuiTelInputCountry[],
+  onlyCountries: readonly MuiTelInputCountry[]
+): readonly MuiTelInputCountry[] {
   return countries.filter((isoCode) => {
     return onlyCountries.includes(isoCode)
   })
 }
 
 export function excludeCountries(
-  countries: readonly Iso3166Alpha2Code[],
-  excludedCountries?: readonly Iso3166Alpha2Code[]
-): readonly Iso3166Alpha2Code[] {
+  countries: readonly MuiTelInputCountry[],
+  excludedCountries?: readonly MuiTelInputCountry[]
+): readonly MuiTelInputCountry[] {
   if (matchIsArray(excludedCountries, true)) {
     return countries.filter((isoCode) => {
       return !excludedCountries.includes(isoCode)
@@ -50,9 +50,9 @@ export function excludeCountries(
 }
 
 export function filterCountries(
-  countries: readonly Iso3166Alpha2Code[],
+  countries: readonly MuiTelInputCountry[],
   options: FilterCountriesOptions
-): readonly Iso3166Alpha2Code[] {
+): readonly MuiTelInputCountry[] {
   const { onlyCountries, excludedCountries, continents, preferredCountries } =
     options
 
@@ -77,8 +77,8 @@ export function filterCountries(
 }
 
 export function matchContinentsIncludeCountry(
-  continents: ContinentCode[],
-  isoCode: Iso3166Alpha2Code
+  continents: MuiTelInputContinent[],
+  isoCode: MuiTelInputCountry
 ) {
   return continents.some((continentCode) => {
     return CONTINENTS[continentCode].includes(isoCode)

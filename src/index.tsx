@@ -3,21 +3,28 @@ import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
 import FlagButton from '@components/FlagButton/FlagButton'
 import FlagsMenu from '@components/FlagsMenu/FlagsMenu'
-import { Iso3166Alpha2Code } from '@shared/constants/countries'
 import { putCursorAtEndOfInput } from '@shared/helpers/dom'
 import { assocRefToPropRef } from '@shared/helpers/ref'
 import { useMismatchProps } from '@shared/hooks/useMissmatchProps'
 import usePhoneDigits from '@shared/hooks/usePhoneDigits'
 
 import type {
+  MuiTelInputContinent,
+  MuiTelInputCountry,
+  MuiTelInputInfo,
   MuiTelInputProps,
-  MuiTelInputReason,
-  MuiTelInputValues
+  MuiTelInputReason
 } from './index.types'
 
-export { isValidPhoneNumber } from 'libphonenumber-js'
+export { isValidPhoneNumber, AsYouType } from 'libphonenumber-js'
 
-export type { MuiTelInputProps, MuiTelInputValues, MuiTelInputReason }
+export type {
+  MuiTelInputProps,
+  MuiTelInputReason,
+  MuiTelInputInfo,
+  MuiTelInputCountry,
+  MuiTelInputContinent
+}
 
 const MuiTelInput = React.forwardRef(
   (props: MuiTelInputProps, propRef: MuiTelInputProps['ref']) => {
@@ -75,7 +82,7 @@ const MuiTelInput = React.forwardRef(
       }
     }
 
-    const handleChangeCountry = (newCountry: Iso3166Alpha2Code): void => {
+    const handleChangeCountry = (newCountry: MuiTelInputCountry): void => {
       setAnchorEl(null)
       onCountryChange(newCountry)
       if (focusOnSelectCountry) {

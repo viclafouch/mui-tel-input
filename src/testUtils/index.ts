@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { Iso3166Alpha2Code } from '@shared/constants/countries'
+import { MuiTelInputCountry } from '@shared/constants/countries'
 import {
   fireEvent,
   screen,
@@ -15,11 +15,11 @@ export function getButtonElement(): HTMLButtonElement {
   return screen.getByRole('button')
 }
 
-export function expectButtonIsFlagOf(isoCode: Iso3166Alpha2Code) {
+export function expectButtonIsFlagOf(isoCode: MuiTelInputCountry) {
   expect(getButtonElement()).toHaveTextContent(isoCode)
 }
 
-export function expectButtonNotIsFlagOf(isoCode: Iso3166Alpha2Code) {
+export function expectButtonNotIsFlagOf(isoCode: MuiTelInputCountry) {
   expect(getButtonElement()).not.toHaveTextContent(isoCode)
 }
 
@@ -31,7 +31,7 @@ export async function typeInInputElement(
   return { result: inputElement.value }
 }
 
-export function selectCountry(isoCode: Iso3166Alpha2Code): void {
+export function selectCountry(isoCode: MuiTelInputCountry): void {
   fireEvent.click(getButtonElement())
   fireEvent.click(screen.getByTestId(`option-${isoCode}`))
 }

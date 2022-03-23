@@ -1,19 +1,19 @@
 import React from 'react'
 import FlagMenuItem from '@components/FlagMenuItem/FlagMenuItem'
-import type { ContinentCode } from '@shared/constants/continents'
-import { ISO_CODES, Iso3166Alpha2Code } from '@shared/constants/countries'
+import type { MuiTelInputContinent } from '@shared/constants/continents'
+import { ISO_CODES, MuiTelInputCountry } from '@shared/constants/countries'
 import { DEFAULT_LANG } from '@shared/constants/lang'
 import { filterCountries } from '@shared/helpers/country'
 import { getDisplayNames } from '@shared/helpers/intl'
 
 export type FlagsListProps = {
-  isoCode: Iso3166Alpha2Code | null
-  onlyCountries?: Iso3166Alpha2Code[]
-  excludedCountries?: Iso3166Alpha2Code[]
-  preferredCountries?: Iso3166Alpha2Code[]
+  isoCode: MuiTelInputCountry | null
+  onlyCountries?: MuiTelInputCountry[]
+  excludedCountries?: MuiTelInputCountry[]
+  preferredCountries?: MuiTelInputCountry[]
   langOfCountryName?: string
-  continents?: ContinentCode[]
-  onSelectCountry: (isoCode: Iso3166Alpha2Code) => void
+  continents?: MuiTelInputContinent[]
+  onSelectCountry: (isoCode: MuiTelInputCountry) => void
 }
 
 const FlagsList = (props: FlagsListProps) => {

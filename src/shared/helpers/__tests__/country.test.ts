@@ -1,9 +1,9 @@
-import { Iso3166Alpha2Code } from '@shared/constants/countries'
+import { MuiTelInputCountry } from '@shared/constants/countries'
 import { expect } from 'vitest'
 
 import { filterCountries } from '../country'
 
-const COUNTRIES: readonly Iso3166Alpha2Code[] = ['FR', 'BE', 'US', 'VE']
+const COUNTRIES: readonly MuiTelInputCountry[] = ['FR', 'BE', 'US', 'VE']
 
 describe('helpers/country', () => {
   describe('filterCountries', () => {

@@ -1,6 +1,6 @@
 import React from 'react'
-import { ContinentCode } from '@shared/constants/continents'
-import { COUNTRIES, Iso3166Alpha2Code } from '@shared/constants/countries'
+import { MuiTelInputContinent } from '@shared/constants/continents'
+import { COUNTRIES, MuiTelInputCountry } from '@shared/constants/countries'
 import { matchIsArray } from '@shared/helpers/array'
 import {
   getCallingCodeOfCountry,
@@ -8,23 +8,25 @@ import {
 } from '@shared/helpers/country'
 import { AsYouType } from 'libphonenumber-js'
 
+import { MuiTelInputInfo, MuiTelInputReason } from '../../index.types'
+
 type UsePhoneDigitsParams = {
   value: string
-  onChange?: (value: string) => void
-  defaultCountry?: Iso3166Alpha2Code
+  onChange?: (value: string, info: MuiTelInputInfo) => void
+  defaultCountry?: MuiTelInputCountry
   forceCallingCode?: boolean
-  excludedCountries?: Iso3166Alpha2Code[]
-  onlyCountries?: Iso3166Alpha2Code[]
-  continents?: ContinentCode[]
+  excludedCountries?: MuiTelInputCountry[]
+  onlyCountries?: MuiTelInputCountry[]
+  continents?: MuiTelInputContinent[]
 }
 
 type State = {
   inputValue: string
-  isoCode: Iso3166Alpha2Code | null
+  isoCode: MuiTelInputCountry | null
 }
 
 type GetInitialStateParams = {
-  defaultCountry?: Iso3166Alpha2Code
+  defaultCountry?: MuiTelInputCountry
   initialValue: string
   disableFormatting?: boolean
 }
@@ -50,13 +52,13 @@ export function getInitialState(params: GetInitialStateParams): State {
 }
 
 type Filters = {
-  excludedCountries?: Iso3166Alpha2Code[]
-  onlyCountries?: Iso3166Alpha2Code[]
-  continents?: ContinentCode[]
+  excludedCountries?: MuiTelInputCountry[]
+  onlyCountries?: MuiTelInputCountry[]
+  continents?: MuiTelInputContinent[]
 }
 
 function matchIsIsoCodeAccepted(
-  isoCode: Iso3166Alpha2Code,
+  isoCode: MuiTelInputCountry,
   filters: Filters
 ): boolean {
   const { excludedCountries, onlyCountries, continents } = filters
@@ -87,9 +89,10 @@ export default function usePhoneDigits({
   excludedCountries,
   continents
 }: UsePhoneDigitsParams) {
+  const asYouTypeRef = React.useRef<AsYouType>(new AsYouType(defaultCountry))
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [previousDefaultCountry, setPreviousDefaultCountry] = React.useState<
-    Iso3166Alpha2Code | undefined
+    MuiTelInputCountry | undefined
   >(defaultCountry)
   const [state, setState] = React.useState<State>(() => {
     return getInitialState({
@@ -99,34 +102,71 @@ export default function usePhoneDigits({
   })
   const [previousValue, setPreviousValue] = React.useState(value)
 
-  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    let inputVal = event.target.value
-    inputVal =
-      inputVal.startsWith('+') || inputVal === '' ? inputVal : `+${inputVal}`
-    const asYouType = new AsYouType()
-    let newValue = asYouType.input(inputVal)
-    let newIsoCode = asYouType.getCountry() || null
-    if (forceCallingCode && !newIsoCode && state.isoCode) {
-      newValue = `+${getCallingCodeOfCountry(state.isoCode)}`
-      newIsoCode = state.isoCode
+  const buildOnChangeInfo = (reason: MuiTelInputReason): MuiTelInputInfo => {
+    return {
+      countryCallingCode: asYouTypeRef.current.getCallingCode() || null,
+      countryCode: asYouTypeRef.current.getCountry() || null,
+      nationalNumber: asYouTypeRef.current.getNationalNumber(),
+      numberValue: asYouTypeRef.current.getNumberValue() || null,
+      reason
     }
-    if (
-      newIsoCode &&
-      !matchIsIsoCodeAccepted(newIsoCode, {
+  }
+
+  const matchIsIsoCodeValid = (isoCode: MuiTelInputCountry | null) => {
+    return (
+      isoCode &&
+      matchIsIsoCodeAccepted(isoCode, {
         onlyCountries,
         excludedCountries,
         continents
       })
-    ) {
-      newValue = state.inputValue
-      newIsoCode = state.isoCode
+    )
+  }
+
+  const typeNewValue = (inputValue: string): string => {
+    asYouTypeRef.current.reset()
+    return asYouTypeRef.current.input(inputValue)
+  }
+
+  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    let inputVal = event.target.value
+    inputVal =
+      inputVal.startsWith('+') || inputVal === '' ? inputVal : `+${inputVal}`
+    const formattedValue = typeNewValue(inputVal)
+    const country = asYouTypeRef.current.getCountry() || null
+    const phoneNumber = asYouTypeRef.current.getNumber() || null
+    const numberValue = asYouTypeRef.current.getNumberValue() || ''
+    if (forceCallingCode && !phoneNumber && (state.isoCode || defaultCountry)) {
+      const inputValueIsoCode = `+${getCallingCodeOfCountry(
+        state.isoCode || (defaultCountry as MuiTelInputCountry)
+      )}`
+      onChange?.(inputValueIsoCode, buildOnChangeInfo('input'))
+      setPreviousValue(inputValueIsoCode)
+      setState({
+        isoCode: state.isoCode || defaultCountry || null,
+        inputValue: inputValueIsoCode
+      })
+    } else if (numberValue && (!country || !matchIsIsoCodeValid(country))) {
+      // Do not format when isoCode is not valide
+      onChange?.(numberValue, {
+        ...buildOnChangeInfo('input'),
+        countryCode: null,
+        countryCallingCode: null,
+        nationalNumber: null
+      })
+      setPreviousValue(numberValue)
+      setState({
+        isoCode: null,
+        inputValue: numberValue
+      })
+    } else {
+      onChange?.(formattedValue, buildOnChangeInfo('input'))
+      setPreviousValue(formattedValue)
+      setState({
+        isoCode: country || null,
+        inputValue: formattedValue
+      })
     }
-    setPreviousValue(newValue)
-    onChange?.(newValue)
-    setState({
-      isoCode: newIsoCode,
-      inputValue: newValue
-    })
   }
 
   React.useEffect(() => {
@@ -144,12 +184,15 @@ export default function usePhoneDigits({
   React.useEffect(() => {
     if (defaultCountry !== previousDefaultCountry) {
       setPreviousDefaultCountry(defaultCountry)
+      asYouTypeRef.current = new AsYouType(defaultCountry)
       const { inputValue, isoCode } = getInitialState({
         initialValue: '',
         defaultCountry
       })
       setPreviousValue(inputValue)
-      onChange?.(inputValue)
+      asYouTypeRef.current.reset()
+      asYouTypeRef.current.input(inputValue)
+      onChange?.(inputValue, buildOnChangeInfo('country'))
       setState({
         inputValue,
         isoCode
@@ -157,17 +200,21 @@ export default function usePhoneDigits({
     }
   }, [defaultCountry, previousDefaultCountry, onChange])
 
-  const onCountryChange = (newCountry: Iso3166Alpha2Code): void => {
+  const onCountryChange = (newCountry: MuiTelInputCountry): void => {
     if (newCountry === state.isoCode) {
       return
     }
     const callingCode = COUNTRIES[newCountry][0] as string
-    const newValue = `+${callingCode}`
-    onChange?.(newValue)
-    setPreviousValue(newValue)
+    const formattedValue = typeNewValue(`+${callingCode}`)
+    onChange?.(formattedValue, {
+      ...buildOnChangeInfo('country'),
+      // Some country have the same calling code, so we choose what the user has selected
+      countryCode: newCountry
+    })
+    setPreviousValue(formattedValue)
     setState({
       isoCode: newCountry,
-      inputValue: newValue
+      inputValue: formattedValue
     })
   }
 

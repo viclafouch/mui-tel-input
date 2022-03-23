@@ -2,13 +2,13 @@ import React from 'react'
 import MenuItem, { MenuItemProps } from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 import Flag from '@components/Flag/Flag'
-import { COUNTRIES, Iso3166Alpha2Code } from '@shared/constants/countries'
+import { COUNTRIES, MuiTelInputCountry } from '@shared/constants/countries'
 
 import { Styled } from './FlagsMenuItem.styled'
 
 export type FlagMenuItemProps = MenuItemProps & {
-  isoCode: Iso3166Alpha2Code
-  onSelectCountry: (isoCode: Iso3166Alpha2Code) => void
+  isoCode: MuiTelInputCountry
+  onSelectCountry: (isoCode: MuiTelInputCountry) => void
   displayNames: Intl.DisplayNames
 }
 

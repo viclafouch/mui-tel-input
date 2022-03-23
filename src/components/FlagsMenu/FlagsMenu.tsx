@@ -1,18 +1,18 @@
 import React from 'react'
 import Menu, { MenuProps } from '@mui/material/Menu'
 import FlagsList from '@components/FlagsList/FlagsList'
-import type { ContinentCode } from '@shared/constants/continents'
-import { Iso3166Alpha2Code } from '@shared/constants/countries'
+import type { MuiTelInputContinent } from '@shared/constants/continents'
+import { MuiTelInputCountry } from '@shared/constants/countries'
 import { DEFAULT_LANG } from '@shared/constants/lang'
 
 export type FlagsMenuProps = Partial<MenuProps> & {
-  isoCode: Iso3166Alpha2Code | null
-  onlyCountries?: Iso3166Alpha2Code[]
-  excludedCountries?: Iso3166Alpha2Code[]
-  preferredCountries?: Iso3166Alpha2Code[]
+  isoCode: MuiTelInputCountry | null
+  onlyCountries?: MuiTelInputCountry[]
+  excludedCountries?: MuiTelInputCountry[]
+  preferredCountries?: MuiTelInputCountry[]
   langOfCountryName?: string
-  continents?: ContinentCode[]
-  onSelectCountry: (isoCode: Iso3166Alpha2Code) => void
+  continents?: MuiTelInputContinent[]
+  onSelectCountry: (isoCode: MuiTelInputCountry) => void
 }
 
 const FlagsMenu = (props: FlagsMenuProps) => {

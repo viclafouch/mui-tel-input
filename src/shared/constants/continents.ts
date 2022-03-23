@@ -1,9 +1,9 @@
-import { Iso3166Alpha2Code } from '@shared/constants/countries'
+import { MuiTelInputCountry } from '@shared/constants/countries'
 
-export type ContinentCode = 'EU' | 'AS' | 'NA' | 'SA' | 'OC' | 'AF'
+export type MuiTelInputContinent = 'EU' | 'AS' | 'NA' | 'SA' | 'OC' | 'AF'
 
 type Continents = {
-  [key in ContinentCode]: Iso3166Alpha2Code[]
+  [key in MuiTelInputContinent]: MuiTelInputCountry[]
 }
 
 export const CONTINENTS: Continents = {

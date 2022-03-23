@@ -1,10 +1,10 @@
 import React from 'react'
 import IconButton, { IconButtonProps } from '@mui/material/IconButton'
 import Flag from '@components/Flag/Flag'
-import type { Iso3166Alpha2Code } from '@shared/constants/countries'
+import type { MuiTelInputCountry } from '@shared/constants/countries'
 
 export type FlagButtonProps = IconButtonProps & {
-  isoCode: Iso3166Alpha2Code | null
+  isoCode: MuiTelInputCountry | null
   isFlagsMenuOpened: boolean
   disableDropdown?: boolean
 }

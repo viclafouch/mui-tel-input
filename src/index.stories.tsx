@@ -3,7 +3,7 @@ import { ISO_CODES } from '@shared/constants/countries'
 import { action } from '@storybook/addon-actions'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 
-import { MuiTelInput } from './index'
+import { MuiTelInput, MuiTelInputProps } from './index'
 
 export default {
   title: 'MuiTelInput',
@@ -52,17 +52,21 @@ export const Primary: ComponentStory<typeof MuiTelInput> = (args) => {
   const { value, ...rest } = args
   const [state, setState] = React.useState<string>('')
 
-  const handleChange = (newValue: string) => {
-    action('onChange')(newValue)
-    setState(newValue)
+  const handleChange = (
+    ...argsChange: Parameters<NonNullable<MuiTelInputProps['onChange']>>
+  ) => {
+    action('onChange')(argsChange)
+    setState(argsChange[0])
   }
 
   return (
     <MuiTelInput
-      value={state}
-      defaultCountry="US"
-      onChange={handleChange}
       {...rest}
+      value={state}
+      forceCallingCode
+      excludedCountries={['FR']}
+      defaultCountry="BE"
+      onChange={handleChange}
     />
   )
 }

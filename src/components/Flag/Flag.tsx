@@ -1,12 +1,12 @@
 import React from 'react'
 import unknownFlag from '@assets/unknown-flag.png'
-import type { Iso3166Alpha2Code } from '@shared/constants/countries'
+import type { MuiTelInputCountry } from '@shared/constants/countries'
 import { FLAGS_SVG } from '@shared/constants/flags'
 
 import { Styled } from './Flag.styled'
 
 export type FlagProps = {
-  isoCode: Iso3166Alpha2Code | null
+  isoCode: MuiTelInputCountry | null
 }
 
 const Flag = (props: FlagProps) => {

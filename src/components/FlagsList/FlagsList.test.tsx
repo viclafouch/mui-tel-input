@@ -1,5 +1,5 @@
 import React from 'react'
-import { ISO_CODES, Iso3166Alpha2Code } from '@shared/constants/countries'
+import { ISO_CODES, MuiTelInputCountry } from '@shared/constants/countries'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { expect, vi } from 'vitest'
 
@@ -24,7 +24,7 @@ describe('components/FlagsList', () => {
   })
 
   test('should fire onSelectCountry', () => {
-    const callback = vi.fn((country: Iso3166Alpha2Code) => {
+    const callback = vi.fn((country: MuiTelInputCountry) => {
       return country
     })
     render(<FlagsList isoCode="FR" onSelectCountry={callback} />)

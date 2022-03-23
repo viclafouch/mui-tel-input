@@ -1,7 +1,7 @@
-import { Iso3166Alpha2Code } from '@shared/constants/countries'
+import { MuiTelInputCountry } from '@shared/constants/countries'
 
 type Flags = {
-  [key in Iso3166Alpha2Code]: string
+  [key in MuiTelInputCountry]: string
 }
 
 export const FLAGS_SVG: Flags = {
