@@ -1,11 +1,12 @@
 <div align="center">
-<h1>Mui-tel-input</h1>
+<h1>MUI tel input</h1>
   <p>A phone number input designed for the React library <a href="https://mui.com/">MUI</a></p>
 </div>
 <div align="center">
   
-  [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/viclafouch/mui-tel-input/blob/master/LICENSE)
-  
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/viclafouch/mui-tel-input/blob/master/LICENSE)
+![npm](https://img.shields.io/npm/v/mui-tel-input)
+
 </div>
 
 ## Installation
