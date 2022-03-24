@@ -47,6 +47,9 @@
     "coverage": "vitest run --coverage"
   },
   "standard-version": {
+    "scripts": {
+      "prerelease": "npm run build"
+    },
     "skip": {
       "changelog": true
     }
