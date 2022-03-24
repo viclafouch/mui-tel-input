@@ -6,7 +6,7 @@
     "url": "https://github.com/viclafouch/mui-tel-input/issues"
   },
   "homepage": "https://github.com/viclafouch/mui-tel-input",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "files": [
     "dist"
   ],
@@ -43,7 +43,13 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "vitest",
+    "release": "standard-version",
     "coverage": "vitest run --coverage"
+  },
+  "standard-version": {
+    "skip": {
+      "changelog": true
+    }
   },
   "peerDependencies": {
     "@emotion/react": "^11.0.0",
@@ -53,12 +59,12 @@
     "react-dom": "^17.0.0"
   },
   "dependencies": {
-    "@emotion/react": "^11.8.2",
-    "@emotion/styled": "^11.8.1",
-    "@mui/material": "^5.5.2",
+    "@emotion/react": "^11.0.0",
+    "@emotion/styled": "^11.0.0",
+    "@mui/material": "^5.0.0",
     "libphonenumber-js": "^1.9.50",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.8",
@@ -93,6 +99,7 @@
     "eslint-plugin-testing-library": "^5.1.0",
     "prettier": "^2.6.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
+    "standard-version": "^9.3.2",
     "typescript": "^4.6.2",
     "vite": "^2.8.6",
     "vite-aliases": "^0.9.1",
