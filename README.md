@@ -6,6 +6,7 @@
   
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/viclafouch/mui-tel-input/blob/master/LICENSE)
 ![npm](https://img.shields.io/npm/v/mui-tel-input)
+[![CircleCI](https://circleci.com/gh/viclafouch/mui-tel-input/tree/master.svg?style=svg)](https://circleci.com/gh/viclafouch/mui-tel-input/tree/master)
 
 </div>
 
