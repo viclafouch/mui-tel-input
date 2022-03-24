@@ -28,12 +28,19 @@ const FlagMenuItem = (props: FlagMenuItemProps) => {
       onClick={handleClick}
       role="option"
       data-testid={`option-${isoCode}`}
+      className="MuiTelInput-MenuItem"
     >
-      <Styled.ListItemIcon>
+      <Styled.ListItemIcon className="MuiTelInput-ListItemIcon-country-code">
         <Flag isoCode={isoCode} />
       </Styled.ListItemIcon>
-      <Styled.ListItemText>{countryName}</Styled.ListItemText>
-      <Typography variant="body2" color="text.secondary">
+      <Styled.ListItemText className="MuiTelInput-ListItemText-country">
+        {countryName}
+      </Styled.ListItemText>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        className="MuiTelInput-Typography-calling-code"
+      >
         +{COUNTRIES[isoCode][0]}
       </Typography>
     </MenuItem>

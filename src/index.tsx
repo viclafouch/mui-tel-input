@@ -49,6 +49,7 @@ const MuiTelInput = React.forwardRef(
       continents,
       preferredCountries,
       MenuProps,
+      className,
       ...restTextFieldProps
     } = props
     const textFieldRef = React.useRef<HTMLDivElement>(null)
@@ -158,6 +159,7 @@ const MuiTelInput = React.forwardRef(
           ref={handleRef}
           onDoubleClick={handleDoubleClick}
           inputRef={handleRefInput}
+          className={`MuiTelInput-TextField ${className || ''}`}
           onChange={onInputChange}
           inputProps={{
             onCopy: handleCopy,

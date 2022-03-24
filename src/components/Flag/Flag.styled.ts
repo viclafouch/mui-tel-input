@@ -5,9 +5,9 @@ const Styled = {
     return {
       display: 'inline-block',
       backgroundSize: 'cover',
-      '--CountryFlagIcon-height': '0.8em',
-      height: 'var(--CountryFlagIcon-height)',
-      width: 'calc(var(--CountryFlagIcon-height)*3/2)'
+      '--mui-tel-input-flag-height': '0.8em',
+      height: 'var(--mui-tel-input-flag-height)',
+      width: 'calc(var(--mui-tel-input-flag-height)*3/2)'
     }
   }),
   Span: styled('span')(() => {

@@ -17,6 +17,7 @@ const FlagButton = (props: FlagButtonProps) => {
     return (
       <IconButton
         tabIndex={-1}
+        className="MuiTelInput-IconButton"
         // eslint-disable-next-line jsx-a11y/aria-role
         role=""
         disableRipple
@@ -33,6 +34,7 @@ const FlagButton = (props: FlagButtonProps) => {
     <IconButton
       {...iconButtonProps}
       aria-label="Select country"
+      className="MuiTelInput-Flag"
       aria-haspopup="listbox"
       aria-controls={isFlagsMenuOpened ? 'select-country' : undefined}
       aria-expanded={isFlagsMenuOpened ? 'true' : 'false'}

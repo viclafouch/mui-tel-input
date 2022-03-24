@@ -18,6 +18,7 @@ const Flag = (props: FlagProps) => {
   return (
     <Styled.Flag
       data-testid={isoCode}
+      className="MuiTelInput-Flag"
       style={{
         backgroundImage: `url(${svgFlag})`
       }}

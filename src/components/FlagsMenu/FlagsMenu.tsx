@@ -33,6 +33,7 @@ const FlagsMenu = (props: FlagsMenuProps) => {
       anchorEl={anchorEl}
       open={Boolean(anchorEl)}
       id="select-country"
+      className="MuiTelInput-Menu"
       MenuListProps={{
         role: 'listbox',
         'aria-activedescendant': isoCode ? `country-${isoCode}` : '',
