@@ -15,6 +15,7 @@ type UsePhoneDigitsParams = {
   onChange?: (value: string, info: MuiTelInputInfo) => void
   defaultCountry?: MuiTelInputCountry
   forceCallingCode?: boolean
+  disableFormatting?: boolean
   excludedCountries?: MuiTelInputCountry[]
   onlyCountries?: MuiTelInputCountry[]
   continents?: MuiTelInputContinent[]
@@ -32,7 +33,7 @@ type GetInitialStateParams = {
 }
 
 export function getInitialState(params: GetInitialStateParams): State {
-  const { defaultCountry, initialValue } = params
+  const { defaultCountry, initialValue, disableFormatting } = params
 
   const fallbackValue = defaultCountry
     ? `+${COUNTRIES[defaultCountry][0] as string}`
@@ -41,8 +42,12 @@ export function getInitialState(params: GetInitialStateParams): State {
   const asYouType = new AsYouType(defaultCountry)
   let inputValue = asYouType.input(initialValue)
 
+  const phoneNumberValue = asYouType.getNumberValue()
+
   if (defaultCountry && asYouType.getCountry() === undefined) {
     inputValue = fallbackValue
+  } else if (disableFormatting && phoneNumberValue) {
+    inputValue = phoneNumberValue
   }
 
   return {
@@ -87,7 +92,8 @@ export default function usePhoneDigits({
   forceCallingCode,
   onlyCountries,
   excludedCountries,
-  continents
+  continents,
+  disableFormatting
 }: UsePhoneDigitsParams) {
   const asYouTypeRef = React.useRef<AsYouType>(new AsYouType(defaultCountry))
   const inputRef = React.useRef<HTMLInputElement>(null)
@@ -97,7 +103,8 @@ export default function usePhoneDigits({
   const [state, setState] = React.useState<State>(() => {
     return getInitialState({
       initialValue: value,
-      defaultCountry
+      defaultCountry,
+      disableFormatting
     })
   })
   const [previousValue, setPreviousValue] = React.useState(value)
@@ -159,6 +166,13 @@ export default function usePhoneDigits({
         isoCode: null,
         inputValue: numberValue
       })
+    } else if (disableFormatting) {
+      onChange?.(numberValue, buildOnChangeInfo('input'))
+      setPreviousValue(numberValue)
+      setState({
+        isoCode: country || null,
+        inputValue: numberValue
+      })
     } else {
       onChange?.(formattedValue, buildOnChangeInfo('input'))
       setPreviousValue(formattedValue)
@@ -190,7 +204,6 @@ export default function usePhoneDigits({
         defaultCountry
       })
       setPreviousValue(inputValue)
-      asYouTypeRef.current.reset()
       asYouTypeRef.current.input(inputValue)
       onChange?.(inputValue, buildOnChangeInfo('country'))
       setState({

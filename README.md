@@ -3,7 +3,7 @@
   <p>A phone number input designed for the React library <a href="https://mui.com/">MUI</a></p>
 </div>
 <div align="center">
-  
+
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/viclafouch/mui-tel-input/blob/master/LICENSE)
 [![npm](https://img.shields.io/npm/v/mui-tel-input)](https://www.npmjs.com/package/mui-tel-input)
 [![CircleCI](https://circleci.com/gh/viclafouch/mui-tel-input/tree/master.svg?style=svg)](https://circleci.com/gh/viclafouch/mui-tel-input/tree/master)
@@ -68,17 +68,18 @@ const MyComponent = () => {
 | Name            | Type                            | Description                                                                                                                   |
 | --------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | `value`         | `string`                        | The phone number value (**Required**)                                                                                                                   |
-| `onChange`    | `(value, info) => void`                     | Gets called once the user updates the input or selects a new country.                        | `defaultCountry?`        | `string`                        | [Country code](#country-code) to be displayed on mount.                                     
+| `onChange?`    | `(value, info) => void`                     | Gets called once the user updates the input or selects a new country.                        | `defaultCountry?`        | `string`                        | [Country code](#country-code) to be displayed on mount.
 | `onlyCountries?`        | `array`                        | [Country codes](#country-code) to be included.                                                 | `excludedCountries?`        | `array`                        | [Country codes](#country-code) to be excluded.
 | `preferredCountries?`        | `array`                        | [Country codes](#country-code) to be highlighted to the top of the list of countries.
 | `continents?`        | `array`                        | [Continent codes](#continent-code) to include a list of countries.
 | `forceCallingCode?`        | `boolean`                        | Force the calling code (e.g: `+33`) to be displayed so the value cannot be empty. Default `false`.
 | `focusOnSelectCountry?`        | `boolean`                        | Autofocus the input when the user selects a country in the list. Default `false`.
 | `disableDropdown?`        | `boolean`                        | No country list / The current flag is a `span` instead of a `button`. Default `false`.
+| `disableFormatting?`        | `boolean`                        | Remove format (spaces..) from the input value. Default `false`.
 | `langOfCountryName?`        | `string`                        | An Intl locale to translate countries (see [Intl locales](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames/DisplayNames)). Default `en`.
 | `MenuProps?`          | [Menu API](https://mui.com/api/menu)     | Props for the Menu component.
 | `ref?`          | `React.Ref<HTMLDivElement>`     | A ref pointing to the [Mui TextField component](https://mui.com/components/text-fields/).
-| [TextField Props](#inheritance) | | 
+| [TextField Props](#inheritance) | |
 
 ### Inheritance
 
@@ -93,7 +94,7 @@ This library supports all [officially assigned](https://en.wikipedia.org/wiki/IS
 
 ## Continent code
 
-| Code            | Continent                                                                                                             
+| Code            | Continent
 | --------------- | -------------------------------
 | AF              | Africa
 | AS              | Asia

@@ -127,6 +127,35 @@ describe('components/MuiTelInput', () => {
     })
   })
 
+  describe('prop/disableFormatting', () => {
+    test('should not format initial value if disableFormatting is true', () => {
+      render(<MuiTelWrapper disableFormatting value="+33626" />)
+      expectButtonIsFlagOf('FR')
+      expect(getInputElement().value).toBe('+33626')
+    })
+
+    test('should not format value if disableFormatting is true', async () => {
+      const callbackOnChange = vi.fn(() => {})
+      render(
+        <MuiTelWrapper
+          onChange={callbackOnChange}
+          disableFormatting
+          defaultCountry="FR"
+        />
+      )
+      expectButtonIsFlagOf('FR')
+      await typeInInputElement('626')
+      expect(getInputElement().value).toBe('+33626')
+      expect(callbackOnChange).toHaveBeenLastCalledWith('+33626', {
+        countryCallingCode: '33',
+        countryCode: 'FR',
+        nationalNumber: '626',
+        numberValue: '+33626',
+        reason: 'input'
+      })
+    })
+  })
+
   describe('prop/onDoubleClick', () => {
     test('should fire the onDoubleClick callback prop', () => {
       const callback = vi.fn(() => {})

@@ -65,6 +65,7 @@ const MuiTelInput = React.forwardRef(
         forceCallingCode,
         excludedCountries,
         onlyCountries,
+        disableFormatting,
         continents
       })
 

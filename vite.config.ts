@@ -14,7 +14,6 @@ export default defineConfig({
     globals: true
   },
   build: {
-    sourcemap: true,
     target: 'esnext',
     minify: true,
     terserOptions: {
