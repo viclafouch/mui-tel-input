@@ -42,9 +42,10 @@
     "lint:fix": "npm run lint -- --fix",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test": "vitest",
+    "test": "vitest --run",
     "release": "standard-version",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "prepare": "husky install"
   },
   "standard-version": {
     "scripts": {
@@ -100,6 +101,7 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-testing-library": "^5.1.0",
+    "husky": "^7.0.4",
     "jsdom": "^19.0.0",
     "prettier": "^2.6.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
