@@ -6,7 +6,7 @@
     "url": "https://github.com/viclafouch/mui-tel-input/issues"
   },
   "homepage": "https://www.npmjs.com/package/mui-tel-input",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "files": [
     "dist"
   ],
@@ -42,7 +42,7 @@
     "lint:fix": "npm run lint -- --fix",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test": "vitest --run",
+    "test": "vitest",
     "release": "standard-version",
     "coverage": "vitest run --coverage",
     "prepare": "husky install"
