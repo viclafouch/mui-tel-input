@@ -72,8 +72,9 @@ const MyComponent = () => {
 | Name            | Type                            | Description                                                                                                                   |
 | --------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | `value`         | `string`                        | The phone number value (**Required**)                                                                                                                   |
-| `onChange?`    | `(value, info) => void`                     | Gets called once the user updates the input or selects a new country.                        | `defaultCountry?`        | `string`                        | [Country code](#country-code) to be displayed on mount.
-| `onlyCountries?`        | `array`                        | [Country codes](#country-code) to be included.                                                 | `excludedCountries?`        | `array`                        | [Country codes](#country-code) to be excluded.
+| `onChange?`    | `(value, info) => void`                     | Gets called once the user updates the input or selects a new country.                      | `defaultCountry?`        | `string`                        | [Country code](#country-code) to be displayed on mount.
+| `onlyCountries?`        | `array`                        | [Country codes](#country-code) to be included.
+| `excludedCountries?`        | `array`                        | [Country codes](#country-code) to be excluded.  |
 | `preferredCountries?`        | `array`                        | [Country codes](#country-code) to be highlighted to the top of the list of countries.
 | `continents?`        | `array`                        | [Continent codes](#continent-code) to include a list of countries.
 | `forceCallingCode?`        | `boolean`                        | Force the calling code (e.g: `+33`) to be displayed so the value cannot be empty. Default `false`.
