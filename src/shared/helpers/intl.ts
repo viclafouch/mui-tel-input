@@ -1,12 +1,16 @@
-import { DEFAULT_LANG, DISPLAY_NAMES_OPTIONS } from '@shared/constants/lang'
+import { DEFAULT_LANG } from '@shared/constants/lang'
 
 import { log } from './log'
 
 export function getDisplayNames(lang = DEFAULT_LANG): Intl.DisplayNames {
   try {
-    return new Intl.DisplayNames(lang, DISPLAY_NAMES_OPTIONS)
+    return new Intl.DisplayNames(lang, {
+      type: 'region'
+    })
   } catch (error) {
     log(error)
-    return new Intl.DisplayNames(DEFAULT_LANG, DISPLAY_NAMES_OPTIONS)
+    return new Intl.DisplayNames(DEFAULT_LANG, {
+      type: 'region'
+    })
   }
 }
