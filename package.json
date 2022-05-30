@@ -59,16 +59,16 @@
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@mui/material": "^5.8.1",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@mui/material": "^5.8.1",
     "libphonenumber-js": "^1.10.6",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
@@ -79,12 +79,11 @@
     "@storybook/react": "^6.5.6",
     "@storybook/testing-library": "^0.0.11",
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^12.1.4",
-    "@testing-library/react-hooks": "^7.0.2",
+    "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.2.0",
     "@types/ramda": "^0.28.13",
-    "@types/react": "^17.0.43",
-    "@types/react-dom": "^17.0.14",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.5",
     "@typescript-eslint/eslint-plugin": "^5.26.0",
     "@typescript-eslint/parser": "^5.26.0",
     "@viclafouch/eslint-config-viclafouch": "^3.6.2",
