@@ -93,6 +93,22 @@ const MyComponent = () => {
 
 While not explicitly documented above, the props of the [TextField](https://mui.com/api/text-field) component are also available on MuiTelInput.
 
+## CSS 
+
+| 	Global class                            | Description                                                                                                                   |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `.MuiTelInput-TextField`                        | 	Styles applied to the root element.                                                                                                                   |
+| `.MuiTelInput-IconButton`                        | 	Styles applied to the [IconButton](https://mui.com/material-ui/api/icon-button/) of the current flag.                                                                                                                   |
+| `.MuiTelInput-Flag`                        | 	Styles applied to a flag.                                                                                                                   |
+| `.MuiTelInput-Menu`                        | 	Styles applied to [Menu](https://mui.com/material-ui/api/menu/) component.                                                                                                                   |
+| `.MuiTelInput-MenuItem`                        | 	Styles applied to a flag item of the [Menu](https://mui.com/material-ui/api/menu/).                                                                                                                   |
+| `.MuiTelInput-ListItemIcon-flag`                        | 	Styles applied to the [ListItemIcon](https://mui.com/material-ui/api/list-item-icon/) of a flag item                                                                                                                   |
+| `.MuiTelInput-ListItemText-country`                        | 	Styles applied to the [ListItemText](https://mui.com/material-ui/api/list-item-text/) of a flag item                                                                                                                   |
+| `.MuiTelInput-Typography-calling-code`                        | 	Styles applied to the calling code of a flag item                                                                                                                  |
+
+You can override the style of the component with a [global class name](https://mui.com/material-ui/guides/interoperability/#global-css).
+
+
 
 ## Country code
 
