@@ -30,7 +30,7 @@ const FlagMenuItem = (props: FlagMenuItemProps) => {
       data-testid={`option-${isoCode}`}
       className="MuiTelInput-MenuItem"
     >
-      <Styled.ListItemIcon className="MuiTelInput-ListItemIcon-country-code">
+      <Styled.ListItemIcon className="MuiTelInput-ListItemIcon-flag">
         <Flag isoCode={isoCode} />
       </Styled.ListItemIcon>
       <Styled.ListItemText className="MuiTelInput-ListItemText-country">

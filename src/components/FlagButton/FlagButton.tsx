@@ -34,7 +34,7 @@ const FlagButton = (props: FlagButtonProps) => {
     <IconButton
       {...iconButtonProps}
       aria-label="Select country"
-      className="MuiTelInput-Flag"
+      className="MuiTelInput-IconButton"
       aria-haspopup="listbox"
       aria-controls={isFlagsMenuOpened ? 'select-country' : undefined}
       aria-expanded={isFlagsMenuOpened ? 'true' : 'false'}
