@@ -95,7 +95,7 @@ const MuiTelInput = React.forwardRef(
     const handleFocus = (
       event: React.FocusEvent<HTMLInputElement, Element>
     ): void => {
-      requestAnimationFrame(() => {
+      queueMicrotask(() => {
         if (inputRef.current) {
           putCursorAtEndOfInput(inputRef.current)
         }
