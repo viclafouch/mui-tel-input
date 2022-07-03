@@ -25,6 +25,7 @@ const FlagsMenu = (props: FlagsMenuProps) => {
     langOfCountryName,
     continents,
     preferredCountries,
+    className,
     ...rest
   } = props
 
@@ -33,7 +34,7 @@ const FlagsMenu = (props: FlagsMenuProps) => {
       anchorEl={anchorEl}
       open={Boolean(anchorEl)}
       id="select-country"
-      className="MuiTelInput-Menu"
+      className={`MuiTelInput-Menu ${className || ''}`}
       MenuListProps={{
         role: 'listbox',
         'aria-activedescendant': isoCode ? `country-${isoCode}` : '',
