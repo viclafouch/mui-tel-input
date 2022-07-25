@@ -108,8 +108,6 @@ While not explicitly documented above, the props of the [TextField](https://mui.
 
 You can override the style of the component with a [global class name](https://mui.com/material-ui/guides/interoperability/#global-css).
 
-
-
 ## Country code
 
 A "country code" is a [two-letter ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) (like `US`).
@@ -127,6 +125,10 @@ This library supports all [officially assigned](https://en.wikipedia.org/wiki/IS
 | OC              | Oceania
 | SA              | South America
 | OC              | Oceania
+
+## Changelog
+
+Go to [Github Releases](https://github.com/viclafouch/mui-tel-input/releases)
 
 ## TypeScript
 
