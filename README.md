@@ -27,6 +27,8 @@ npm install mui-tel-input
 yarn add mui-tel-input
 ```
 
+The component uses [libphonenumber-js](https://www.npmjs.com/package/libphonenumber-js) for phone number parsing and formatting.
+
 ## Usage
 
 ```jsx
