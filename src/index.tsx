@@ -16,7 +16,10 @@ import type {
   MuiTelInputReason
 } from './index.types'
 
-export { isValidPhoneNumber, AsYouType } from 'libphonenumber-js'
+export {
+  isValidPhoneNumber as matchIsValidTel,
+  AsYouType
+} from 'libphonenumber-js'
 
 export type {
   MuiTelInputProps,
