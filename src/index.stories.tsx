@@ -63,9 +63,7 @@ export const Primary: ComponentStory<typeof MuiTelInput> = (args) => {
     <MuiTelInput
       {...rest}
       value={state}
-      forceCallingCode
-      excludedCountries={['FR']}
-      defaultCountry="BE"
+      preferredCountries={['FR']}
       onChange={handleChange}
     />
   )
