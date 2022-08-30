@@ -1,6 +1,6 @@
 {
   "name": "mui-tel-input",
-  "description": "A phone number input designed for the React library MUI",
+  "description": "A phone number input designed for the React library MUI built with libphonenumber-js",
   "author": "Victor de la Fouchardiere <victor.delafouchardiere@gmail.com> (https://github.com/viclafouch)",
   "license": "MIT",
   "bugs": {

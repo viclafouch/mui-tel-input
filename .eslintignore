@@ -1,3 +1,5 @@
 vite.config.ts
 dist
 coverage
+docs/build
+docs/.docusaurus

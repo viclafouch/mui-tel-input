@@ -1,0 +1,20 @@
+.main-wrapper {
+  display: flex;
+}
+
+
+.MuiTelInput-TextField input {
+  color: var(--ifm-color-black);
+}
+
+[data-theme="dark"] .MuiTelInput-TextField input {
+  color: var(--ifm-color-white);
+}
+
+.MuiTelInput-TextField fieldset {
+  border-color: var(--ifm-color-black)!important;
+}
+
+[data-theme="dark"] .MuiTelInput-TextField fieldset {
+  border-color: var(--ifm-color-white)!important;
+}

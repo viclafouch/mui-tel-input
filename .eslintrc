@@ -4,7 +4,7 @@
     "plugin:testing-library/react"
   ],
   "parserOptions": {
-    "project": ["./tsconfig.json"]
+    "project": ["./tsconfig.json", "./docs/tsconfig.json"]
   },
   "rules": {
     "react-hooks/exhaustive-deps": 1,
