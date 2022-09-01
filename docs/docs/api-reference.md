@@ -8,12 +8,14 @@ This article discusses the API and props of **MuiTelInput**. Props are defined w
 
 ## `value`
 
-- Type: `string`
-- Required: `true`
+- Default: `''`
+- Type: `string` | `undefined`
+- Required: `false`
 
 ### Example
 
 ```tsx
+<MuiTelInput />
 <MuiTelInput value="+12133734253" />
 ```
 

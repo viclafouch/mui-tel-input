@@ -50,7 +50,7 @@ export default {
 
 export const Primary: ComponentStory<typeof MuiTelInput> = (args) => {
   const { value, ...rest } = args
-  const [state, setState] = React.useState<string>('')
+  const [state, setState] = React.useState<string | undefined>(undefined)
 
   const handleChange = (
     ...argsChange: Parameters<NonNullable<MuiTelInputProps['onChange']>>

@@ -32,6 +32,6 @@ export interface MuiTelInputProps extends BaseTextFieldProps {
   disableFormatting?: boolean
   continents?: MuiTelInputContinent[]
   onChange?: (value: string, info: MuiTelInputInfo) => void
-  value: string
+  value?: string | undefined
   MenuProps?: Partial<MenuProps>
 }

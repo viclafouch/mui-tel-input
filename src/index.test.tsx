@@ -18,7 +18,7 @@ import '@testing-library/jest-dom'
 
 const MuiTelWrapper = (props: Partial<MuiTelInputProps>) => {
   const { onChange, ...rest } = props
-  const [state, setState] = React.useState<string>('')
+  const [state, setState] = React.useState<string | undefined>(undefined)
 
   const handleChange = (newValue: string, info: MuiTelInputInfo) => {
     setState(newValue)
@@ -318,6 +318,13 @@ describe('components/MuiTelInput', () => {
   })
 
   describe('prop/value', () => {
+    test('should work if value is undefined', () => {
+      const { rerender } = render(<MuiTelWrapper value={undefined} />)
+      rerender(<MuiTelWrapper value="+32" />)
+      expect(getInputElement().value).toBe('+32')
+      expectButtonIsFlagOf('BE')
+    })
+
     test('should display the calling code when the value prop become empty', () => {
       const { rerender } = render(
         <MuiTelWrapper defaultCountry="BE" value="+328732" />
