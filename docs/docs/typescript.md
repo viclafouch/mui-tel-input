@@ -28,7 +28,7 @@ const MyComponent = () => {
   const excludedCountries: MuiTelInputCountry[] = ['FR']
 
   return (
-    <MuiColorInput
+    <MuiTelInput
       value={value}
       onChange={handleChange}
       continents={continents}
