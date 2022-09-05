@@ -95,8 +95,8 @@ Autofocus the input when the user selects a country in the list.
 
 ## `preferredCountries`
 
-- Default: `undefined`
 - Type: `MuiTelInputCountry[]`
+- Default: `undefined`
 
 [Country codes](/docs/country-codes) to be highlighted to the top of the list of countries.
 
