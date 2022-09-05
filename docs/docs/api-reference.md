@@ -8,9 +8,8 @@ This article discusses the API and props of **MuiTelInput**. Props are defined w
 
 ## `value`
 
-- Default: `''`
 - Type: `string` | `undefined`
-- Required: `false`
+- Default: `''`
 
 ### Example
 
@@ -21,9 +20,8 @@ This article discusses the API and props of **MuiTelInput**. Props are defined w
 
 ## `onChange`
 
-- Default: `undefined`
 - Type: `(value: string, info: MuiTelInputInfo) => void`
-- Required: `false`
+- Default: `undefined`
 
 Gets called once the user updates the tel value.
 
@@ -53,9 +51,8 @@ const handleChange = (value, info) => {
 
 ## `forceCallingCode`
 
-- Default: `false`
 - Type: `boolean`
-- Required: `false`
+- Default: `false`
 
 Force the calling code (e.g: +33) to be displayed so the value cannot be empty.
 
@@ -65,9 +62,8 @@ Force the calling code (e.g: +33) to be displayed so the value cannot be empty.
 
 ## `focusOnSelectCountry`
 
-- Default: `false`
 - Type: `boolean`
-- Required: `false`
+- Default: `false`
 
 Autofocus the input when the user selects a country in the list.
 
@@ -77,9 +73,8 @@ Autofocus the input when the user selects a country in the list.
 
 ## `onlyCountries`
 
-- Default: `undefined`
 - Type: `MuiTelInputCountry[]`
-- Required: `false`
+- Default: `undefined`
 
 [Country codes](/docs/country-codes) to be included in the list of countries.
 
@@ -89,9 +84,8 @@ Autofocus the input when the user selects a country in the list.
 
 ## `excludedCountries`
 
-- Default: `undefined`
 - Type: `MuiTelInputCountry[]`
-- Required: `false`
+- Default: `undefined`
 
 [Country codes](/docs/country-codes) to be excluded of the list of countries.
 
@@ -103,19 +97,17 @@ Autofocus the input when the user selects a country in the list.
 
 - Default: `undefined`
 - Type: `MuiTelInputCountry[]`
-- Required: `false`
 
 [Country codes](/docs/country-codes) to be highlighted to the top of the list of countries.
 
 ```tsx
-<MuiTelInput excludedCountries={['CA', 'PT']} />
+<MuiTelInput preferredCountries={['BE', 'FR']} />
 ```
 
 ## `continents`
 
-- Default: `undefined`
 - Type: `MuiTelInputContinent[]`
-- Required: `false`
+- Default: `undefined`
 
 [Continent codes](/docs/continent-codes) to include a group of countries.
 
@@ -125,9 +117,8 @@ Autofocus the input when the user selects a country in the list.
 
 ## `disableDropdown`
 
-- Default: `false`
 - Type: `boolean`
-- Required: `false`
+- Default: `false`
 
 No country list / The current flag is a `span` instead of a `button`.
 
@@ -137,9 +128,8 @@ No country list / The current flag is a `span` instead of a `button`.
 
 ## `disableFormatting`
 
-- Default: `false`
 - Type: `boolean`
-- Required: `false`
+- Default: `false`
 
 Remove format (spaces..) from the input value.
 
@@ -149,9 +139,8 @@ Remove format (spaces..) from the input value.
 
 ## `langOfCountryName`
 
-- Default: `en`
 - Type: `string`
-- Required: `false`
+- Default: `en`
 
 An `Intl` locale to translate country names (see [Intl locales](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames/DisplayNames)). All countries will be translated in this language.
 
@@ -161,9 +150,8 @@ An `Intl` locale to translate country names (see [Intl locales](https://develope
 
 ## `MenuProps`
 
-- Default: `undefined`
 - Type: [MenuProps](https://mui.com/material-ui/api/menu/)
-- Required: `false`
+- Default: `undefined`
 
 Props for the MUI [Menu](https://mui.com/material-ui/api/menu/) component.
 
