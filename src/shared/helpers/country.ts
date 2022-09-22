@@ -84,3 +84,14 @@ export function matchContinentsIncludeCountry(
     return CONTINENTS[continentCode].includes(isoCode)
   })
 }
+
+export function sortAlphabeticallyCountryCodes(
+  countryCodes: readonly MuiTelInputCountry[],
+  displayNames: Intl.DisplayNames
+): readonly MuiTelInputCountry[] {
+  return [...countryCodes].sort((countryCodeA, countryCodeB) => {
+    const countryA = displayNames.of(countryCodeA) as string
+    const countryB = displayNames.of(countryCodeB) as string
+    return countryA.localeCompare(countryB)
+  })
+}

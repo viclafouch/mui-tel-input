@@ -1,7 +1,7 @@
 import { MuiTelInputCountry } from '@shared/constants/countries'
 import { expect } from 'vitest'
 
-import { filterCountries } from '../country'
+import { filterCountries, sortAlphabeticallyCountryCodes } from '../country'
 
 const COUNTRIES: readonly MuiTelInputCountry[] = ['FR', 'BE', 'US', 'VE']
 
@@ -71,6 +71,19 @@ describe('helpers/country', () => {
           onlyCountries: ['BE', 'FR', 'VE']
         })
       ).toEqual(['FR', 'BE', 'VE'])
+    })
+  })
+
+  describe('sortAlphabeticallyCountryCodes', () => {
+    it('should sort alphabetically', () => {
+      const countries = ['FR', 'BE', 'CA'] as MuiTelInputCountry[]
+      const displayNames = new Intl.DisplayNames('fr', {
+        type: 'region'
+      })
+      // Belgique / Canada / France
+      expect(
+        sortAlphabeticallyCountryCodes(countries, displayNames)
+      ).toStrictEqual(['BE', 'CA', 'FR'])
     })
   })
 })

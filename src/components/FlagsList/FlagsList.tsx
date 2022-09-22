@@ -3,7 +3,10 @@ import FlagMenuItem from '@components/FlagMenuItem/FlagMenuItem'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
 import { ISO_CODES, MuiTelInputCountry } from '@shared/constants/countries'
 import { DEFAULT_LANG } from '@shared/constants/lang'
-import { filterCountries } from '@shared/helpers/country'
+import {
+  filterCountries,
+  sortAlphabeticallyCountryCodes
+} from '@shared/helpers/country'
 import { getDisplayNames } from '@shared/helpers/intl'
 
 export type FlagsListProps = {
@@ -27,9 +30,19 @@ const FlagsList = (props: FlagsListProps) => {
     preferredCountries
   } = props
 
+  // Idem for the translations
+  const [displayNames] = React.useState(() => {
+    return getDisplayNames(langOfCountryName)
+  })
+
   // Don't need to refilter when the list is already displayed
   const [countriesFiltered] = React.useState(() => {
-    return filterCountries(ISO_CODES, {
+    const ISO_CODES_SORTED = sortAlphabeticallyCountryCodes(
+      ISO_CODES,
+      displayNames
+    )
+
+    return filterCountries(ISO_CODES_SORTED, {
       onlyCountries,
       excludedCountries,
       continents,
@@ -40,11 +53,6 @@ const FlagsList = (props: FlagsListProps) => {
   // Same for the callback, we don't trust the parent for useCallback or not
   const [onSelectCountryMemo] = React.useState(() => {
     return onSelectCountry
-  })
-
-  // Idem for the translations
-  const [displayNames] = React.useState(() => {
-    return getDisplayNames(langOfCountryName)
   })
 
   return (
