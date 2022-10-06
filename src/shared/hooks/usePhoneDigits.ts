@@ -1,4 +1,5 @@
 import React from 'react'
+import { AsYouType } from 'libphonenumber-js'
 import { MuiTelInputContinent } from '@shared/constants/continents'
 import { COUNTRIES, MuiTelInputCountry } from '@shared/constants/countries'
 import { matchIsArray } from '@shared/helpers/array'
@@ -6,8 +7,6 @@ import {
   getCallingCodeOfCountry,
   matchContinentsIncludeCountry
 } from '@shared/helpers/country'
-import { AsYouType } from 'libphonenumber-js'
-
 import { MuiTelInputInfo, MuiTelInputReason } from '../../index.types'
 
 type UsePhoneDigitsParams = {
@@ -36,7 +35,7 @@ export function getInitialState(params: GetInitialStateParams): State {
   const { defaultCountry, initialValue, disableFormatting } = params
 
   const fallbackValue = defaultCountry
-    ? `+${COUNTRIES[defaultCountry][0] as string}`
+    ? `+${COUNTRIES[defaultCountry]?.[0] as string}`
     : ''
 
   const asYouType = new AsYouType(defaultCountry)
@@ -228,7 +227,7 @@ export default function usePhoneDigits({
     if (newCountry === state.isoCode) {
       return
     }
-    const callingCode = COUNTRIES[newCountry][0] as string
+    const callingCode = COUNTRIES[newCountry]?.[0] as string
     const formattedValue = typeNewValue(`+${callingCode}`)
     onChange?.(formattedValue, {
       ...buildOnChangeInfo('country'),

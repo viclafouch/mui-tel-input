@@ -2,7 +2,6 @@ import React from 'react'
 import unknownFlag from '@assets/unknown-flag.png'
 import type { MuiTelInputCountry } from '@shared/constants/countries'
 import { FLAGS_SVG } from '@shared/constants/flags'
-
 import { Styled } from './Flag.styled'
 
 export type FlagProps = {

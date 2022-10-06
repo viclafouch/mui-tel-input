@@ -1,10 +1,8 @@
 import React from 'react'
+import { expect, vi } from 'vitest'
 import { ISO_CODES, MuiTelInputCountry } from '@shared/constants/countries'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { expect, vi } from 'vitest'
-
 import FlagsList from './FlagsList'
-
 import '@testing-library/jest-dom'
 
 describe('components/FlagsList', () => {

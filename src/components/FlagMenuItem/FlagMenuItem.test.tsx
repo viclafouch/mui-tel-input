@@ -1,10 +1,8 @@
 import React from 'react'
+import { vi } from 'vitest'
 import { getDisplayNames } from '@shared/helpers/intl'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { vi } from 'vitest'
-
 import FlagMenuItem from './FlagMenuItem'
-
 import '@testing-library/jest-dom'
 
 describe('components/FlagMenuItem', () => {

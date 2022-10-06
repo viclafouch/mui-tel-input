@@ -1,8 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-
 import FlagsMenu from './FlagsMenu'
-
 import '@testing-library/jest-dom'
 
 function getAnchorEl() {

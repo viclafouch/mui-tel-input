@@ -1,13 +1,11 @@
 import React from 'react'
+import clsx from 'clsx'
+import { MuiTelInput } from 'mui-tel-input'
 import Link from '@docusaurus/Link'
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 import DocusaurusImageUrl from '@site/static/img/logo.svg'
 import Layout from '@theme/Layout'
-import clsx from 'clsx'
-import { MuiTelInput } from 'mui-tel-input'
-
 import styles from './index.module.css'
-
 import '../css/index.css'
 
 const HomepageHeader = () => {

@@ -1,9 +1,8 @@
 import React from 'react'
+import Flag from '@components/Flag/Flag'
 import MenuItem, { MenuItemProps } from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
-import Flag from '@components/Flag/Flag'
 import { COUNTRIES, MuiTelInputCountry } from '@shared/constants/countries'
-
 import { Styled } from './FlagsMenuItem.styled'
 
 export type FlagMenuItemProps = MenuItemProps & {
@@ -41,7 +40,7 @@ const FlagMenuItem = (props: FlagMenuItemProps) => {
         color="text.secondary"
         className="MuiTelInput-Typography-calling-code"
       >
-        +{COUNTRIES[isoCode][0]}
+        +{COUNTRIES[isoCode]?.[0]}
       </Typography>
     </MenuItem>
   )

@@ -1,13 +1,12 @@
 import React from 'react'
-import InputAdornment from '@mui/material/InputAdornment'
-import TextField from '@mui/material/TextField'
 import FlagButton from '@components/FlagButton/FlagButton'
 import FlagsMenu from '@components/FlagsMenu/FlagsMenu'
+import InputAdornment from '@mui/material/InputAdornment'
+import TextField from '@mui/material/TextField'
 import { putCursorAtEndOfInput } from '@shared/helpers/dom'
 import { assocRefToPropRef } from '@shared/helpers/ref'
 import { useMismatchProps } from '@shared/hooks/useMissmatchProps'
 import usePhoneDigits from '@shared/hooks/usePhoneDigits'
-
 import type {
   MuiTelInputContinent,
   MuiTelInputCountry,

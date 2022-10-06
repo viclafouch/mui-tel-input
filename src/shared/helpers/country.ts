@@ -10,7 +10,7 @@ type FilterCountriesOptions = {
 }
 
 export function getCallingCodeOfCountry(isoCode: MuiTelInputCountry): string {
-  return COUNTRIES[isoCode][0] as string
+  return COUNTRIES[isoCode]?.[0] as string
 }
 
 export function sortedPreferredCountries(

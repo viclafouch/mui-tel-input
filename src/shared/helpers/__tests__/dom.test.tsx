@@ -1,8 +1,7 @@
 import React from 'react'
+import { expect } from 'vitest'
 import { putCursorAtEndOfInput } from '@shared/helpers/dom'
 import { render, screen } from '@testing-library/react'
-import { expect } from 'vitest'
-
 import '@testing-library/jest-dom'
 
 describe('helpers/dom', () => {

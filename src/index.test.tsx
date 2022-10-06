@@ -1,8 +1,7 @@
 import React from 'react'
+import { vi } from 'vitest'
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { vi } from 'vitest'
-
 import { MuiTelInput, MuiTelInputInfo, MuiTelInputProps } from './index'
 import {
   closeFlagsMenu,
@@ -13,7 +12,6 @@ import {
   selectCountry,
   typeInInputElement
 } from './testUtils'
-
 import '@testing-library/jest-dom'
 
 const MuiTelWrapper = (props: Partial<MuiTelInputProps>) => {

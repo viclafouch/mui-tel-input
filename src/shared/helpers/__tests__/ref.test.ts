@@ -1,7 +1,6 @@
 import React from 'react'
-import { assocRefToPropRef } from '@shared/helpers/ref'
 import { expect, vi } from 'vitest'
-
+import { assocRefToPropRef } from '@shared/helpers/ref'
 import '@testing-library/jest-dom'
 
 describe('helpers/ref', () => {

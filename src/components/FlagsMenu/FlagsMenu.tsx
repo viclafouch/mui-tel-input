@@ -1,6 +1,6 @@
 import React from 'react'
-import Menu, { MenuProps } from '@mui/material/Menu'
 import FlagsList from '@components/FlagsList/FlagsList'
+import Menu, { MenuProps } from '@mui/material/Menu'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
 import { MuiTelInputCountry } from '@shared/constants/countries'
 import { DEFAULT_LANG } from '@shared/constants/lang'

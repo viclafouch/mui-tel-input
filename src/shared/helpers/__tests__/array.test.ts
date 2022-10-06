@@ -1,5 +1,4 @@
 import { expect } from 'vitest'
-
 import { getFirstIntersection, matchIsArray } from '../array'
 
 describe('helpers/array', () => {

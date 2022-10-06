@@ -2,7 +2,6 @@ import React from 'react'
 import { ISO_CODES } from '@shared/constants/countries'
 import { action } from '@storybook/addon-actions'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-
 import { MuiTelInput, MuiTelInputProps } from './index'
 
 export default {

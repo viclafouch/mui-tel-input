@@ -1,8 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-
 import FlagButton from './FlagButton'
-
 import '@testing-library/jest-dom'
 
 describe('components/FlagButton', () => {

@@ -1,6 +1,6 @@
 import React from 'react'
-import IconButton, { IconButtonProps } from '@mui/material/IconButton'
 import Flag from '@components/Flag/Flag'
+import IconButton, { IconButtonProps } from '@mui/material/IconButton'
 import type { MuiTelInputCountry } from '@shared/constants/countries'
 
 export type FlagButtonProps = IconButtonProps & {

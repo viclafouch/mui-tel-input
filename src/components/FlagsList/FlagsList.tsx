@@ -1,3 +1,4 @@
+/* eslint-disable react/hook-use-state */
 import React from 'react'
 import FlagMenuItem from '@components/FlagMenuItem/FlagMenuItem'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
