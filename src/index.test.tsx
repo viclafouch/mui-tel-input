@@ -323,6 +323,12 @@ describe('components/MuiTelInput', () => {
       expectButtonIsFlagOf('BE')
     })
 
+    test('should show value even if the phone number is invalid', () => {
+      render(<MuiTelWrapper defaultCountry="US" value="+132323232322323" />)
+      expectButtonIsFlagOf('US')
+      expect(getInputElement().value).toBe('+1 32323232322323')
+    })
+
     test('should display the calling code when the value prop become empty', () => {
       const { rerender } = render(
         <MuiTelWrapper defaultCountry="BE" value="+328732" />

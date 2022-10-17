@@ -43,9 +43,7 @@ export function getInitialState(params: GetInitialStateParams): State {
 
   const phoneNumberValue = asYouType.getNumberValue()
 
-  if (defaultCountry && asYouType.getCountry() === undefined) {
-    inputValue = fallbackValue
-  } else if (disableFormatting && phoneNumberValue) {
+  if (disableFormatting && phoneNumberValue) {
     inputValue = phoneNumberValue
   }
 
