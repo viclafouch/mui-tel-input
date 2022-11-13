@@ -32,7 +32,6 @@ const MuiTelInput = React.forwardRef(
   (props: MuiTelInputProps, propRef: MuiTelInputProps['ref']) => {
     const {
       forceCallingCode,
-      splitCallingCode,
       onlyCountries,
       excludedCountries,
       defaultCountry,
@@ -66,7 +65,6 @@ const MuiTelInput = React.forwardRef(
         value: value ?? '',
         onChange,
         forceCallingCode,
-        splitCallingCode,
         excludedCountries,
         onlyCountries,
         disableFormatting,
@@ -181,7 +179,6 @@ const MuiTelInput = React.forwardRef(
                   onClick={handleOpenFlagsMenu}
                   disabled={disabled}
                   disableDropdown={Boolean(disableDropdown)}
-                  splitCallingCode={splitCallingCode}
                 />
               </InputAdornment>
             )

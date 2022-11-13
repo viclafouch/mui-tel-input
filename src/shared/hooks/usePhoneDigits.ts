@@ -14,7 +14,6 @@ type UsePhoneDigitsParams = {
   onChange?: (value: string, info: MuiTelInputInfo) => void
   defaultCountry?: MuiTelInputCountry
   forceCallingCode?: boolean
-  splitCallingCode?: boolean
   disableFormatting?: boolean
   excludedCountries?: MuiTelInputCountry[]
   onlyCountries?: MuiTelInputCountry[]
@@ -30,17 +29,14 @@ type GetInitialStateParams = {
   defaultCountry?: MuiTelInputCountry
   initialValue: string
   disableFormatting?: boolean
-  splitCallingCode?: boolean
 }
 
 export function getInitialState(params: GetInitialStateParams): State {
-  const { defaultCountry, initialValue, disableFormatting, splitCallingCode } =
-    params
+  const { defaultCountry, initialValue, disableFormatting } = params
 
-  const fallbackValue =
-    defaultCountry && !splitCallingCode
-      ? `+${COUNTRIES[defaultCountry]?.[0] as string}`
-      : ''
+  const fallbackValue = defaultCountry
+    ? `+${COUNTRIES[defaultCountry]?.[0] as string}`
+    : ''
 
   const asYouType = new AsYouType(defaultCountry)
   let inputValue = asYouType.input(initialValue)
@@ -49,11 +45,6 @@ export function getInitialState(params: GetInitialStateParams): State {
 
   if (disableFormatting && phoneNumberValue) {
     inputValue = phoneNumberValue
-  }
-
-  const callingCode = asYouType.getCallingCode()
-  if (splitCallingCode && callingCode) {
-    inputValue = inputValue.replace(`+${callingCode}`, '').trim()
   }
 
   return {
@@ -96,7 +87,6 @@ export default function usePhoneDigits({
   onChange,
   defaultCountry,
   forceCallingCode,
-  splitCallingCode,
   onlyCountries,
   excludedCountries,
   continents,
@@ -114,8 +104,7 @@ export default function usePhoneDigits({
     return getInitialState({
       initialValue: value,
       defaultCountry,
-      disableFormatting,
-      splitCallingCode
+      disableFormatting
     })
   })
   const [previousValue, setPreviousValue] = React.useState(value)
@@ -148,16 +137,8 @@ export default function usePhoneDigits({
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     let inputVal = event.target.value
-    if (splitCallingCode) {
-      // use the currently selected country calling code
-      inputVal = `+${getCallingCodeOfCountry(
-        state.isoCode || (defaultCountry as MuiTelInputCountry)
-      )}${inputVal.replaceAll('+', '')}`
-    } else {
-      // make the start of the number a calling code if it's not already one
-      inputVal =
-        inputVal.startsWith('+') || inputVal === '' ? inputVal : `+${inputVal}`
-    }
+    inputVal =
+      inputVal.startsWith('+') || inputVal === '' ? inputVal : `+${inputVal}`
     const formattedValue = typeNewValue(inputVal)
     const country =
       inputVal === '+' || !inputVal
@@ -165,34 +146,11 @@ export default function usePhoneDigits({
         : asYouTypeRef.current.getCountry() ||
           previousCountryRef.current ||
           null
-    if (!splitCallingCode) {
-      previousCountryRef.current = country
-    }
+    previousCountryRef.current = country
     const phoneNumber = asYouTypeRef.current.getNumber() || null
     const numberValue = asYouTypeRef.current.getNumberValue() || ''
 
-    if (splitCallingCode) {
-      const valueWithoutCallingCode = (
-        disableFormatting ? numberValue : formattedValue
-      )
-        .replace(
-          `+${getCallingCodeOfCountry(
-            state.isoCode || (defaultCountry as MuiTelInputCountry)
-          )}`,
-          ''
-        )
-        .trim()
-      onChange?.(valueWithoutCallingCode, buildOnChangeInfo('input'))
-      setPreviousValue(valueWithoutCallingCode)
-      setState({
-        isoCode: previousCountryRef.current,
-        inputValue: valueWithoutCallingCode
-      })
-    } else if (
-      forceCallingCode &&
-      !phoneNumber &&
-      (state.isoCode || defaultCountry)
-    ) {
+    if (forceCallingCode && !phoneNumber && (state.isoCode || defaultCountry)) {
       const inputValueIsoCode = `+${getCallingCodeOfCountry(
         state.isoCode || (defaultCountry as MuiTelInputCountry)
       )}`
@@ -237,20 +195,12 @@ export default function usePhoneDigits({
       setPreviousValue(value)
       const newState = getInitialState({
         initialValue: value,
-        defaultCountry,
-        splitCallingCode
+        defaultCountry
       })
-
-      if (splitCallingCode) {
-        // keep the selected flag country if we are splitting the calling code
-        newState.isoCode = previousCountryRef.current
-      } else {
-        // otherwise, update the country as it might have changed with the number
-        previousCountryRef.current = newState.isoCode
-      }
+      previousCountryRef.current = newState.isoCode
       setState(newState)
     }
-  }, [value, previousValue, defaultCountry, splitCallingCode])
+  }, [value, previousValue, defaultCountry])
 
   React.useEffect(() => {
     if (defaultCountry !== previousDefaultCountry) {
@@ -258,8 +208,7 @@ export default function usePhoneDigits({
       asYouTypeRef.current = new AsYouType(defaultCountry)
       const { inputValue, isoCode } = getInitialState({
         initialValue: '',
-        defaultCountry,
-        splitCallingCode
+        defaultCountry
       })
       setPreviousValue(inputValue)
       asYouTypeRef.current.input(inputValue)
@@ -270,37 +219,24 @@ export default function usePhoneDigits({
         isoCode
       })
     }
-  }, [defaultCountry, previousDefaultCountry, splitCallingCode, onChange])
+  }, [defaultCountry, previousDefaultCountry, onChange])
 
   const onCountryChange = (newCountry: MuiTelInputCountry): void => {
     if (newCountry === state.isoCode) {
       return
     }
     const callingCode = COUNTRIES[newCountry]?.[0] as string
-    // replace the old calling code with the new one, keeping the rest of the number
-    let newValue = `+${callingCode}${state.inputValue.replace(
-      `+${getCallingCodeOfCountry(
-        state.isoCode || (defaultCountry as MuiTelInputCountry)
-      )}`,
-      ''
-    )}`
-    if (!disableFormatting) {
-      newValue = typeNewValue(newValue)
-    }
-    if (splitCallingCode) {
-      newValue = newValue.replace(`+${callingCode}`, '').trim()
-    }
-
-    onChange?.(newValue, {
+    const formattedValue = typeNewValue(`+${callingCode}`)
+    onChange?.(formattedValue, {
       ...buildOnChangeInfo('country'),
       // Some country have the same calling code, so we choose what the user has selected
       countryCode: newCountry
     })
     previousCountryRef.current = newCountry
-    setPreviousValue(newValue)
+    setPreviousValue(formattedValue)
     setState({
       isoCode: newCountry,
-      inputValue: newValue
+      inputValue: formattedValue
     })
   }
 

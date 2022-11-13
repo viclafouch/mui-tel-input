@@ -380,12 +380,12 @@ describe('components/MuiTelInput', () => {
     expect(result).toBe('+33 6 26 92 26 31')
   })
 
-  test('should display the new calling of the new selected country flag, keeping original number', async () => {
-    render(<MuiTelWrapper disableFormatting />)
+  test('should display the new calling of the new selected country flag', async () => {
+    render(<MuiTelWrapper />)
     await typeInInputElement('+33626922631')
     expectButtonIsFlagOf('FR')
     selectCountry('BE')
-    expect(getInputElement().value).toBe('+32626922631')
+    expect(getInputElement().value).toBe('+32')
     expectButtonIsFlagOf('BE')
   })
 
@@ -414,47 +414,6 @@ describe('components/MuiTelInput', () => {
     rerender(<MuiTelWrapper defaultCountry="FR" value="" />)
     expect(getInputElement().value).toBe('+33')
     expectButtonIsFlagOf('FR')
-  })
-
-  test('should not have calling code if splitting it', () => {
-    render(
-      <MuiTelWrapper
-        defaultCountry="ES"
-        splitCallingCode
-        disableFormatting
-        value="+34555123456"
-      />
-    )
-    expect(getInputElement().value).toBe('555123456')
-    expectButtonIsFlagOf('ES')
-  })
-
-  test('should not allow inputting a calling code if splitting it', async () => {
-    render(
-      <MuiTelWrapper splitCallingCode disableFormatting defaultCountry="ES" />
-    )
-    await typeInInputElement('+33555123456')
-    expect(getInputElement().value).toBe('33555123456')
-    expectButtonIsFlagOf('ES')
-  })
-
-  test('should give calling code in onchange info even when splitting it', async () => {
-    const callbackOnChange = vi.fn(() => {})
-    render(
-      <MuiTelWrapper
-        splitCallingCode
-        defaultCountry="ES"
-        onChange={callbackOnChange}
-      />
-    )
-    await typeInInputElement('555123456')
-    expect(callbackOnChange).toHaveBeenCalledWith('555 12 34 56', {
-      countryCallingCode: '34',
-      countryCode: 'ES',
-      nationalNumber: '555123456',
-      numberValue: '+34555123456',
-      reason: 'input'
-    })
   })
 
   /** Copy doesn't work in user-event@beta */
