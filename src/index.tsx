@@ -62,7 +62,7 @@ const MuiTelInput = React.forwardRef(
 
     const { onInputChange, onCountryChange, inputRef, isoCode, inputValue } =
       usePhoneDigits({
-        defaultCountry,
+        defaultCountry: defaultCountry || (splitCallingCode ? 'US' : undefined),
         value: value ?? '',
         onChange,
         forceCallingCode,
