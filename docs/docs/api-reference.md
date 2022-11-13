@@ -60,6 +60,17 @@ Force the calling code (e.g: +33) to be displayed so the value cannot be empty.
 <MuiTelInput forceCallingCode />
 ```
 
+## `splitCallingCode`
+
+- Type: `boolean`
+- Default: `false`
+
+Displays the calling code (e.g: +33) as read-only next to the flag and with a divider instead of as part of the input field.
+
+```tsx
+<MuiTelInput splitCallingCode />
+```
+
 ## `focusOnSelectCountry`
 
 - Type: `boolean`
