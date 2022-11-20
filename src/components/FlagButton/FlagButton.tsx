@@ -1,9 +1,9 @@
 import React from 'react'
 import Flag from '@components/Flag/Flag'
-import { Typography } from '@mui/material'
 import IconButton, { IconButtonProps } from '@mui/material/IconButton'
 import type { MuiTelInputCountry } from '@shared/constants/countries'
 import { getCallingCodeOfCountry } from '@shared/helpers/country'
+import { Styled } from './FlagButton.styled'
 
 export type FlagButtonProps = IconButtonProps & {
   isoCode: MuiTelInputCountry | null
@@ -48,19 +48,10 @@ const FlagButton = (props: FlagButtonProps) => {
           <Flag isoCode={isoCode} />
         </IconButton>
       )}
-
       {splitCallingCode && isoCode ? (
-        <Typography
-          sx={{
-            pr: 1,
-            cursor: 'default',
-            borderRightWidth: 1,
-            borderRightColor: 'grey.300',
-            borderRightStyle: 'solid'
-          }}
-        >
+        <Styled.CallingCodeSplitted>
           +{getCallingCodeOfCountry(isoCode)}
-        </Typography>
+        </Styled.CallingCodeSplitted>
       ) : null}
     </>
   )

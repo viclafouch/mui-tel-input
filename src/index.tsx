@@ -3,6 +3,7 @@ import FlagButton from '@components/FlagButton/FlagButton'
 import FlagsMenu from '@components/FlagsMenu/FlagsMenu'
 import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
+import { DEFAULT_ISO_CODE } from '@shared/constants/countries'
 import { putCursorAtEndOfInput } from '@shared/helpers/dom'
 import { assocRefToPropRef } from '@shared/helpers/ref'
 import { useMismatchProps } from '@shared/hooks/useMissmatchProps'
@@ -57,12 +58,15 @@ const MuiTelInput = React.forwardRef(
     } = props
     const textFieldRef = React.useRef<HTMLDivElement>(null)
     const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null)
+    const validDefaultCountry =
+      // splitCallingCode needs a default country
+      defaultCountry || (splitCallingCode ? DEFAULT_ISO_CODE : undefined)
 
     useMismatchProps(props)
 
     const { onInputChange, onCountryChange, inputRef, isoCode, inputValue } =
       usePhoneDigits({
-        defaultCountry: defaultCountry || (splitCallingCode ? 'US' : undefined),
+        defaultCountry: validDefaultCountry,
         value: value ?? '',
         onChange,
         forceCallingCode,

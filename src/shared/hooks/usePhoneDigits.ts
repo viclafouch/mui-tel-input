@@ -7,6 +7,7 @@ import {
   getCallingCodeOfCountry,
   matchContinentsIncludeCountry
 } from '@shared/helpers/country'
+import { removeOccurrence } from '@shared/helpers/string'
 import { MuiTelInputInfo, MuiTelInputReason } from '../../index.types'
 
 type UsePhoneDigitsParams = {
@@ -149,10 +150,11 @@ export default function usePhoneDigits({
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     let inputVal = event.target.value
     if (splitCallingCode) {
+      const cleanInputValue = removeOccurrence(inputVal, '+')
+      // defaultCountry must be set by the user if `splitCallingCode`
+      const isoCode = state.isoCode || (defaultCountry as MuiTelInputCountry)
       // use the currently selected country calling code
-      inputVal = `+${getCallingCodeOfCountry(
-        state.isoCode || (defaultCountry as MuiTelInputCountry)
-      )}${inputVal.replaceAll('+', '')}`
+      inputVal = `+${getCallingCodeOfCountry(isoCode)}${cleanInputValue}`
     } else {
       // make the start of the number a calling code if it's not already one
       inputVal =
@@ -277,18 +279,18 @@ export default function usePhoneDigits({
       return
     }
     const callingCode = COUNTRIES[newCountry]?.[0] as string
+    const { inputValue, isoCode } = state
+    const inputValueWithoutCallingCode = isoCode
+      ? removeOccurrence(inputValue, `+${getCallingCodeOfCountry(isoCode)}`)
+      : inputValue
     // replace the old calling code with the new one, keeping the rest of the number
-    let newValue = `+${callingCode}${state.inputValue.replace(
-      `+${getCallingCodeOfCountry(
-        state.isoCode || (defaultCountry as MuiTelInputCountry)
-      )}`,
-      ''
-    )}`
+    let newValue = `+${callingCode}${inputValueWithoutCallingCode}`
+
     if (!disableFormatting) {
       newValue = typeNewValue(newValue)
     }
     if (splitCallingCode) {
-      newValue = newValue.replace(`+${callingCode}`, '').trim()
+      newValue = removeOccurrence(newValue, `+${callingCode}`).trim()
     }
 
     onChange?.(newValue, {
