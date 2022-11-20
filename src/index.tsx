@@ -103,11 +103,11 @@ const MuiTelInput = React.forwardRef(
     const handleFocus = (
       event: React.FocusEvent<HTMLInputElement, Element>
     ): void => {
-      queueMicrotask(() => {
+      setTimeout(() => {
         if (inputRef.current) {
           putCursorAtEndOfInput(inputRef.current)
         }
-      })
+      }, 0)
       onFocus?.(event)
     }
 

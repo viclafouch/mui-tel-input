@@ -40,7 +40,8 @@ export default defineConfig({
           '@mui/material/MenuItem': 'MenuItem',
           '@mui/material/Typography': 'Typography',
           '@mui/material/ListItemIcon': 'ListItemIcon',
-          '@mui/material/ListItemText': 'ListItemText'
+          '@mui/material/ListItemText': 'ListItemText',
+          '@mui/material/colors': 'colors',
         }
       }
     }
