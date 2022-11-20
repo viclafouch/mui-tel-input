@@ -457,6 +457,11 @@ describe('components/MuiTelInput', () => {
     })
   })
 
+  test('should default to US country if splitting calling code and no default country provided', () => {
+    render(<MuiTelWrapper splitCallingCode />)
+    expectButtonIsFlagOf('US')
+  })
+
   /** Copy doesn't work in user-event@beta */
   // test('should fire the onCopy prop', async () => {
   //   const user = userEvent.setup({
