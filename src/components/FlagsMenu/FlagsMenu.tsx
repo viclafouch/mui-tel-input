@@ -1,4 +1,3 @@
-/* eslint-disable react/hook-use-state */
 import React from 'react'
 import FlagMenuItem from '@components/FlagMenuItem/FlagMenuItem'
 import Menu, { MenuProps } from '@mui/material/Menu'
