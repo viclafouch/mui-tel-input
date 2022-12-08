@@ -1,9 +1,15 @@
+/* eslint-disable react/hook-use-state */
 import React from 'react'
-import FlagsList from '@components/FlagsList/FlagsList'
+import FlagMenuItem from '@components/FlagMenuItem/FlagMenuItem'
 import Menu, { MenuProps } from '@mui/material/Menu'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
-import { MuiTelInputCountry } from '@shared/constants/countries'
+import { ISO_CODES, MuiTelInputCountry } from '@shared/constants/countries'
 import { DEFAULT_LANG } from '@shared/constants/lang'
+import {
+  filterCountries,
+  sortAlphabeticallyCountryCodes
+} from '@shared/helpers/country'
+import { getDisplayNames } from '@shared/helpers/intl'
 
 export type FlagsMenuProps = Partial<MenuProps> & {
   isoCode: MuiTelInputCountry | null
@@ -29,6 +35,32 @@ const FlagsMenu = (props: FlagsMenuProps) => {
     ...rest
   } = props
 
+  // Idem for the translations
+  const displayNames = React.useMemo(() => {
+    return getDisplayNames(langOfCountryName)
+  }, [langOfCountryName])
+
+  // Don't need to refilter when the list is already displayed
+  const countriesFiltered = React.useMemo(() => {
+    const ISO_CODES_SORTED = sortAlphabeticallyCountryCodes(
+      ISO_CODES,
+      displayNames
+    )
+
+    return filterCountries(ISO_CODES_SORTED, {
+      onlyCountries,
+      excludedCountries,
+      continents,
+      preferredCountries
+    })
+  }, [
+    continents,
+    displayNames,
+    excludedCountries,
+    onlyCountries,
+    preferredCountries
+  ])
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -42,15 +74,18 @@ const FlagsMenu = (props: FlagsMenuProps) => {
       }}
       {...rest}
     >
-      <FlagsList
-        onlyCountries={onlyCountries}
-        excludedCountries={excludedCountries}
-        preferredCountries={preferredCountries}
-        continents={continents}
-        isoCode={isoCode}
-        langOfCountryName={langOfCountryName}
-        onSelectCountry={onSelectCountry}
-      />
+      {countriesFiltered.map((isoCodeItem) => {
+        return (
+          <FlagMenuItem
+            onSelectCountry={onSelectCountry}
+            key={isoCodeItem}
+            isoCode={isoCodeItem}
+            displayNames={displayNames}
+            selected={isoCodeItem === isoCode}
+            id={`country-${isoCodeItem}`}
+          />
+        )
+      })}
     </Menu>
   )
 }
