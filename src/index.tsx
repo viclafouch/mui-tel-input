@@ -86,19 +86,16 @@ const MuiTelInput = React.forwardRef(
       }
     }
 
-    const focusInputElement = (): void => {
-      if (inputRef.current) {
-        inputRef.current.focus()
-      }
-    }
-
-    const handleChangeCountry = (newCountry: MuiTelInputCountry): void => {
-      setAnchorEl(null)
-      onCountryChange(newCountry)
-      if (focusOnSelectCountry) {
-        focusInputElement()
-      }
-    }
+    const handleChangeCountry = React.useCallback(
+      (newCountry: MuiTelInputCountry): void => {
+        setAnchorEl(null)
+        onCountryChange(newCountry)
+        if (focusOnSelectCountry && inputRef.current) {
+          inputRef.current.focus()
+        }
+      },
+      [focusOnSelectCountry, inputRef, onCountryChange]
+    )
 
     const handleFocus = (
       event: React.FocusEvent<HTMLInputElement, Element>

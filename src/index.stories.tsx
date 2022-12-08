@@ -16,10 +16,6 @@ export default {
       options: ISO_CODES,
       control: { type: 'select' }
     },
-    isIsoCodeEditable: {
-      options: [true, false],
-      control: { type: 'boolean' }
-    },
     disableDropdown: {
       options: [true, false],
       control: { type: 'boolean' }
