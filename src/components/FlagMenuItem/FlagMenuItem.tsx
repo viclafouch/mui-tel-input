@@ -30,7 +30,7 @@ const FlagMenuItem = (props: FlagMenuItemProps) => {
       className="MuiTelInput-MenuItem"
     >
       <Styled.ListItemIcon className="MuiTelInput-ListItemIcon-flag">
-        <Flag isoCode={isoCode} />
+        <Flag isoCode={isoCode} countryName={countryName} />
       </Styled.ListItemIcon>
       <Styled.ListItemText className="MuiTelInput-ListItemText-country">
         {countryName}
