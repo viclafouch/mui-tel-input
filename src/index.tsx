@@ -193,7 +193,7 @@ const MuiTelInput = React.forwardRef(
                 <FlagButton
                   isFlagsMenuOpened={Boolean(anchorEl)}
                   isoCode={isoCode}
-                  forceCallingCode
+                  forceCallingCode={forceCallingCode}
                   onClick={handleOpenFlagsMenu}
                   disabled={disabled}
                   disableDropdown={Boolean(disableDropdown)}
