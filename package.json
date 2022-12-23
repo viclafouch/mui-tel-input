@@ -71,7 +71,7 @@
     }
   },
   "dependencies": {
-    "libphonenumber-js": "^1.10.13"
+    "libphonenumber-js": "^1.10.15"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
