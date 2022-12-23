@@ -250,6 +250,20 @@ describe('components/MuiTelInput', () => {
         reason: 'input'
       })
     })
+
+    test('should get correct numberType from the onChange callback', async () => {
+      const callbackOnChange = vi.fn(() => {})
+      render(<MuiTelWrapper onChange={callbackOnChange} />)
+      await typeInInputElement('+12133734253')
+      expect(callbackOnChange).toHaveBeenLastCalledWith('+1 213 373 4253', {
+        countryCallingCode: '1',
+        countryCode: 'US',
+        nationalNumber: '2133734253',
+        numberType: 'FIXED_LINE_OR_MOBILE',
+        numberValue: '+12133734253',
+        reason: 'input'
+      })
+    })
   })
 
   describe('prop/focusOnSelectCountry', () => {
