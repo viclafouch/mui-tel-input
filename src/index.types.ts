@@ -1,3 +1,4 @@
+import { NumberType } from 'libphonenumber-js'
 import type { MenuProps } from '@mui/material/Menu'
 import type { TextFieldProps } from '@mui/material/TextField'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
@@ -16,7 +17,7 @@ export interface MuiTelInputInfo {
   countryCode: MuiTelInputCountry | null
   countryCallingCode: string | null
   nationalNumber: string | null
-  numberType: string | null
+  numberType: Exclude<NumberType, undefined> | null
   numberValue: string | null
   reason: MuiTelInputReason
 }

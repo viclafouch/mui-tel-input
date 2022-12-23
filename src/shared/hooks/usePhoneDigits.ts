@@ -1,5 +1,5 @@
 import React from 'react'
-import { AsYouType, getNumberType } from 'libphonenumber-js'
+import { AsYouType } from 'libphonenumber-js'
 import { MuiTelInputContinent } from '@shared/constants/continents'
 import { COUNTRIES, MuiTelInputCountry } from '@shared/constants/countries'
 import { matchIsArray } from '@shared/helpers/array'
@@ -126,11 +126,7 @@ export default function usePhoneDigits({
       countryCallingCode: asYouTypeRef.current.getCallingCode() || null,
       countryCode: asYouTypeRef.current.getCountry() || null,
       nationalNumber: asYouTypeRef.current.getNationalNumber(),
-      numberType:
-        getNumberType(
-          asYouTypeRef.current.getNationalNumber(),
-          asYouTypeRef.current.getCountry()
-        ) || null,
+      numberType: asYouTypeRef.current.getNumber()?.getType() ?? null,
       numberValue: asYouTypeRef.current.getNumberValue() || null,
       reason
     }
