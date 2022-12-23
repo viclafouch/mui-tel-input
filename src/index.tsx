@@ -189,7 +189,7 @@ const MuiTelInput = React.forwardRef(
           InputProps={{
             ...InputProps,
             startAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position="start" sx={{ flexShrink: 0 }}>
                 <FlagButton
                   isFlagsMenuOpened={Boolean(anchorEl)}
                   isoCode={isoCode}
