@@ -16,6 +16,7 @@ export interface MuiTelInputInfo {
   countryCode: MuiTelInputCountry | null
   countryCallingCode: string | null
   nationalNumber: string | null
+  numberType: string | null
   numberValue: string | null
   reason: MuiTelInputReason
 }
