@@ -54,21 +54,10 @@ const handleChange = (value, info) => {
 - Type: `boolean`
 - Default: `false`
 
-Force the calling code (e.g: +33) to be displayed so the value cannot be empty.
-
-```tsx
-<MuiTelInput forceCallingCode />
-```
-
-## `splitCallingCode`
-
-- Type: `boolean`
-- Default: `false`
-
 Displays the calling code (e.g: +33) as read-only next to the flag and with a divider instead of as part of the input field. Needs `defaultCountry` prop to be defined or will default to `US`.
 
 ```tsx
-<MuiTelInput splitCallingCode />
+<MuiTelInput forceCallingCode />
 ```
 
 ## `focusOnSelectCountry`
