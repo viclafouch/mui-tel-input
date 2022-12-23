@@ -18,7 +18,8 @@ import type {
 
 export {
   isValidPhoneNumber as matchIsValidTel,
-  AsYouType
+  AsYouType,
+  getNumberType
 } from 'libphonenumber-js'
 
 export type {
