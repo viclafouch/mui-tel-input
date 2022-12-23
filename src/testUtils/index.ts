@@ -19,6 +19,10 @@ export function expectButtonIsFlagOf(isoCode: MuiTelInputCountry) {
   expect(getButtonElement()).toHaveTextContent(isoCode)
 }
 
+export function expectButtonContainsCallingCode(callingCode: string) {
+  expect(screen.getByText(`+${callingCode}`)).toBeInTheDocument()
+}
+
 export function expectButtonNotIsFlagOf(isoCode: MuiTelInputCountry) {
   expect(getButtonElement()).not.toHaveTextContent(isoCode)
 }

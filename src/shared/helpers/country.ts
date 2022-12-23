@@ -1,5 +1,9 @@
 import { CONTINENTS, MuiTelInputContinent } from '@shared/constants/continents'
-import { COUNTRIES, MuiTelInputCountry } from '@shared/constants/countries'
+import {
+  COUNTRIES,
+  DEFAULT_ISO_CODE,
+  MuiTelInputCountry
+} from '@shared/constants/countries'
 import { matchIsArray } from '@shared/helpers/array'
 
 type FilterCountriesOptions = {
@@ -11,6 +15,12 @@ type FilterCountriesOptions = {
 
 export function getCallingCodeOfCountry(isoCode: MuiTelInputCountry): string {
   return COUNTRIES[isoCode]?.[0] as string
+}
+
+export function getValidCountry(
+  country?: MuiTelInputCountry
+): MuiTelInputCountry {
+  return country || DEFAULT_ISO_CODE
 }
 
 export function sortedPreferredCountries(

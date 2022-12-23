@@ -26,9 +26,9 @@ export interface MuiTelInputProps extends BaseTextFieldProps {
   excludedCountries?: MuiTelInputCountry[]
   onlyCountries?: MuiTelInputCountry[]
   preferredCountries?: MuiTelInputCountry[]
+  // Todo: make it required if `forceCallingCode` is true
   defaultCountry?: MuiTelInputCountry
   forceCallingCode?: boolean
-  splitCallingCode?: boolean
   focusOnSelectCountry?: boolean
   disableDropdown?: boolean
   langOfCountryName?: string
