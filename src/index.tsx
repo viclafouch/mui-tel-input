@@ -54,6 +54,7 @@ const MuiTelInput = React.forwardRef(
       disableFormatting,
       focusOnSelectCountry,
       langOfCountryName,
+      flagStyle,
       continents,
       preferredCountries,
       MenuProps,
@@ -193,6 +194,7 @@ const MuiTelInput = React.forwardRef(
                 <FlagButton
                   isFlagsMenuOpened={Boolean(anchorEl)}
                   isoCode={isoCode}
+                  flagStyle={flagStyle}
                   forceCallingCode={forceCallingCode}
                   onClick={handleOpenFlagsMenu}
                   disabled={disabled}
@@ -213,6 +215,7 @@ const MuiTelInput = React.forwardRef(
             preferredCountries={preferredCountries}
             onClose={handleCloseFlagsMenu}
             langOfCountryName={langOfCountryName}
+            flagStyle={flagStyle}
             onSelectCountry={handleChangeCountry}
             {...MenuProps}
           />

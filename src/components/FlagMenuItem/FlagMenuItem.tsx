@@ -1,5 +1,5 @@
 import React from 'react'
-import Flag from '@components/Flag/Flag'
+import Flag, { FlagStyle } from '@components/Flag/Flag'
 import MenuItem, { MenuItemProps } from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 import { COUNTRIES, MuiTelInputCountry } from '@shared/constants/countries'
@@ -9,10 +9,17 @@ export type FlagMenuItemProps = MenuItemProps & {
   isoCode: MuiTelInputCountry
   onSelectCountry: (isoCode: MuiTelInputCountry) => void
   displayNames: Intl.DisplayNames
+  flagStyle?: FlagStyle
 }
 
 const FlagMenuItem = (props: FlagMenuItemProps) => {
-  const { isoCode, onSelectCountry, displayNames, ...menuItemProps } = props
+  const {
+    isoCode,
+    onSelectCountry,
+    displayNames,
+    flagStyle,
+    ...menuItemProps
+  } = props
 
   const handleClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     event.preventDefault()
@@ -30,7 +37,7 @@ const FlagMenuItem = (props: FlagMenuItemProps) => {
       className="MuiTelInput-MenuItem"
     >
       <Styled.ListItemIcon className="MuiTelInput-ListItemIcon-flag">
-        <Flag isoCode={isoCode} countryName={countryName} />
+        <Flag isoCode={isoCode} countryName={countryName} style={flagStyle} />
       </Styled.ListItemIcon>
       <Styled.ListItemText className="MuiTelInput-ListItemText-country">
         {countryName}
@@ -44,6 +51,10 @@ const FlagMenuItem = (props: FlagMenuItemProps) => {
       </Typography>
     </MenuItem>
   )
+}
+
+FlagMenuItem.defaultProps = {
+  flagStyle: {}
 }
 
 export default React.memo(FlagMenuItem)

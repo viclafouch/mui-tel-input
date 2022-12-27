@@ -4,9 +4,16 @@ import type { MuiTelInputCountry } from '@shared/constants/countries'
 import { FLAGS_SVG } from '@shared/constants/flags'
 import { Styled } from './Flag.styled'
 
+export type FlagStyle = {
+  width?: number
+  height?: number
+  variant?: 'waving' | 'original'
+}
+
 export type FlagProps = {
   isoCode: MuiTelInputCountry | null
   countryName?: string
+  style?: FlagStyle
 }
 
 const getSourceByIsoCode = (isoCode: MuiTelInputCountry | null) => {
@@ -24,7 +31,7 @@ const getSourceByIsoCode = (isoCode: MuiTelInputCountry | null) => {
 }
 
 const Flag = (props: FlagProps) => {
-  const { isoCode, countryName } = props
+  const { isoCode, countryName, style } = props
 
   const isoCodeFormatted = isoCode ? isoCode.toLowerCase() : ''
   const sourceFound = getSourceByIsoCode(isoCode)
@@ -35,27 +42,41 @@ const Flag = (props: FlagProps) => {
         <img
           src={sourceFound}
           alt={countryName || 'unknown'}
-          width="28"
-          height={21}
+          width={style?.width}
+          height={style?.height}
         />
       ) : (
         <Styled.Picture>
           <source
             type="image/webp"
-            srcSet={`https://flagcdn.com/24x18/${isoCodeFormatted}.webp,
-        https://flagcdn.com/56x42/${isoCodeFormatted}.webp 2x,
-        https://flagcdn.com/84x63/${isoCodeFormatted}.webp 3x`}
+            srcSet={`https://flagcdn.com/${
+              style?.variant === 'waving' ? '28x21' : 'w40'
+            }/${isoCodeFormatted}.webp,
+        https://flagcdn.com/${
+          style?.variant === 'waving' ? '56x42' : 'w80'
+        }/${isoCodeFormatted}.webp 2x,
+        https://flagcdn.com/${
+          style?.variant === 'waving' ? '84x63' : 'w160'
+        }/${isoCodeFormatted}.webp 3x`}
           />
           <source
             type="image/png"
-            srcSet={`https://flagcdn.com/24x18/${isoCodeFormatted}.png,
-        https://flagcdn.com/56x42/${isoCodeFormatted}.png 2x,
-        https://flagcdn.com/84x63/${isoCodeFormatted}.png 3x`}
+            srcSet={`https://flagcdn.com/${
+              style?.variant === 'waving' ? '28x21' : 'w40'
+            }/${isoCodeFormatted}.png,
+        https://flagcdn.com/${
+          style?.variant === 'waving' ? '56x42' : 'w80'
+        }/${isoCodeFormatted}.png 2x,
+        https://flagcdn.com/${
+          style?.variant === 'waving' ? '84x63' : 'w160'
+        }/${isoCodeFormatted}.png 3x`}
           />
           <img
-            src={`https://flagcdn.com/24x18/${isoCodeFormatted}.png`}
-            width="28"
-            height="21"
+            src={`https://flagcdn.com/${
+              style?.variant === 'waving' ? '28x21' : 'w40'
+            }/${isoCodeFormatted}.png`}
+            width={style?.width}
+            height={style?.height}
             alt={countryName || 'unknown'}
             loading="lazy"
           />
@@ -68,7 +89,12 @@ const Flag = (props: FlagProps) => {
 }
 
 Flag.defaultProps = {
-  countryName: ''
+  countryName: '',
+  style: {
+    width: 28,
+    height: 21,
+    variant: 'original'
+  }
 }
 
 export default Flag

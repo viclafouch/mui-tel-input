@@ -1,4 +1,5 @@
-import { NumberType } from 'libphonenumber-js'
+import type { NumberType } from 'libphonenumber-js'
+import type { FlagStyle } from '@components/Flag/Flag'
 import type { MenuProps } from '@mui/material/Menu'
 import type { TextFieldProps } from '@mui/material/TextField'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
@@ -32,6 +33,7 @@ export interface MuiTelInputProps extends BaseTextFieldProps {
   focusOnSelectCountry?: boolean
   disableDropdown?: boolean
   langOfCountryName?: string
+  flagStyle?: FlagStyle
   disableFormatting?: boolean
   continents?: MuiTelInputContinent[]
   onChange?: (value: string, info: MuiTelInputInfo) => void

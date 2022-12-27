@@ -1,5 +1,6 @@
 /* eslint-disable react/hook-use-state */
 import React from 'react'
+import type { FlagStyle } from '@components/Flag/Flag'
 import FlagMenuItem from '@components/FlagMenuItem/FlagMenuItem'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
 import { ISO_CODES, MuiTelInputCountry } from '@shared/constants/countries'
@@ -16,6 +17,7 @@ export type FlagsListProps = {
   excludedCountries?: MuiTelInputCountry[]
   preferredCountries?: MuiTelInputCountry[]
   langOfCountryName?: string
+  flagStyle?: FlagStyle
   continents?: MuiTelInputContinent[]
   onSelectCountry: (isoCode: MuiTelInputCountry) => void
 }
@@ -27,6 +29,7 @@ const FlagsList = (props: FlagsListProps) => {
     excludedCountries,
     onlyCountries,
     langOfCountryName,
+    flagStyle,
     continents,
     preferredCountries
   } = props
@@ -65,6 +68,7 @@ const FlagsList = (props: FlagsListProps) => {
             key={isoCodeItem}
             isoCode={isoCodeItem}
             displayNames={displayNames}
+            flagStyle={flagStyle}
             selected={isoCodeItem === isoCode}
             id={`country-${isoCodeItem}`}
           />
@@ -79,7 +83,8 @@ FlagsList.defaultProps = {
   excludedCountries: [],
   continents: [],
   preferredCountries: [],
-  langOfCountryName: DEFAULT_LANG
+  langOfCountryName: DEFAULT_LANG,
+  flagStyle: {}
 }
 
 // For performance reasons, we don't need to rerender all items when closing the list
