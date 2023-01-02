@@ -39,26 +39,17 @@ const FlagsMenu = (props: FlagsMenuProps) => {
     return getDisplayNames(langOfCountryName)
   }, [langOfCountryName])
 
-  // Don't need to refilter when the list is already displayed
-  const countriesFiltered = React.useMemo(() => {
-    const ISO_CODES_SORTED = sortAlphabeticallyCountryCodes(
-      ISO_CODES,
-      displayNames
-    )
+  const ISO_CODES_SORTED = sortAlphabeticallyCountryCodes(
+    ISO_CODES,
+    displayNames
+  )
 
-    return filterCountries(ISO_CODES_SORTED, {
-      onlyCountries,
-      excludedCountries,
-      continents,
-      preferredCountries
-    })
-  }, [
-    continents,
-    displayNames,
-    excludedCountries,
+  const countriesFiltered = filterCountries(ISO_CODES_SORTED, {
     onlyCountries,
+    excludedCountries,
+    continents,
     preferredCountries
-  ])
+  })
 
   return (
     <Menu
@@ -79,7 +70,7 @@ const FlagsMenu = (props: FlagsMenuProps) => {
             onSelectCountry={onSelectCountry}
             key={isoCodeItem}
             isoCode={isoCodeItem}
-            displayNames={displayNames}
+            countryName={displayNames.of(isoCodeItem)}
             selected={isoCodeItem === isoCode}
             id={`country-${isoCodeItem}`}
           />

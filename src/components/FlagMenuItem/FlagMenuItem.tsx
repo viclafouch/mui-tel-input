@@ -8,18 +8,16 @@ import { Styled } from './FlagsMenuItem.styled'
 export type FlagMenuItemProps = MenuItemProps & {
   isoCode: MuiTelInputCountry
   onSelectCountry: (isoCode: MuiTelInputCountry) => void
-  displayNames: Intl.DisplayNames
+  countryName: string | undefined
 }
 
 const FlagMenuItem = (props: FlagMenuItemProps) => {
-  const { isoCode, onSelectCountry, displayNames, ...menuItemProps } = props
+  const { isoCode, onSelectCountry, countryName, ...menuItemProps } = props
 
   const handleClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     event.preventDefault()
     onSelectCountry(isoCode)
   }
-
-  const countryName = displayNames.of(isoCode)
 
   return (
     <MenuItem
