@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event'
 import { MuiTelInput, MuiTelInputInfo, MuiTelInputProps } from './index'
 import {
   closeFlagsMenu,
+  expectButtonContainsCallingCode,
   expectButtonIsFlagOf,
   expectButtonNotIsFlagOf,
   getButtonElement,
@@ -70,38 +71,6 @@ describe('components/MuiTelInput', () => {
     })
   })
 
-  describe('props/forceCallingCode', () => {
-    test('should display calling code if forceCallingCode is true and has defaultCountry', async () => {
-      render(<MuiTelWrapper defaultCountry="FR" forceCallingCode />)
-      const inputElement = getInputElement()
-      await userEvent.clear(inputElement)
-      expect(inputElement.value).toBe('+33')
-    })
-
-    test('should display calling code if forceCallingCode is true and not defaultCountry but choose valid country', async () => {
-      render(<MuiTelWrapper forceCallingCode />)
-      const inputElement = getInputElement()
-      await typeInInputElement('+33626922635')
-      await userEvent.clear(inputElement)
-      expect(inputElement.value).toBe('+33')
-    })
-
-    test('should display empty value if forceCallingCode is true and not defaultCountry and choose not valid country before', async () => {
-      render(<MuiTelWrapper excludedCountries={['FR']} forceCallingCode />)
-      const inputElement = getInputElement()
-      await typeInInputElement('+33626922635')
-      await userEvent.clear(inputElement)
-      expect(inputElement.value).toBe('')
-    })
-
-    test('should display empty value if forceCallingCode is false and user clears input', async () => {
-      render(<MuiTelWrapper defaultCountry="FR" forceCallingCode={false} />)
-      const inputElement = getInputElement()
-      await userEvent.clear(inputElement)
-      expect(inputElement.value).toBe('')
-    })
-  })
-
   describe('prop/defaultCountry', () => {
     test('should displayed the calling code of the defaultCuntry prop', () => {
       render(<MuiTelWrapper defaultCountry="FR" />)
@@ -148,6 +117,7 @@ describe('components/MuiTelInput', () => {
         countryCallingCode: '33',
         countryCode: 'FR',
         nationalNumber: '626',
+        numberType: null,
         numberValue: '+33626',
         reason: 'input'
       })
@@ -174,6 +144,100 @@ describe('components/MuiTelInput', () => {
     })
   })
 
+  describe('prop/forceCallingCode', () => {
+    test('should not contain +33 in input value, but in adornment', () => {
+      render(
+        <MuiTelWrapper
+          defaultCountry="BE"
+          forceCallingCode
+          disableFormatting
+          value="+33626922765"
+        />
+      )
+      expect(getInputElement().value).toBe('626922765')
+      expectButtonIsFlagOf('FR')
+      expectButtonContainsCallingCode('33')
+    })
+
+    test('should fill correctly the input', async () => {
+      render(<MuiTelWrapper defaultCountry="FR" forceCallingCode />)
+      await typeInInputElement('626922635')
+      expect(getInputElement().value).toBe('6 26 92 26 35')
+      expectButtonIsFlagOf('FR')
+      expectButtonContainsCallingCode('33')
+    })
+
+    test('should display US country if `defaultCountry` is not provided', () => {
+      render(<MuiTelWrapper forceCallingCode />)
+      expectButtonIsFlagOf('US')
+      expectButtonContainsCallingCode('1')
+      expect(getInputElement().value).toBe('')
+    })
+
+    test('should not accept the + at the beginning', async () => {
+      render(<MuiTelWrapper defaultCountry="FR" forceCallingCode />)
+      await typeInInputElement('+33626')
+      expect(getInputElement().value).toBe('3 36 26')
+      expectButtonIsFlagOf('FR')
+      expectButtonContainsCallingCode('33')
+    })
+
+    test('should not change country even if same country code', async () => {
+      // JM and US have the same country code, +1
+      render(<MuiTelWrapper forceCallingCode />)
+      expectButtonIsFlagOf('US')
+      expectButtonContainsCallingCode('1')
+      await typeInInputElement('87654')
+      expectButtonIsFlagOf('US')
+      expectButtonContainsCallingCode('1')
+    })
+
+    test('should give same value on the onChange callback', async () => {
+      const callbackOnChange = vi.fn(() => {})
+
+      render(
+        <MuiTelWrapper
+          defaultCountry="FR"
+          forceCallingCode
+          onChange={callbackOnChange}
+        />
+      )
+      await typeInInputElement('626922631')
+      expect(callbackOnChange).toHaveBeenCalledWith('+33 6 26 92 26 31', {
+        countryCallingCode: '33',
+        countryCode: 'FR',
+        nationalNumber: '626922631',
+        numberType: null,
+        numberValue: '+33626922631',
+        reason: 'input'
+      })
+    })
+
+    test('should update the country and isoCode if the defaultCountry prop changes', () => {
+      const { rerender } = render(
+        <MuiTelWrapper forceCallingCode defaultCountry="FR" />
+      )
+      expectButtonIsFlagOf('FR')
+      expectButtonContainsCallingCode('33')
+      rerender(<MuiTelWrapper forceCallingCode defaultCountry="BE" />)
+      expectButtonIsFlagOf('BE')
+      expectButtonContainsCallingCode('32')
+    })
+
+    test('should update the inputValue if rerender a new value', () => {
+      const { rerender } = render(
+        <MuiTelWrapper forceCallingCode value="+33626" />
+      )
+      expectButtonIsFlagOf('FR')
+      expectButtonContainsCallingCode('33')
+      expect(getInputElement().value).toBe('6 26')
+      rerender(<MuiTelWrapper forceCallingCode value="+32721" />)
+      expectButtonIsFlagOf('BE')
+      expectButtonContainsCallingCode('32')
+      expect(getInputElement().value).toBe('72 1')
+    })
+  })
+
   describe('prop/onChange', () => {
     test('should call onChange callback when the defaultCountry prop changes', () => {
       const callbackOnChange = vi.fn(() => {})
@@ -187,6 +251,7 @@ describe('components/MuiTelInput', () => {
         countryCallingCode: '32',
         countryCode: 'BE',
         nationalNumber: '',
+        numberType: null,
         numberValue: '+32',
         reason: 'country'
       })
@@ -200,6 +265,7 @@ describe('components/MuiTelInput', () => {
         countryCallingCode: '32',
         countryCode: 'BE',
         nationalNumber: '',
+        numberType: null,
         numberValue: '+32',
         reason: 'country'
       })
@@ -242,7 +308,22 @@ describe('components/MuiTelInput', () => {
         countryCallingCode: '33',
         countryCode: 'FR',
         nationalNumber: '626',
+        numberType: null,
         numberValue: '+33626',
+        reason: 'input'
+      })
+    })
+
+    test('should get correct numberType from the onChange callback', async () => {
+      const callbackOnChange = vi.fn(() => {})
+      render(<MuiTelWrapper onChange={callbackOnChange} />)
+      await typeInInputElement('+12133734253')
+      expect(callbackOnChange).toHaveBeenLastCalledWith('+1 213 373 4253', {
+        countryCallingCode: '1',
+        countryCode: 'US',
+        nationalNumber: '2133734253',
+        numberType: 'FIXED_LINE_OR_MOBILE',
+        numberValue: '+12133734253',
         reason: 'input'
       })
     })
@@ -414,52 +495,6 @@ describe('components/MuiTelInput', () => {
     rerender(<MuiTelWrapper defaultCountry="FR" value="" />)
     expect(getInputElement().value).toBe('+33')
     expectButtonIsFlagOf('FR')
-  })
-
-  test('should not have calling code if splitting it', () => {
-    render(
-      <MuiTelWrapper
-        defaultCountry="ES"
-        splitCallingCode
-        disableFormatting
-        value="+34555123456"
-      />
-    )
-    expect(getInputElement().value).toBe('555123456')
-    expectButtonIsFlagOf('ES')
-  })
-
-  test('should not allow inputting a calling code if splitting it', async () => {
-    render(
-      <MuiTelWrapper splitCallingCode disableFormatting defaultCountry="ES" />
-    )
-    await typeInInputElement('+33555123456')
-    expect(getInputElement().value).toBe('33555123456')
-    expectButtonIsFlagOf('ES')
-  })
-
-  test('should give calling code in onchange info even when splitting it', async () => {
-    const callbackOnChange = vi.fn(() => {})
-    render(
-      <MuiTelWrapper
-        splitCallingCode
-        defaultCountry="ES"
-        onChange={callbackOnChange}
-      />
-    )
-    await typeInInputElement('555123456')
-    expect(callbackOnChange).toHaveBeenCalledWith('555 12 34 56', {
-      countryCallingCode: '34',
-      countryCode: 'ES',
-      nationalNumber: '555123456',
-      numberValue: '+34555123456',
-      reason: 'input'
-    })
-  })
-
-  test('should default to US country if splitting calling code and no default country provided', () => {
-    render(<MuiTelWrapper splitCallingCode />)
-    expectButtonIsFlagOf('US')
   })
 
   /** Copy doesn't work in user-event@beta */

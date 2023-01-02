@@ -3,9 +3,13 @@ import FlagButton from '@components/FlagButton/FlagButton'
 import FlagsMenu from '@components/FlagsMenu/FlagsMenu'
 import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
-import { DEFAULT_ISO_CODE } from '@shared/constants/countries'
+import {
+  getCallingCodeOfCountry,
+  getValidCountry
+} from '@shared/helpers/country'
 import { putCursorAtEndOfInput } from '@shared/helpers/dom'
 import { assocRefToPropRef } from '@shared/helpers/ref'
+import { removeOccurrence } from '@shared/helpers/string'
 import { useMismatchProps } from '@shared/hooks/useMissmatchProps'
 import usePhoneDigits from '@shared/hooks/usePhoneDigits'
 import type {
@@ -18,7 +22,8 @@ import type {
 
 export {
   isValidPhoneNumber as matchIsValidTel,
-  AsYouType
+  AsYouType,
+  getNumberType
 } from 'libphonenumber-js'
 
 export type {
@@ -33,7 +38,6 @@ const MuiTelInput = React.forwardRef(
   (props: MuiTelInputProps, propRef: MuiTelInputProps['ref']) => {
     const {
       forceCallingCode,
-      splitCallingCode,
       onlyCountries,
       excludedCountries,
       defaultCountry,
@@ -58,19 +62,18 @@ const MuiTelInput = React.forwardRef(
     } = props
     const textFieldRef = React.useRef<HTMLDivElement>(null)
     const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null)
-    const validDefaultCountry =
-      // splitCallingCode needs a default country
-      defaultCountry || (splitCallingCode ? DEFAULT_ISO_CODE : undefined)
+    const validDefaultCountry = forceCallingCode
+      ? getValidCountry(defaultCountry)
+      : defaultCountry
 
     useMismatchProps(props)
 
     const { onInputChange, onCountryChange, inputRef, isoCode, inputValue } =
       usePhoneDigits({
+        forceCallingCode,
         defaultCountry: validDefaultCountry,
         value: value ?? '',
         onChange,
-        forceCallingCode,
-        splitCallingCode,
         excludedCountries,
         onlyCountries,
         disableFormatting,
@@ -156,12 +159,20 @@ const MuiTelInput = React.forwardRef(
       setAnchorEl(null)
     }
 
+    const isoCodeWithPlus = isoCode
+      ? `+${getCallingCodeOfCountry(isoCode)}`
+      : ''
+    const validInputValue = forceCallingCode
+      ? // We removed the isoCode but no necessarily the space after
+        removeOccurrence(inputValue, isoCodeWithPlus).trimStart()
+      : inputValue
+
     return (
       <>
         <TextField
           type="tel"
           disabled={disabled}
-          value={inputValue}
+          value={validInputValue}
           ref={handleRef}
           onDoubleClick={handleDoubleClick}
           inputRef={handleRefInput}
@@ -175,14 +186,14 @@ const MuiTelInput = React.forwardRef(
           InputProps={{
             ...InputProps,
             startAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position="start" sx={{ flexShrink: 0 }}>
                 <FlagButton
                   isFlagsMenuOpened={Boolean(anchorEl)}
                   isoCode={isoCode}
+                  forceCallingCode={forceCallingCode}
                   onClick={handleOpenFlagsMenu}
                   disabled={disabled}
                   disableDropdown={Boolean(disableDropdown)}
-                  splitCallingCode={splitCallingCode}
                 />
               </InputAdornment>
             )

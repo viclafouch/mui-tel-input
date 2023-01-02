@@ -7,7 +7,7 @@
     "url": "https://github.com/viclafouch/mui-tel-input/issues"
   },
   "homepage": "https://viclafouch.github.io/mui-tel-input",
-  "version": "2.1.0",
+  "version": "3.0.2",
   "files": [
     "dist"
   ],
@@ -56,6 +56,7 @@
       "changelog": true
     }
   },
+  "sideEffects": false,
   "peerDependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
@@ -70,7 +71,7 @@
     }
   },
   "dependencies": {
-    "libphonenumber-js": "^1.10.13"
+    "libphonenumber-js": "^1.10.15"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",

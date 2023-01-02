@@ -3,11 +3,14 @@ import { styled } from '@mui/material/styles'
 const Styled = {
   Flag: styled('span')(() => {
     return {
-      display: 'inline-block',
-      backgroundSize: 'cover',
-      '--mui-tel-input-flag-height': '0.8em',
-      height: 'var(--mui-tel-input-flag-height)',
-      width: 'calc(var(--mui-tel-input-flag-height)*3/2)'
+      display: 'flex',
+      alignItems: 'center'
+    }
+  }),
+  Picture: styled('picture')(() => {
+    return {
+      display: 'flex',
+      alignItems: 'center'
     }
   }),
   Span: styled('span')(() => {

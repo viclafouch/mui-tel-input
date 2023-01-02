@@ -10,7 +10,7 @@ export function useMismatchProps(props: MuiTelInputProps) {
     onlyCountries,
     excludedCountries,
     continents,
-    splitCallingCode
+    forceCallingCode
   } = props
 
   React.useEffect(() => {
@@ -61,10 +61,10 @@ export function useMismatchProps(props: MuiTelInputProps) {
   }, [defaultCountry, continents])
 
   React.useEffect(() => {
-    if (splitCallingCode && !defaultCountry) {
+    if (forceCallingCode && !defaultCountry) {
       log(
-        `[mui-tel-input] 'splitCallingCode' needs 'defaultCountry' defined. Will default to US.`
+        `[mui-tel-input] 'forceCallingCode' needs 'defaultCountry' defined. Will default to US.`
       )
     }
-  }, [defaultCountry, splitCallingCode])
+  }, [defaultCountry, forceCallingCode])
 }

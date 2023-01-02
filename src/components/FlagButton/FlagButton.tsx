@@ -7,7 +7,7 @@ import { Styled } from './FlagButton.styled'
 
 export type FlagButtonProps = IconButtonProps & {
   isoCode: MuiTelInputCountry | null
-  splitCallingCode?: boolean
+  forceCallingCode?: boolean
   isFlagsMenuOpened: boolean
   disableDropdown?: boolean
 }
@@ -17,7 +17,7 @@ const FlagButton = (props: FlagButtonProps) => {
     isoCode,
     isFlagsMenuOpened,
     disableDropdown,
-    splitCallingCode,
+    forceCallingCode,
     ...iconButtonProps
   } = props
 
@@ -48,7 +48,7 @@ const FlagButton = (props: FlagButtonProps) => {
           <Flag isoCode={isoCode} />
         </IconButton>
       )}
-      {splitCallingCode && isoCode ? (
+      {forceCallingCode && isoCode ? (
         <Styled.CallingCodeSplitted>
           +{getCallingCodeOfCountry(isoCode)}
         </Styled.CallingCodeSplitted>
@@ -59,7 +59,7 @@ const FlagButton = (props: FlagButtonProps) => {
 
 FlagButton.defaultProps = {
   disableDropdown: false,
-  splitCallingCode: false
+  forceCallingCode: false
 }
 
 export default FlagButton
