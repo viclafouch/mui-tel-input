@@ -10,7 +10,7 @@ describe('components/FlagMenuItem', () => {
     const callback = vi.fn(() => {})
     render(
       <FlagMenuItem
-        displayNames={getDisplayNames('en')}
+        countryName={getDisplayNames('en').of('FR')}
         isoCode="FR"
         onSelectCountry={callback}
       />
@@ -23,7 +23,7 @@ describe('components/FlagMenuItem', () => {
     const callback = vi.fn(() => {})
     render(
       <FlagMenuItem
-        displayNames={getDisplayNames('en')}
+        countryName={getDisplayNames('en').of('FR')}
         isoCode="FR"
         onSelectCountry={callback}
       />
@@ -37,7 +37,7 @@ describe('components/FlagMenuItem', () => {
     const callback = vi.fn(() => {})
     render(
       <FlagMenuItem
-        displayNames={getDisplayNames('en')}
+        countryName={getDisplayNames('en').of('BE')}
         isoCode="BE"
         onSelectCountry={callback}
       />
