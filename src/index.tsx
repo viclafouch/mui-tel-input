@@ -58,6 +58,7 @@ const MuiTelInput = React.forwardRef(
       preferredCountries,
       MenuProps,
       className,
+      flagSize = 'small',
       ...restTextFieldProps
     } = props
     const textFieldRef = React.useRef<HTMLDivElement>(null)
@@ -190,6 +191,7 @@ const MuiTelInput = React.forwardRef(
                   forceCallingCode={forceCallingCode}
                   onClick={handleOpenFlagsMenu}
                   disabled={disabled}
+                  flagSize={flagSize}
                   disableDropdown={Boolean(disableDropdown)}
                 />
               </InputAdornment>
@@ -208,6 +210,7 @@ const MuiTelInput = React.forwardRef(
             onClose={handleCloseFlagsMenu}
             langOfCountryName={langOfCountryName}
             onSelectCountry={handleChangeCountry}
+            flagSize={flagSize}
             {...MenuProps}
           />
         ) : null}

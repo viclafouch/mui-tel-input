@@ -2,11 +2,13 @@ import React from 'react'
 import unknownFlag from '@assets/unknown-flag.png'
 import type { MuiTelInputCountry } from '@shared/constants/countries'
 import { FLAGS_SVG } from '@shared/constants/flags'
+import { FlagSize } from '../../index.types'
 import { Styled } from './Flag.styled'
 
 export type FlagProps = {
   isoCode: MuiTelInputCountry | null
   countryName?: string
+  size?: FlagSize
 }
 
 const getSourceByIsoCode = (isoCode: MuiTelInputCountry | null) => {
@@ -24,38 +26,30 @@ const getSourceByIsoCode = (isoCode: MuiTelInputCountry | null) => {
 }
 
 const Flag = (props: FlagProps) => {
-  const { isoCode, countryName } = props
+  const { isoCode, countryName, size } = props
 
   const isoCodeFormatted = isoCode ? isoCode.toLowerCase() : ''
   const sourceFound = getSourceByIsoCode(isoCode)
+  // see https://flagpedia.net/download/api for the valid width
+  const width = size === 'small' ? 20 : 40
 
   return (
     <Styled.Flag data-testid={isoCode} className="MuiTelInput-Flag">
       {sourceFound ? (
-        <img
-          src={sourceFound}
-          alt={countryName || 'unknown'}
-          width="28"
-          height={21}
-        />
+        <img src={sourceFound} alt={countryName || 'unknown'} width={width} />
       ) : (
         <Styled.Picture>
           <source
             type="image/webp"
-            srcSet={`https://flagcdn.com/24x18/${isoCodeFormatted}.webp,
-        https://flagcdn.com/56x42/${isoCodeFormatted}.webp 2x,
-        https://flagcdn.com/84x63/${isoCodeFormatted}.webp 3x`}
+            srcSet={`https://flagcdn.com/w${width}/${isoCodeFormatted}.webp`}
           />
           <source
             type="image/png"
-            srcSet={`https://flagcdn.com/24x18/${isoCodeFormatted}.png,
-        https://flagcdn.com/56x42/${isoCodeFormatted}.png 2x,
-        https://flagcdn.com/84x63/${isoCodeFormatted}.png 3x`}
+            srcSet={`https://flagcdn.com/w${width}/${isoCodeFormatted}.png`}
           />
           <img
-            src={`https://flagcdn.com/24x18/${isoCodeFormatted}.png`}
-            width="28"
-            height="21"
+            src={`https://flagcdn.com/w${width}/${isoCodeFormatted}.png`}
+            width={width}
             alt={countryName || 'unknown'}
             loading="lazy"
           />
@@ -68,7 +62,8 @@ const Flag = (props: FlagProps) => {
 }
 
 Flag.defaultProps = {
-  countryName: ''
+  countryName: '',
+  size: 'small' as FlagSize
 }
 
 export default Flag

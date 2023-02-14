@@ -11,6 +11,8 @@ type BaseTextFieldProps = Omit<
 
 export type { MuiTelInputContinent, MuiTelInputCountry }
 
+export type FlagSize = `small` | 'medium'
+
 export type MuiTelInputReason = 'country' | 'input'
 
 export interface MuiTelInputInfo {
@@ -31,6 +33,7 @@ export interface MuiTelInputProps extends BaseTextFieldProps {
   forceCallingCode?: boolean
   focusOnSelectCountry?: boolean
   disableDropdown?: boolean
+  flagSize?: FlagSize
   langOfCountryName?: string
   disableFormatting?: boolean
   continents?: MuiTelInputContinent[]

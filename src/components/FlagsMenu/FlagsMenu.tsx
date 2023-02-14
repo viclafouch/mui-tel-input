@@ -9,6 +9,7 @@ import {
   sortAlphabeticallyCountryCodes
 } from '@shared/helpers/country'
 import { getDisplayNames } from '@shared/helpers/intl'
+import { FlagSize } from '../../index.types'
 
 export type FlagsMenuProps = Partial<MenuProps> & {
   isoCode: MuiTelInputCountry | null
@@ -16,6 +17,7 @@ export type FlagsMenuProps = Partial<MenuProps> & {
   excludedCountries?: MuiTelInputCountry[]
   preferredCountries?: MuiTelInputCountry[]
   langOfCountryName?: string
+  flagSize?: FlagSize
   continents?: MuiTelInputContinent[]
   onSelectCountry: (isoCode: MuiTelInputCountry) => void
 }
@@ -31,6 +33,7 @@ const FlagsMenu = (props: FlagsMenuProps) => {
     continents,
     preferredCountries,
     className,
+    flagSize,
     ...rest
   } = props
 
@@ -73,6 +76,7 @@ const FlagsMenu = (props: FlagsMenuProps) => {
             countryName={displayNames.of(isoCodeItem)}
             selected={isoCodeItem === isoCode}
             id={`country-${isoCodeItem}`}
+            flagSize={flagSize}
           />
         )
       })}
@@ -85,6 +89,7 @@ FlagsMenu.defaultProps = {
   excludedCountries: [],
   continents: [],
   preferredCountries: [],
+  flagSize: 'small' as FlagSize,
   langOfCountryName: DEFAULT_LANG
 }
 
