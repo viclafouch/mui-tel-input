@@ -31,12 +31,16 @@ const Flag = (props: FlagProps) => {
   const isoCodeFormatted = isoCode ? isoCode.toLowerCase() : ''
   const sourceFound = getSourceByIsoCode(isoCode)
   // see https://flagpedia.net/download/api for the valid width
-  const width = size === 'small' ? 20 : 40
+  const width = size === 'small' ? 40 : 80
 
   return (
     <Styled.Flag data-testid={isoCode} className="MuiTelInput-Flag">
       {sourceFound ? (
-        <img src={sourceFound} alt={countryName || 'unknown'} width={width} />
+        <img
+          src={sourceFound}
+          alt={countryName || 'unknown'}
+          width={width / 2}
+        />
       ) : (
         <Styled.Picture>
           <source
@@ -49,7 +53,7 @@ const Flag = (props: FlagProps) => {
           />
           <img
             src={`https://flagcdn.com/w${width}/${isoCodeFormatted}.png`}
-            width={width}
+            width={width / 2}
             alt={countryName || 'unknown'}
             loading="lazy"
           />
