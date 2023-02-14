@@ -148,6 +148,17 @@ An `Intl` locale to translate country names (see [Intl locales](https://develope
 <MuiTelInput langOfCountryName="fr" />
 ```
 
+## `flagSize`
+
+- Type: `small` | `medium`
+- Default: `small`
+
+The size corresponding to the flag component.
+
+```tsx
+<MuiTelInput flagSize="medium" />
+```
+
 ## `MenuProps`
 
 - Type: [MenuProps](https://mui.com/material-ui/api/menu/)
