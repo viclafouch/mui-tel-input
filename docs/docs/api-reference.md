@@ -49,6 +49,20 @@ const handleChange = (value, info) => {
 <MuiTelInput onChange={handleChange} />
 ```
 
+## `defaultCountry`
+
+- Type: `string`
+- Default: `undefined`
+
+Sets the selected country on component mount
+
+Example:
+
+```tsx
+
+<MuiTelInput defaultCountry="DE" />
+```
+
 ## `forceCallingCode`
 
 - Type: `boolean`
