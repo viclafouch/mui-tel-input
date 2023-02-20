@@ -40,4 +40,5 @@ export interface MuiTelInputProps extends BaseTextFieldProps {
   onChange?: (value: string, info: MuiTelInputInfo) => void
   value?: string | undefined
   MenuProps?: Partial<MenuProps>
+  allowSearch?: boolean
 }

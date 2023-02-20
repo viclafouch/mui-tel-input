@@ -1,5 +1,6 @@
 import React from 'react'
 import FlagButton from '@components/FlagButton/FlagButton'
+import FlagsAutocomplete from '@components/FlagsAutocomplete/FlagsAutocomplete'
 import FlagsMenu from '@components/FlagsMenu/FlagsMenu'
 import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
@@ -58,6 +59,7 @@ const MuiTelInput = React.forwardRef(
       preferredCountries,
       MenuProps,
       className,
+      allowSearch,
       flagSize = 'small',
       ...restTextFieldProps
     } = props
@@ -199,7 +201,7 @@ const MuiTelInput = React.forwardRef(
           }}
           {...restTextFieldProps}
         />
-        {!disableDropdown ? (
+        {!disableDropdown && !allowSearch ? (
           <FlagsMenu
             onlyCountries={onlyCountries}
             excludedCountries={excludedCountries}
@@ -212,6 +214,20 @@ const MuiTelInput = React.forwardRef(
             onSelectCountry={handleChangeCountry}
             flagSize={flagSize}
             {...MenuProps}
+          />
+        ) : null}
+        {!disableDropdown && allowSearch ? (
+          <FlagsAutocomplete
+            onlyCountries={onlyCountries}
+            excludedCountries={excludedCountries}
+            continents={continents}
+            anchorEl={anchorEl}
+            isoCode={isoCode}
+            preferredCountries={preferredCountries}
+            onClose={handleCloseFlagsMenu}
+            langOfCountryName={langOfCountryName}
+            onSelectCountry={handleChangeCountry}
+            flagSize={flagSize}
           />
         ) : null}
       </>
