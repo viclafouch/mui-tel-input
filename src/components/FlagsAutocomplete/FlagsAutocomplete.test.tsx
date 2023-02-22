@@ -158,7 +158,7 @@ describe('components/FlagsAutocomplete', () => {
       />
     )
 
-    const autocompleteInput = screen.getByTestId('autocomplete-input')
+    const autocompleteInput = screen.getByTestId('flagsautocomplete-input')
 
     await userEvent.type(autocompleteInput, 'bel', { delay: 1 })
 

@@ -97,8 +97,8 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
   return (
     <Styled.Popper
       anchorEl={anchorEl}
-      className={`MuiTelInput-Autocomplete-Popover ${className || ''}`}
-      id="select-country-autocomplete"
+      className={`MuiTelInput-FlagsAutocomplete-Popover ${className || ''}`}
+      id="muitelinput-flagsautocomplete"
       open={Boolean(anchorEl)}
       placement="bottom-start"
     >
@@ -134,10 +134,10 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
             return (
               <Styled.Input
                 autoFocus
-                className="MuiTelInput-Autocomplete-Input"
+                className="MuiTelInput-FlagsAutocomplete-Input"
                 inputProps={{
                   ...params.inputProps,
-                  'data-testid': 'autocomplete-input'
+                  'data-testid': 'flagsautocomplete-input'
                 }}
                 placeholder="Search for a country"
                 ref={params.InputProps.ref}
@@ -149,7 +149,7 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
               <ListItem
                 {...optionProps}
                 alignItems="flex-start"
-                className="MuiTelInput-Autocomplete-ListItem"
+                className="MuiTelInput-FlagsAutocomplete-ListItem"
                 data-testid={`option-${option.countryCode}`}
                 role="option"
                 secondaryAction={
