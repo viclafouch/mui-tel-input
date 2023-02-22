@@ -45,15 +45,15 @@ export type FlagsAutocompleteProps = Partial<
   >
 > & {
   anchorEl: HTMLElement | null
-  isoCode: MuiTelInputCountry | null
-  onlyCountries?: MuiTelInputCountry[]
-  excludedCountries?: MuiTelInputCountry[]
-  preferredCountries?: MuiTelInputCountry[]
-  langOfCountryName?: string
-  flagSize?: FlagSize
   continents?: MuiTelInputContinent[]
-  onSelectCountry: (isoCode: MuiTelInputCountry) => void
+  excludedCountries?: MuiTelInputCountry[]
+  flagSize?: FlagSize
+  isoCode: MuiTelInputCountry | null
+  langOfCountryName?: string
   onClose: () => void
+  onlyCountries?: MuiTelInputCountry[]
+  onSelectCountry: (isoCode: MuiTelInputCountry) => void
+  preferredCountries?: MuiTelInputCountry[]
 }
 
 const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
@@ -96,16 +96,23 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
 
   return (
     <Styled.Popper
-      id="select-country-autocomplete"
       anchorEl={anchorEl}
-      open={Boolean(anchorEl)}
       className={`MuiTelInput-Autocomplete-Popover ${className || ''}`}
+      id="select-country-autocomplete"
+      open={Boolean(anchorEl)}
       placement="bottom-start"
     >
       <ClickAwayListener onClickAway={onClose}>
         <Autocomplete
-          open
-          PopperComponent={PopperComponent}
+          filterOptions={(options, { inputValue }) => {
+            if (inputValue === '') {
+              return options
+            }
+
+            return matchSorter(options, inputValue, {
+              keys: ['countryCode', 'label']
+            })
+          }}
           onChange={(event, newValue, reason) => {
             if (
               event.type === 'keydown' &&
@@ -120,19 +127,20 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
             }
           }}
           onClose={onClose}
+          open
           options={countriesFilteredOptions}
-          filterOptions={(options, { inputValue }) => {
-            return matchSorter(options, inputValue, {
-              keys: ['countryCode', 'label']
-            })
-          }}
+          PopperComponent={PopperComponent}
           renderInput={(params) => {
             return (
               <Styled.Input
-                ref={params.InputProps.ref}
-                inputProps={params.inputProps}
                 autoFocus
+                className="MuiTelInput-Autocomplete-Input"
+                inputProps={{
+                  ...params.inputProps,
+                  'data-testid': 'autocomplete-input'
+                }}
                 placeholder="Search for a country"
+                ref={params.InputProps.ref}
               />
             )
           }}
@@ -141,6 +149,9 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
               <ListItem
                 {...optionProps}
                 alignItems="flex-start"
+                className="MuiTelInput-Autocomplete-ListItem"
+                data-testid={`option-${option.countryCode}`}
+                role="option"
                 secondaryAction={
                   <Typography
                     variant="body2"
@@ -153,9 +164,9 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
               >
                 <Styled.ListItemIcon className="MuiTelInput-ListItemIcon-flag">
                   <Flag
-                    size={flagSize}
-                    isoCode={option.countryCode}
                     countryName={option.label}
+                    isoCode={option.countryCode}
+                    size={flagSize}
                   />
                 </Styled.ListItemIcon>
                 <Styled.ListItemText className="MuiTelInput-ListItemText-country">
@@ -171,12 +182,12 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
 }
 
 FlagsAutocomplete.defaultProps = {
-  onlyCountries: [],
-  excludedCountries: [],
   continents: [],
-  preferredCountries: [],
+  excludedCountries: [],
   flagSize: 'small' as FlagSize,
-  langOfCountryName: DEFAULT_LANG
+  langOfCountryName: DEFAULT_LANG,
+  onlyCountries: [],
+  preferredCountries: []
 }
 
 export default FlagsAutocomplete
