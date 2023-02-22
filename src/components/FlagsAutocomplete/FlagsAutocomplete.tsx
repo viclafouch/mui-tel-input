@@ -1,11 +1,16 @@
 import React from 'react'
+import { matchSorter } from 'match-sorter'
+import Flag from '@components/Flag/Flag'
 import Autocomplete, { AutocompleteProps } from '@mui/material/Autocomplete'
-import Box from '@mui/material/Box'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
-import InputBase from '@mui/material/InputBase'
-import Popper from '@mui/material/Popper'
+import ListItem from '@mui/material/ListItem'
+import Typography from '@mui/material/Typography'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
-import { ISO_CODES, MuiTelInputCountry } from '@shared/constants/countries'
+import {
+  COUNTRIES,
+  ISO_CODES,
+  MuiTelInputCountry
+} from '@shared/constants/countries'
 import { DEFAULT_LANG } from '@shared/constants/lang'
 import {
   filterCountries,
@@ -13,6 +18,23 @@ import {
 } from '@shared/helpers/country'
 import { getDisplayNames } from '@shared/helpers/intl'
 import { FlagSize } from '../../index.types'
+import { Styled } from './FlagsAutocomplete.styled'
+
+interface PopperComponentProps {
+  anchorEl?: unknown
+  disablePortal?: boolean
+  open: boolean
+}
+
+const PopperComponent = (props: PopperComponentProps) => {
+  const { disablePortal, anchorEl, open, ...other } = props
+  return <Styled.AutocompletePopper {...other} />
+}
+
+PopperComponent.defaultProps = {
+  anchorEl: null,
+  disablePortal: false
+}
 
 export type FlagsAutocompleteProps = Partial<
   AutocompleteProps<
@@ -37,7 +59,6 @@ export type FlagsAutocompleteProps = Partial<
 const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
   const {
     anchorEl,
-    isoCode,
     onSelectCountry,
     excludedCountries,
     onlyCountries,
@@ -45,6 +66,7 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
     continents,
     preferredCountries,
     className,
+    flagSize,
     onClose
   } = props
 
@@ -65,12 +87,16 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
     preferredCountries
   })
 
-  // TODO: Figure out ARIA label stuff
-  // TODO: Figure out the individual menu item
-  // TODO: Figure out styling
+  const countriesFilteredOptions = countriesFiltered.map((countryCode) => {
+    return {
+      countryCode,
+      label: displayNames.of(countryCode) ?? countryCode
+    }
+  })
+
   return (
-    <Popper
-      id="select-country"
+    <Styled.Popper
+      id="select-country-autocomplete"
       anchorEl={anchorEl}
       open={Boolean(anchorEl)}
       className={`MuiTelInput-Autocomplete-Popover ${className || ''}`}
@@ -79,7 +105,7 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
       <ClickAwayListener onClickAway={onClose}>
         <Autocomplete
           open
-          value={isoCode}
+          PopperComponent={PopperComponent}
           onChange={(event, newValue, reason) => {
             if (
               event.type === 'keydown' &&
@@ -89,13 +115,20 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
               return
             }
 
-            onSelectCountry(newValue as MuiTelInputCountry)
+            if (newValue !== null) {
+              onSelectCountry(newValue.countryCode)
+            }
           }}
           onClose={onClose}
-          options={countriesFiltered}
+          options={countriesFilteredOptions}
+          filterOptions={(options, { inputValue }) => {
+            return matchSorter(options, inputValue, {
+              keys: ['countryCode', 'label']
+            })
+          }}
           renderInput={(params) => {
             return (
-              <InputBase
+              <Styled.Input
                 ref={params.InputProps.ref}
                 inputProps={params.inputProps}
                 autoFocus
@@ -105,14 +138,35 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
           }}
           renderOption={(optionProps, option) => {
             return (
-              <li {...optionProps}>
-                <Box>{displayNames.of(option)}</Box>
-              </li>
+              <ListItem
+                {...optionProps}
+                alignItems="flex-start"
+                secondaryAction={
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    className="MuiTelInput-Typography-calling-code"
+                  >
+                    +{COUNTRIES[option.countryCode]?.[0]}
+                  </Typography>
+                }
+              >
+                <Styled.ListItemIcon className="MuiTelInput-ListItemIcon-flag">
+                  <Flag
+                    size={flagSize}
+                    isoCode={option.countryCode}
+                    countryName={option.label}
+                  />
+                </Styled.ListItemIcon>
+                <Styled.ListItemText className="MuiTelInput-ListItemText-country">
+                  {option.label}
+                </Styled.ListItemText>
+              </ListItem>
             )
           }}
         />
       </ClickAwayListener>
-    </Popper>
+    </Styled.Popper>
   )
 }
 
