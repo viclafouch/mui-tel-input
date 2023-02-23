@@ -183,3 +183,14 @@ Props for the MUI [Menu](https://mui.com/material-ui/api/menu/) component.
 ```tsx
 <MuiTelInput MenuProps={{ disableAutoFocusItem: true }} />
 ```
+
+## `allowSearch`
+
+- Type: `boolean`
+- Default: `false`
+
+Adds a search input to filter countries by ISO code or name.
+
+```tsx
+<MuiTelInput allowSearch>
+```
