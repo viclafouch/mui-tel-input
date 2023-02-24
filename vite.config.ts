@@ -39,9 +39,12 @@ export default defineConfig({
           '@mui/material/Menu': 'Menu',
           '@mui/material/MenuItem': 'MenuItem',
           '@mui/material/Typography': 'Typography',
+          '@mui/material/ListItem': 'ListItem',
           '@mui/material/ListItemIcon': 'ListItemIcon',
           '@mui/material/ListItemText': 'ListItemText',
           '@mui/material/colors': 'colors',
+          '@mui/material/Autocompelte': 'Autocomplete',
+          '@mui/material/ClickAwayListener': 'ClickAwayListener',
         }
       }
     }
