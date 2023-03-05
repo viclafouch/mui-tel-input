@@ -4,6 +4,9 @@ import Flag from '@components/Flag/Flag'
 import Autocomplete, { AutocompleteProps } from '@mui/material/Autocomplete'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
 import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
 import Typography from '@mui/material/Typography'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
 import {
@@ -90,7 +93,8 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
   const countriesFilteredOptions = countriesFiltered.map((countryCode) => {
     return {
       countryCode,
-      label: displayNames.of(countryCode) ?? countryCode
+      callingCode: COUNTRIES[countryCode]?.[0] as string,
+      displayName: displayNames.of(countryCode) ?? countryCode
     }
   })
 
@@ -104,13 +108,14 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
     >
       <ClickAwayListener onClickAway={onClose}>
         <Autocomplete
+          autoHighlight
           filterOptions={(options, { inputValue }) => {
             if (inputValue === '') {
               return options
             }
 
             return matchSorter(options, inputValue, {
-              keys: ['countryCode', 'label']
+              keys: ['callingCode', 'countryCode', 'displayName']
             })
           }}
           onChange={(event, newValue, reason) => {
@@ -152,26 +157,26 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
                 className="MuiTelInput-FlagsAutocomplete-ListItem"
                 data-testid={`option-${option.countryCode}`}
                 role="option"
-                secondaryAction={
+              >
+                <ListItemButton dense>
+                  <ListItemIcon className="MuiTelInput-ListItemIcon-flag">
+                    <Flag
+                      countryName={option.displayName}
+                      isoCode={option.countryCode}
+                      size={flagSize}
+                    />
+                  </ListItemIcon>
+                  <ListItemText className="MuiTelInput-ListItemText-country">
+                    {option.displayName}
+                  </ListItemText>
                   <Typography
                     variant="body2"
                     color="text.secondary"
                     className="MuiTelInput-Typography-calling-code"
                   >
-                    +{COUNTRIES[option.countryCode]?.[0]}
+                    +{option.callingCode}
                   </Typography>
-                }
-              >
-                <Styled.ListItemIcon className="MuiTelInput-ListItemIcon-flag">
-                  <Flag
-                    countryName={option.label}
-                    isoCode={option.countryCode}
-                    size={flagSize}
-                  />
-                </Styled.ListItemIcon>
-                <Styled.ListItemText className="MuiTelInput-ListItemText-country">
-                  {option.label}
-                </Styled.ListItemText>
+                </ListItemButton>
               </ListItem>
             )
           }}

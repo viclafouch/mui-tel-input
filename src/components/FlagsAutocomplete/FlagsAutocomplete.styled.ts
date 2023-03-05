@@ -1,17 +1,9 @@
 import { autocompleteClasses } from '@mui/material/Autocomplete'
 import InputBase from '@mui/material/InputBase'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
 import Popper from '@mui/material/Popper'
 import { styled } from '@mui/material/styles'
 
 const Styled = {
-  ListItemIcon: styled(ListItemIcon)({
-    marginRight: '10px'
-  }),
-  ListItemText: styled(ListItemText)({
-    marginRight: '10px'
-  }),
   AutocompletePopper: styled('div')(({ theme }) => {
     return {
       [`& .${autocompleteClasses.paper}`]: {
@@ -52,7 +44,7 @@ const Styled = {
       backgroundColor: '#fff'
     }
   }),
-  Input: styled(InputBase)(({ theme }) => {
+  Input: styled(InputBase)(() => {
     return {
       padding: 10,
       width: '100%',
@@ -61,7 +53,6 @@ const Styled = {
         borderRadius: 4,
         backgroundColor: '#fff',
         padding: 8,
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
         border: '1px solid #eaecef',
         '&:focus': {
           boxShadow: '0px 0px 0px 3px rgba(3, 102, 214, 0.3)',
