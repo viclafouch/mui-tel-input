@@ -119,6 +119,10 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
     })
   }
 
+  const getOptionLabel = (option: MuiTelAutocompleteOption) => {
+    return option.countryCode
+  }
+
   return (
     <Styled.Popper
       anchorEl={anchorEl}
@@ -131,9 +135,7 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
         <Autocomplete
           autoHighlight
           filterOptions={filterOptions}
-          getOptionLabel={(option) => {
-            return option.countryCode
-          }}
+          getOptionLabel={getOptionLabel}
           onChange={(event, newValue, reason) => {
             if (
               event.type === 'keydown' &&
