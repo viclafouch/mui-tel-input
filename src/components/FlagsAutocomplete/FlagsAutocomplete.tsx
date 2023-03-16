@@ -8,6 +8,7 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Typography from '@mui/material/Typography'
+import { FilterOptionsState } from '@mui/material/useAutocomplete'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
 import {
   COUNTRIES,
@@ -59,6 +60,12 @@ export type FlagsAutocompleteProps = Partial<
   preferredCountries?: MuiTelInputCountry[]
 }
 
+type MuiTelAutocompleteOption = {
+  countryCode: MuiTelInputCountry
+  callingCode: string
+  displayName: string
+}
+
 const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
   const {
     anchorEl,
@@ -90,13 +97,27 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
     preferredCountries
   })
 
-  const countriesFilteredOptions = countriesFiltered.map((countryCode) => {
-    return {
-      countryCode,
-      callingCode: COUNTRIES[countryCode]?.[0] as string,
-      displayName: displayNames.of(countryCode) ?? countryCode
+  const countriesFilteredOptions: MuiTelAutocompleteOption[] =
+    countriesFiltered.map((countryCode) => {
+      return {
+        countryCode,
+        callingCode: COUNTRIES[countryCode]?.[0] as string,
+        displayName: displayNames.of(countryCode) ?? countryCode
+      }
+    })
+
+  const filterOptions = (
+    options: MuiTelAutocompleteOption[],
+    { inputValue }: FilterOptionsState<MuiTelAutocompleteOption>
+  ) => {
+    if (inputValue === '') {
+      return options
     }
-  })
+
+    return matchSorter(options, inputValue, {
+      keys: ['callingCode', 'countryCode', 'displayName']
+    })
+  }
 
   return (
     <Styled.Popper
@@ -109,14 +130,9 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
       <ClickAwayListener onClickAway={onClose}>
         <Autocomplete
           autoHighlight
-          filterOptions={(options, { inputValue }) => {
-            if (inputValue === '') {
-              return options
-            }
-
-            return matchSorter(options, inputValue, {
-              keys: ['callingCode', 'countryCode', 'displayName']
-            })
+          filterOptions={filterOptions}
+          getOptionLabel={(option) => {
+            return option.countryCode
           }}
           onChange={(event, newValue, reason) => {
             if (
