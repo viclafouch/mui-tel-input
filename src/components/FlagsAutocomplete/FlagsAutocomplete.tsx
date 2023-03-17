@@ -24,6 +24,8 @@ import { getDisplayNames } from '@shared/helpers/intl'
 import { FlagSize } from '../../index.types'
 import { Styled } from './FlagsAutocomplete.styled'
 
+// TODO: Figure out how to make styling generic for the component
+
 interface PopperComponentProps {
   anchorEl?: unknown
   disablePortal?: boolean
@@ -60,7 +62,7 @@ export type FlagsAutocompleteProps = Partial<
   preferredCountries?: MuiTelInputCountry[]
 }
 
-type MuiTelAutocompleteOption = {
+export type MuiTelAutocompleteOption = {
   countryCode: MuiTelInputCountry
   callingCode: string
   displayName: string

@@ -1,7 +1,9 @@
 import React from 'react'
 import FlagButton from '@components/FlagButton/FlagButton'
-import FlagsAutocomplete from '@components/FlagsAutocomplete/FlagsAutocomplete'
-import FlagsMenu from '@components/FlagsMenu/FlagsMenu'
+import FlagsAutocomplete, {
+  FlagsAutocompleteProps
+} from '@components/FlagsAutocomplete/FlagsAutocomplete'
+import FlagsMenu, { FlagsMenuProps } from '@components/FlagsMenu/FlagsMenu'
 import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
 import {
@@ -33,6 +35,20 @@ export type {
   MuiTelInputInfo,
   MuiTelInputCountry,
   MuiTelInputContinent
+}
+
+type FlagsDropdownProps = Pick<MuiTelInputProps, 'allowSearch' | 'MenuProps'> &
+  FlagsAutocompleteProps &
+  FlagsMenuProps
+
+const FlagsDropdown = (props: FlagsDropdownProps) => {
+  const { allowSearch, MenuProps, ...rest } = props
+
+  if (allowSearch) {
+    return <FlagsAutocomplete {...rest} />
+  }
+
+  return <FlagsMenu {...MenuProps} {...rest} />
 }
 
 const MuiTelInput = React.forwardRef(
@@ -201,8 +217,8 @@ const MuiTelInput = React.forwardRef(
           }}
           {...restTextFieldProps}
         />
-        {!disableDropdown && !allowSearch ? (
-          <FlagsMenu
+        {!disableDropdown ? (
+          <FlagsDropdown
             onlyCountries={onlyCountries}
             excludedCountries={excludedCountries}
             continents={continents}
@@ -213,21 +229,8 @@ const MuiTelInput = React.forwardRef(
             langOfCountryName={langOfCountryName}
             onSelectCountry={handleChangeCountry}
             flagSize={flagSize}
-            {...MenuProps}
-          />
-        ) : null}
-        {!disableDropdown && allowSearch ? (
-          <FlagsAutocomplete
-            onlyCountries={onlyCountries}
-            excludedCountries={excludedCountries}
-            continents={continents}
-            anchorEl={anchorEl}
-            isoCode={isoCode}
-            preferredCountries={preferredCountries}
-            onClose={handleCloseFlagsMenu}
-            langOfCountryName={langOfCountryName}
-            onSelectCountry={handleChangeCountry}
-            flagSize={flagSize}
+            allowSearch={allowSearch}
+            MenuProps={MenuProps}
           />
         ) : null}
       </>
