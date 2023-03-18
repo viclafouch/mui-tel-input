@@ -8,7 +8,7 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Typography from '@mui/material/Typography'
-import { FilterOptionsState } from '@mui/material/useAutocomplete'
+import type { FilterOptionsState } from '@mui/material/useAutocomplete'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
 import {
   COUNTRIES,
