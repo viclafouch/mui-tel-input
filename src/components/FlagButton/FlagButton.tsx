@@ -14,16 +14,14 @@ export type FlagButtonProps = IconButtonProps & {
   flagSize?: FlagSize
 }
 
-const FlagButton = (props: FlagButtonProps) => {
-  const {
-    isoCode,
-    isFlagsMenuOpened,
-    disableDropdown,
-    forceCallingCode,
-    flagSize,
-    ...iconButtonProps
-  } = props
-
+const FlagButton = ({
+  disableDropdown = false,
+  forceCallingCode = false,
+  flagSize = 'small',
+  isFlagsMenuOpened = false,
+  isoCode,
+  ...iconButtonProps
+}: FlagButtonProps) => {
   return (
     <>
       {disableDropdown ? (
@@ -59,12 +57,6 @@ const FlagButton = (props: FlagButtonProps) => {
       ) : null}
     </>
   )
-}
-
-FlagButton.defaultProps = {
-  disableDropdown: false,
-  forceCallingCode: false,
-  flagSize: 'small' as FlagSize
 }
 
 export default FlagButton

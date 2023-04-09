@@ -25,9 +25,7 @@ const getSourceByIsoCode = (isoCode: MuiTelInputCountry | null) => {
   return ''
 }
 
-const Flag = (props: FlagProps) => {
-  const { isoCode, countryName, size } = props
-
+const Flag = ({ size = 'small', isoCode, countryName = '' }: FlagProps) => {
   const isoCodeFormatted = isoCode ? isoCode.toLowerCase() : ''
   const sourceFound = getSourceByIsoCode(isoCode)
   // see https://flagpedia.net/download/api for the valid width
@@ -63,11 +61,6 @@ const Flag = (props: FlagProps) => {
       {isoCode ? <Styled.Span>{isoCode}</Styled.Span> : null}
     </Styled.Flag>
   )
-}
-
-Flag.defaultProps = {
-  countryName: '',
-  size: 'small' as FlagSize
 }
 
 export default Flag

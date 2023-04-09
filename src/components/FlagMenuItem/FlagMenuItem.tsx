@@ -13,10 +13,13 @@ export type FlagMenuItemProps = MenuItemProps & {
   flagSize?: FlagSize
 }
 
-const FlagMenuItem = (props: FlagMenuItemProps) => {
-  const { isoCode, onSelectCountry, countryName, flagSize, ...menuItemProps } =
-    props
-
+const FlagMenuItem = ({
+  isoCode,
+  onSelectCountry,
+  countryName,
+  flagSize = 'small',
+  ...menuItemProps
+}: FlagMenuItemProps) => {
   const handleClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     event.preventDefault()
     onSelectCountry(isoCode)
@@ -45,10 +48,6 @@ const FlagMenuItem = (props: FlagMenuItemProps) => {
       </Typography>
     </MenuItem>
   )
-}
-
-FlagMenuItem.defaultProps = {
-  flagSize: 'small' as FlagSize
 }
 
 export default React.memo(FlagMenuItem)
