@@ -61,7 +61,7 @@ const MuiTelInput = React.forwardRef(
       onDoubleClick,
       onFocus,
       onCopy,
-      value,
+      value = '',
       inputProps,
       InputProps,
       inputRef: inputRefFromProps,
@@ -237,9 +237,5 @@ const MuiTelInput = React.forwardRef(
     )
   }
 )
-
-MuiTelInput.defaultProps = {
-  value: ''
-} as Partial<MuiTelInputProps>
 
 export { MuiTelInput }

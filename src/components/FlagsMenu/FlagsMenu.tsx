@@ -22,21 +22,19 @@ export type FlagsMenuProps = Partial<MenuProps> & {
   onSelectCountry: (isoCode: MuiTelInputCountry) => void
 }
 
-const FlagsMenu = (props: FlagsMenuProps) => {
-  const {
-    anchorEl,
-    isoCode,
-    onSelectCountry,
-    excludedCountries,
-    onlyCountries,
-    langOfCountryName,
-    continents,
-    preferredCountries,
-    className,
-    flagSize,
-    ...rest
-  } = props
-
+const FlagsMenu = ({
+  anchorEl,
+  isoCode,
+  onSelectCountry,
+  excludedCountries = [],
+  onlyCountries = [],
+  langOfCountryName = DEFAULT_LANG,
+  continents = [],
+  preferredCountries = [],
+  className,
+  flagSize = 'small',
+  ...rest
+}: FlagsMenuProps) => {
   // Idem for the translations
   const displayNames = React.useMemo(() => {
     return getDisplayNames(langOfCountryName)
@@ -82,15 +80,6 @@ const FlagsMenu = (props: FlagsMenuProps) => {
       })}
     </Menu>
   )
-}
-
-FlagsMenu.defaultProps = {
-  onlyCountries: [],
-  excludedCountries: [],
-  continents: [],
-  preferredCountries: [],
-  flagSize: 'small' as FlagSize,
-  langOfCountryName: DEFAULT_LANG
 }
 
 export default FlagsMenu
