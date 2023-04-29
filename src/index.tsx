@@ -37,15 +37,19 @@ export type {
   MuiTelInputContinent
 }
 
-type FlagsDropdownProps = Pick<MuiTelInputProps, 'allowSearch' | 'MenuProps'> &
+type FlagsDropdownProps = Pick<
+  MuiTelInputProps,
+  'allowSearch' | 'MenuProps' | 'FlagsAutocompleteCustomProps'
+> &
   FlagsAutocompleteProps &
   FlagsMenuProps
 
 const FlagsDropdown = (props: FlagsDropdownProps) => {
-  const { allowSearch, MenuProps, ...rest } = props
+  const { allowSearch, MenuProps, FlagsAutocompleteCustomProps, ...rest } =
+    props
 
   if (allowSearch) {
-    return <FlagsAutocomplete {...rest} />
+    return <FlagsAutocomplete {...FlagsAutocompleteCustomProps} {...rest} />
   }
 
   return <FlagsMenu {...MenuProps} {...rest} />

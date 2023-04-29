@@ -1,3 +1,5 @@
+/* eslint-disable react/require-default-props */
+
 import React from 'react'
 import { matchSorter } from 'match-sorter'
 import Flag from '@components/Flag/Flag'
@@ -7,6 +9,7 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
+import type { PopperProps } from '@mui/material/Popper'
 import Typography from '@mui/material/Typography'
 import type { FilterOptionsState } from '@mui/material/useAutocomplete'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
@@ -21,18 +24,30 @@ import {
   sortAlphabeticallyCountryCodes
 } from '@shared/helpers/country'
 import { getDisplayNames } from '@shared/helpers/intl'
+import type { FlagsAutocompleteCustomStylesProps } from '../../index.types'
 import { FlagSize } from '../../index.types'
 import { Styled } from './FlagsAutocomplete.styled'
 
-interface PopperComponentProps {
+type PopperComponentProps = {
   anchorEl?: unknown
   disablePortal?: boolean
   open: boolean
-}
+} & Pick<FlagsAutocompleteCustomStylesProps, 'muiAutocompletePopperStyles'>
 
 const PopperComponent = (props: PopperComponentProps) => {
-  const { disablePortal, anchorEl, open, ...other } = props
-  return <Styled.AutocompletePopper {...other} />
+  const {
+    disablePortal,
+    anchorEl,
+    open,
+    muiAutocompletePopperStyles,
+    ...other
+  } = props
+  return (
+    <Styled.AutocompletePopper
+      userStyles={muiAutocompletePopperStyles}
+      {...other}
+    />
+  )
 }
 
 PopperComponent.defaultProps = {
@@ -58,6 +73,7 @@ export type FlagsAutocompleteProps = Partial<
   onlyCountries?: MuiTelInputCountry[]
   onSelectCountry: (isoCode: MuiTelInputCountry) => void
   preferredCountries?: MuiTelInputCountry[]
+  customStyles?: FlagsAutocompleteCustomStylesProps
 }
 
 export type MuiTelAutocompleteOption = {
@@ -77,13 +93,28 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
     preferredCountries,
     className,
     flagSize,
-    onClose
+    onClose,
+    customStyles
   } = props
 
   // Idem for the translations
   const displayNames = React.useMemo(() => {
     return getDisplayNames(langOfCountryName)
   }, [langOfCountryName])
+
+  const CustomPopperComponent = React.useCallback(
+    (popperProps: PopperProps) => {
+      return (
+        <PopperComponent
+          {...popperProps}
+          muiAutocompletePopperStyles={
+            customStyles?.muiAutocompletePopperStyles ?? {}
+          }
+        />
+      )
+    },
+    [customStyles?.muiAutocompletePopperStyles]
+  )
 
   const ISO_CODES_SORTED = sortAlphabeticallyCountryCodes(
     ISO_CODES,
@@ -124,12 +155,13 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
   }
 
   return (
-    <Styled.Popper
+    <Styled.FlagsAutocompletePopper
       anchorEl={anchorEl}
       className={`MuiTelInput-FlagsAutocomplete-Popover ${className || ''}`}
       id="muitelinput-flagsautocomplete"
       open={Boolean(anchorEl)}
       placement="bottom-start"
+      userStyles={customStyles?.flagsAutocompletePopperStyles ?? {}}
     >
       <ClickAwayListener onClickAway={onClose}>
         <Autocomplete
@@ -152,7 +184,7 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
           onClose={onClose}
           open
           options={countriesFilteredOptions}
-          PopperComponent={PopperComponent}
+          PopperComponent={CustomPopperComponent}
           renderInput={(params) => {
             return (
               <Styled.Input
@@ -164,6 +196,7 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
                 }}
                 placeholder="Search for a country"
                 ref={params.InputProps.ref}
+                userStyles={customStyles?.inputStyles ?? {}}
               />
             )
           }}
@@ -200,7 +233,7 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
           }}
         />
       </ClickAwayListener>
-    </Styled.Popper>
+    </Styled.FlagsAutocompletePopper>
   )
 }
 

@@ -9,6 +9,12 @@ type BaseTextFieldProps = Omit<
   'onChange' | 'select' | 'type' | 'multiline' | 'defaultValue'
 >
 
+export type FlagsAutocompleteCustomStylesProps = {
+  muiAutocompletePopperStyles: Record<string, unknown>
+  flagsAutocompletePopperStyles: Record<string, unknown>
+  inputStyles: Record<string, unknown>
+}
+
 export type { MuiTelInputContinent, MuiTelInputCountry }
 
 export type FlagSize = `small` | 'medium'
@@ -41,4 +47,7 @@ export interface MuiTelInputProps extends BaseTextFieldProps {
   value?: string | undefined
   MenuProps?: Partial<MenuProps>
   allowSearch?: boolean
+  FlagsAutocompleteCustomProps?: {
+    customStyles: FlagsAutocompleteCustomStylesProps
+  }
 }
