@@ -16,11 +16,6 @@ export default defineConfig({
   build: {
     target: 'esnext',
     minify: true,
-    terserOptions: {
-      format: {
-        comments: false
-      }
-    },
     lib: {
       entry: path.resolve(__dirname, 'src/index.tsx'),
       name: 'Mui-tel-input',
