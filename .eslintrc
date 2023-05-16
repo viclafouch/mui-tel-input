@@ -14,9 +14,12 @@
         "ignoreCase": false
       }
     ],
-    "react/require-default-props": ["error", {
-      "functions": "defaultArguments"
-    }],
+    "react/require-default-props": [
+      "error",
+      {
+        "functions": "defaultArguments"
+      }
+    ],
     "import/no-extraneous-dependencies": [
       "error",
       {

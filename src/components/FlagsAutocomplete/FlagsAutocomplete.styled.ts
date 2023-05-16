@@ -3,14 +3,8 @@ import InputBase from '@mui/material/InputBase'
 import Popper from '@mui/material/Popper'
 import { styled } from '@mui/material/styles'
 
-type CustomProps = { userStyles: Record<string, unknown> }
-
 const Styled = {
-  AutocompletePopper: styled('div', {
-    shouldForwardProp: (prop) => {
-      return prop !== 'userStyles'
-    }
-  })<CustomProps>(({ theme, userStyles }) => {
+  AutocompletePopper: styled('div')(({ theme }) => {
     return {
       [`& .${autocompleteClasses.paper}`]: {
         boxShadow: 'none',
@@ -36,15 +30,10 @@ const Styled = {
       },
       [`&.${autocompleteClasses.popperDisablePortal}`]: {
         position: 'relative'
-      },
-      ...userStyles
+      }
     }
   }),
-  FlagsAutocompletePopper: styled(Popper, {
-    shouldForwardProp: (prop) => {
-      return prop !== 'userStyles'
-    }
-  })<CustomProps>(({ theme, userStyles }) => {
+  FlagsAutocompletePopper: styled(Popper)(({ theme }) => {
     return {
       border: '1px solid #e1e4e8',
       boxShadow: '0 8px 24px rgba(149, 157, 165, 0.2)',
@@ -52,15 +41,10 @@ const Styled = {
       width: 300,
       zIndex: theme.zIndex.modal,
       color: '#24292e',
-      backgroundColor: '#fff',
-      ...userStyles
+      backgroundColor: '#fff'
     }
   }),
-  Input: styled(InputBase, {
-    shouldForwardProp: (prop) => {
-      return prop !== 'userStyles'
-    }
-  })<CustomProps>(({ userStyles }) => {
+  Input: styled(InputBase)(() => {
     return {
       padding: 10,
       width: '100%',
@@ -74,8 +58,7 @@ const Styled = {
           boxShadow: '0px 0px 0px 3px rgba(3, 102, 214, 0.3)',
           borderColor: '#0366d6'
         }
-      },
-      ...userStyles
+      }
     }
   })
 }
