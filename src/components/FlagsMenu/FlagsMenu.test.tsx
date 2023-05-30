@@ -1,6 +1,7 @@
 import React from 'react'
 import { expect, vi } from 'vitest'
 import { ISO_CODES, MuiTelInputCountry } from '@shared/constants/countries'
+import { getDisplayNames } from '@shared/helpers/intl'
 import { fireEvent, render, screen } from '@testing-library/react'
 import FlagsMenu from './FlagsMenu'
 import '@testing-library/jest-dom'
@@ -17,6 +18,7 @@ describe('components/FlagsMenu', () => {
   test('should displayed when anchorEl is valid', () => {
     render(
       <FlagsMenu
+        displayNames={getDisplayNames()}
         anchorEl={getAnchorEl()}
         isoCode="FR"
         onSelectCountry={() => {}}
@@ -27,6 +29,7 @@ describe('components/FlagsMenu', () => {
   test('should render correctly', () => {
     render(
       <FlagsMenu
+        displayNames={getDisplayNames()}
         isoCode="FR"
         excludedCountries={['FR']}
         onSelectCountry={() => {}}
@@ -37,6 +40,7 @@ describe('components/FlagsMenu', () => {
   test('should list all countries without filters props', () => {
     render(
       <FlagsMenu
+        displayNames={getDisplayNames()}
         anchorEl={getAnchorEl()}
         isoCode="FR"
         onSelectCountry={() => {}}
@@ -51,6 +55,7 @@ describe('components/FlagsMenu', () => {
     })
     render(
       <FlagsMenu
+        displayNames={getDisplayNames()}
         anchorEl={getAnchorEl()}
         isoCode="FR"
         onSelectCountry={callback}
@@ -64,6 +69,7 @@ describe('components/FlagsMenu', () => {
   test('should list onlyCountries', () => {
     render(
       <FlagsMenu
+        displayNames={getDisplayNames()}
         anchorEl={getAnchorEl()}
         onlyCountries={['FR']}
         isoCode="FR"
@@ -78,6 +84,7 @@ describe('components/FlagsMenu', () => {
   test('should exclude countries', () => {
     render(
       <FlagsMenu
+        displayNames={getDisplayNames()}
         anchorEl={getAnchorEl()}
         excludedCountries={['FR']}
         isoCode="FR"
@@ -90,6 +97,7 @@ describe('components/FlagsMenu', () => {
   test('should display EU countries except FR', () => {
     render(
       <FlagsMenu
+        displayNames={getDisplayNames()}
         anchorEl={getAnchorEl()}
         excludedCountries={['FR']}
         continents={['EU']}
@@ -105,6 +113,7 @@ describe('components/FlagsMenu', () => {
   test('should display onlyCountries and not continents', () => {
     render(
       <FlagsMenu
+        displayNames={getDisplayNames()}
         anchorEl={getAnchorEl()}
         onlyCountries={['VE']}
         continents={['EU']}
@@ -119,6 +128,7 @@ describe('components/FlagsMenu', () => {
   test('should highlight preferred countries and in good order', () => {
     render(
       <FlagsMenu
+        displayNames={getDisplayNames()}
         anchorEl={getAnchorEl()}
         preferredCountries={['FR', 'BE', 'VE']}
         isoCode="FR"
@@ -134,6 +144,7 @@ describe('components/FlagsMenu', () => {
   test('should highlight preferred countries not excluded', () => {
     render(
       <FlagsMenu
+        displayNames={getDisplayNames()}
         anchorEl={getAnchorEl()}
         preferredCountries={['FR', 'BE', 'VE']}
         excludedCountries={['FR']}

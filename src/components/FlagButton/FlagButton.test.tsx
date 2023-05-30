@@ -5,17 +5,26 @@ import '@testing-library/jest-dom'
 
 describe('components/FlagButton', () => {
   test('should have aria-expanded to true', () => {
-    render(<FlagButton isFlagsMenuOpened isoCode="FR" />)
+    render(<FlagButton isFlagsMenuOpened isoCode="FR" countryName="France" />)
     expect(screen.getByRole('button')).toHaveAttribute('aria-expanded', 'true')
   })
 
   test('should have aria-expanded to false', () => {
-    render(<FlagButton isFlagsMenuOpened={false} isoCode="FR" />)
+    render(
+      <FlagButton isFlagsMenuOpened={false} isoCode="FR" countryName="France" />
+    )
     expect(screen.getByRole('button')).toHaveAttribute('aria-expanded', 'false')
   })
 
   test('should be disabled', () => {
-    render(<FlagButton disabled isFlagsMenuOpened={false} isoCode="FR" />)
+    render(
+      <FlagButton
+        disabled
+        isFlagsMenuOpened={false}
+        isoCode="FR"
+        countryName="France"
+      />
+    )
     expect(screen.getByRole('button')).toBeDisabled()
   })
 })

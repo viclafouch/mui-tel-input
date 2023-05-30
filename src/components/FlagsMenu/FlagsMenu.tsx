@@ -3,12 +3,10 @@ import FlagMenuItem from '@components/FlagMenuItem/FlagMenuItem'
 import Menu, { MenuProps } from '@mui/material/Menu'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
 import { ISO_CODES, MuiTelInputCountry } from '@shared/constants/countries'
-import { DEFAULT_LANG } from '@shared/constants/lang'
 import {
   filterCountries,
   sortAlphabeticallyCountryCodes
 } from '@shared/helpers/country'
-import { getDisplayNames } from '@shared/helpers/intl'
 import { FlagSize } from '../../index.types'
 
 export type FlagsMenuProps = Partial<MenuProps> & {
@@ -16,7 +14,7 @@ export type FlagsMenuProps = Partial<MenuProps> & {
   onlyCountries?: MuiTelInputCountry[]
   excludedCountries?: MuiTelInputCountry[]
   preferredCountries?: MuiTelInputCountry[]
-  langOfCountryName?: string
+  displayNames: Intl.DisplayNames
   flagSize?: FlagSize
   continents?: MuiTelInputContinent[]
   onSelectCountry: (isoCode: MuiTelInputCountry) => void
@@ -28,18 +26,13 @@ const FlagsMenu = ({
   onSelectCountry,
   excludedCountries = [],
   onlyCountries = [],
-  langOfCountryName = DEFAULT_LANG,
+  displayNames,
   continents = [],
   preferredCountries = [],
   className,
   flagSize = 'small',
   ...rest
 }: FlagsMenuProps) => {
-  // Idem for the translations
-  const displayNames = React.useMemo(() => {
-    return getDisplayNames(langOfCountryName)
-  }, [langOfCountryName])
-
   const ISO_CODES_SORTED = sortAlphabeticallyCountryCodes(
     ISO_CODES,
     displayNames

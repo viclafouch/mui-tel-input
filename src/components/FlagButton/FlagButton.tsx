@@ -8,6 +8,7 @@ import { Styled } from './FlagButton.styled'
 
 export type FlagButtonProps = IconButtonProps & {
   isoCode: MuiTelInputCountry | null
+  countryName: string | undefined
   forceCallingCode?: boolean
   isFlagsMenuOpened: boolean
   disableDropdown?: boolean
@@ -20,6 +21,7 @@ const FlagButton = ({
   flagSize = 'small',
   isFlagsMenuOpened = false,
   isoCode,
+  countryName,
   ...iconButtonProps
 }: FlagButtonProps) => {
   return (
@@ -35,7 +37,7 @@ const FlagButton = ({
           sx={{ pointerEvents: 'none', aspectRatio: '1 / 1' }}
           component="span"
         >
-          <Flag size={flagSize} isoCode={isoCode} />
+          <Flag size={flagSize} isoCode={isoCode} countryName={countryName} />
         </IconButton>
       ) : (
         <IconButton
@@ -47,7 +49,7 @@ const FlagButton = ({
           aria-controls={isFlagsMenuOpened ? 'select-country' : undefined}
           aria-expanded={isFlagsMenuOpened ? 'true' : 'false'}
         >
-          <Flag size={flagSize} isoCode={isoCode} />
+          <Flag size={flagSize} isoCode={isoCode} countryName={countryName} />
         </IconButton>
       )}
       {forceCallingCode && isoCode ? (

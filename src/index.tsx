@@ -8,6 +8,7 @@ import {
   getValidCountry
 } from '@shared/helpers/country'
 import { putCursorAtEndOfInput } from '@shared/helpers/dom'
+import { getDisplayNames } from '@shared/helpers/intl'
 import { assocRefToPropRef } from '@shared/helpers/ref'
 import { removeOccurrence } from '@shared/helpers/string'
 import { useMismatchProps } from '@shared/hooks/useMissmatchProps'
@@ -80,6 +81,10 @@ const MuiTelInput = React.forwardRef(
         disableFormatting,
         continents
       })
+
+    const displayNames = React.useMemo(() => {
+      return getDisplayNames(langOfCountryName)
+    }, [langOfCountryName])
 
     const handleOpenFlagsMenu = (
       event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -191,6 +196,7 @@ const MuiTelInput = React.forwardRef(
                   forceCallingCode={forceCallingCode}
                   onClick={handleOpenFlagsMenu}
                   disabled={disabled}
+                  countryName={isoCode ? displayNames.of(isoCode) : 'unknown'}
                   flagSize={flagSize}
                   disableDropdown={Boolean(disableDropdown)}
                 />
@@ -208,7 +214,7 @@ const MuiTelInput = React.forwardRef(
             isoCode={isoCode}
             preferredCountries={preferredCountries}
             onClose={handleCloseFlagsMenu}
-            langOfCountryName={langOfCountryName}
+            displayNames={displayNames}
             onSelectCountry={handleChangeCountry}
             flagSize={flagSize}
             {...MenuProps}
