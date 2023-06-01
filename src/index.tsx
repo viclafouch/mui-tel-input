@@ -182,7 +182,6 @@ const MuiTelInput = React.forwardRef(
           }}
           onFocus={handleFocus}
           InputProps={{
-            ...InputProps,
             startAdornment: (
               <InputAdornment position="start" sx={{ flexShrink: 0 }}>
                 <FlagButton
@@ -196,7 +195,8 @@ const MuiTelInput = React.forwardRef(
                 />
               </InputAdornment>
             )
-          }}
+          }},
+          ...InputProps,
           {...restTextFieldProps}
         />
         {!disableDropdown ? (
