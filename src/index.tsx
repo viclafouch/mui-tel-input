@@ -194,9 +194,9 @@ const MuiTelInput = React.forwardRef(
                   disableDropdown={Boolean(disableDropdown)}
                 />
               </InputAdornment>
-            )
-          }},
-          ...InputProps,
+            ),
+            ...InputProps
+          }}
           {...restTextFieldProps}
         />
         {!disableDropdown ? (
