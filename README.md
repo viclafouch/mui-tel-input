@@ -2,8 +2,8 @@
   <img src="https://viclafouch.github.io/mui-tel-input/img/logo.svg" width="80" />
 </div>
 <div align="center">
-<h1>MUI tel input</h1>
-  <p>A phone number input designed for the React library <a href="https://mui.com/">MUI</a></p>
+<h1>Material UI tel input</h1>
+  <p>A phone number input designed for the React library <a href="https://material-ui.com/">Material UI</a></p>
 </div>
 <div align="center">
 
@@ -50,7 +50,7 @@ const MyComponent = () => {
 
 ## Changelog
 
-Go to [Github Releases](https://github.com/viclafouch/mui-tel-input/releases)
+Go to [GitHub Releases](https://github.com/viclafouch/mui-tel-input/releases)
 
 ## TypeScript
 
