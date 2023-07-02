@@ -11,14 +11,12 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/mui-tel-input.umd.js",
-  "module": "./dist/mui-tel-input.es.js",
+  "main": "./dist/mui-tel-input.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/mui-tel-input.es.js",
-      "types": "./dist/index.d.ts",
-      "require": "./dist/mui-tel-input.umd.js"
+      "types": "./dist/index.d.ts"
     }
   },
   "repository": {
