@@ -56,6 +56,7 @@ export function excludeCountries(
       return !excludedCountries.includes(isoCode)
     })
   }
+
   return countries
 }
 
@@ -68,6 +69,7 @@ export function filterCountries(
 
   if (matchIsArray(onlyCountries, true)) {
     const filteredCountries = getOnlyCountries(countries, onlyCountries)
+
     return matchIsArray(preferredCountries, true)
       ? sortedPreferredCountries(filteredCountries, preferredCountries)
       : filteredCountries
@@ -102,6 +104,7 @@ export function sortAlphabeticallyCountryCodes(
   return [...countryCodes].sort((countryCodeA, countryCodeB) => {
     const countryA = displayNames.of(countryCodeA) as string
     const countryB = displayNames.of(countryCodeB) as string
+
     return countryA.localeCompare(countryB)
   })
 }

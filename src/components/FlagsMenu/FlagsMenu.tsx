@@ -22,15 +22,20 @@ export type FlagsMenuProps = Partial<MenuProps> & {
   onSelectCountry: (isoCode: MuiTelInputCountry) => void
 }
 
+const defaultExcludedCountries: MuiTelInputCountry[] = []
+const defaultOnlyCountries: MuiTelInputCountry[] = []
+const defaultContinents: MuiTelInputContinent[] = []
+const defaultPreferredCountries: MuiTelInputCountry[] = []
+
 const FlagsMenu = ({
   anchorEl,
   isoCode,
   onSelectCountry,
-  excludedCountries = [],
-  onlyCountries = [],
+  excludedCountries = defaultExcludedCountries,
+  onlyCountries = defaultOnlyCountries,
   langOfCountryName = DEFAULT_LANG,
-  continents = [],
-  preferredCountries = [],
+  continents = defaultContinents,
+  preferredCountries = defaultPreferredCountries,
   className,
   flagSize = 'small',
   ...rest

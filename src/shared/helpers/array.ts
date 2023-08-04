@@ -3,6 +3,7 @@ export function matchIsArray(
   filled?: boolean
 ): value is unknown[] {
   const isArray = Array.isArray(value)
+
   return filled ? isArray && value.length > 0 : isArray
 }
 

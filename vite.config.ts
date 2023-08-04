@@ -51,9 +51,6 @@ export default defineConfig({
   plugins: [
     peerDepsExternal(),
     react(),
-    dts({
-      exclude: ['src/components/**/*'],
-      insertTypesEntry: true
-    })
+    dts({ rollupTypes: true })
   ]
 })

@@ -19,6 +19,7 @@ export function useMismatchProps(props: MuiTelInputProps) {
         onlyCountries,
         excludedCountries
       )
+
       if (intersection) {
         log(
           `[mui-tel-input] Not expected to have the country ${intersection} to be included in the 'onlyCountries' AND 'excludedCountries' props`
@@ -52,6 +53,7 @@ export function useMismatchProps(props: MuiTelInputProps) {
       const continentOfDefaultCountry = continents.some((continentCode) => {
         return CONTINENTS[continentCode].includes(defaultCountry)
       })
+
       if (!continentOfDefaultCountry) {
         log(
           `[mui-tel-input] Not expected to have a 'defaultCountry' prop (${defaultCountry}) and a 'continents' prop that are not contain the country (${defaultCountry})`

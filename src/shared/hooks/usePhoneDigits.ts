@@ -71,21 +71,25 @@ function matchIsIsoCodeAccepted(
   filters: Filters
 ): boolean {
   const { excludedCountries, onlyCountries, continents } = filters
+
   if (
     matchIsArray(excludedCountries, true) &&
     excludedCountries.includes(isoCode)
   ) {
     return false
   }
+
   if (matchIsArray(onlyCountries) && !onlyCountries.includes(isoCode)) {
     return false
   }
+
   if (
     matchIsArray(continents) &&
     !matchContinentsIncludeCountry(continents, isoCode)
   ) {
     return false
   }
+
   return true
 }
 
@@ -142,6 +146,7 @@ export default function usePhoneDigits({
 
   const typeNewValue = (inputValue: string): string => {
     asYouTypeRef.current.reset()
+
     return asYouTypeRef.current.input(inputValue)
   }
 
@@ -246,6 +251,7 @@ export default function usePhoneDigits({
     if (newCountry === state.isoCode) {
       return
     }
+
     const callingCode = COUNTRIES[newCountry]?.[0] as string
     const { inputValue, isoCode } = state
     const inputValueWithoutCallingCode = isoCode
