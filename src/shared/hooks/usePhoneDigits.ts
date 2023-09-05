@@ -169,8 +169,8 @@ export default function usePhoneDigits({
     prevValue: string,
     cursorStart: number
   ) => {
-    let cursor = event.target?.selectionStart || 0
-    const cursorCur = (event.target?.selectionStart || 0) + cursorStart
+    let cursor = event.target?.selectionStart ?? 0
+    const cursorCur = (event.target?.selectionStart ?? 0) + cursorStart
 
     const previousValueLenActual = prevValue.replace(/\s/g, '').length
 
@@ -197,6 +197,7 @@ export default function usePhoneDigits({
         cursor -= spacesPrevVal - spacesNewVal
       }
     }
+
     if (
       newValueLenAccActual < previousValueLenActual &&
       spacesNewVal > spacesPrevVal
@@ -239,10 +240,12 @@ export default function usePhoneDigits({
 
     const previousValueStore = previousValue
 
+    const phoneInfo = buildOnChangeInfo('input')
+
     // Check if the country is excluded, or not part on onlyCountries, etc..
     if (numberValue && (!country || !matchIsIsoCodeValid(country))) {
       onChange?.(numberValue, {
-        ...buildOnChangeInfo('input'),
+        ...phoneInfo,
         // we show the input value but without any formatting, or country..
         countryCode: null,
         countryCallingCode: null,
@@ -253,27 +256,22 @@ export default function usePhoneDigits({
         isoCode: null,
         inputValue: numberValue
       })
-    } else if (disableFormatting) {
-      onChange?.(numberValue, buildOnChangeInfo('input'))
-      setPreviousValue(numberValue)
-      setState({
-        isoCode: country,
-        inputValue: numberValue
-      })
     } else {
-      onChange?.(formattedValue, buildOnChangeInfo('input'))
-      setPreviousValue(formattedValue)
+      const valueToSet = disableFormatting ? numberValue : formattedValue
+      onChange?.(valueToSet, phoneInfo)
+      setPreviousValue(valueToSet)
       setState({
         isoCode: country,
-        inputValue: formattedValue
+        inputValue: valueToSet
       })
     }
+
     if (!disableFormatting) {
-      const countryCallingCodeLen =
-        buildOnChangeInfo('input').countryCallingCode?.length
+      const countryCallingCodeLen = phoneInfo.countryCallingCode?.length
       const cursorStart =
         forceCallingCode && countryCallingCodeLen
-          ? countryCallingCodeLen + 2
+          ? // +33 3 => starts at 4
+            countryCallingCodeLen + 2
           : 0
       setCursorPosition(event, formattedValue, previousValueStore, cursorStart)
     }
