@@ -7,7 +7,6 @@ import {
   getCallingCodeOfCountry,
   getValidCountry
 } from '@shared/helpers/country'
-import { putCursorAtEndOfInput } from '@shared/helpers/dom'
 import { assocRefToPropRef } from '@shared/helpers/ref'
 import { removeOccurrence } from '@shared/helpers/string'
 import { useMismatchProps } from '@shared/hooks/useMissmatchProps'
@@ -103,11 +102,6 @@ const MuiTelInput = React.forwardRef(
     const handleFocus = (
       event: React.FocusEvent<HTMLInputElement, Element>
     ): void => {
-      setTimeout(() => {
-        if (inputRef.current) {
-          putCursorAtEndOfInput(inputRef.current)
-        }
-      }, 0)
       onFocus?.(event)
     }
 
