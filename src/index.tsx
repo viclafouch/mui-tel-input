@@ -1,8 +1,6 @@
 import React from 'react'
 import FlagButton from '@components/FlagButton/FlagButton'
 import FlagsMenu from '@components/FlagsMenu/FlagsMenu'
-import InputAdornment from '@mui/material/InputAdornment'
-import TextField from '@mui/material/TextField'
 import {
   getCallingCodeOfCountry,
   getValidCountry
@@ -11,6 +9,8 @@ import { assocRefToPropRef } from '@shared/helpers/ref'
 import { removeOccurrence } from '@shared/helpers/string'
 import { useMismatchProps } from '@shared/hooks/useMissmatchProps'
 import usePhoneDigits from '@shared/hooks/usePhoneDigits'
+import InputAdornment from '@mui/material/InputAdornment'
+import TextField from '@mui/material/TextField'
 import type {
   MuiTelInputContinent,
   MuiTelInputCountry,
