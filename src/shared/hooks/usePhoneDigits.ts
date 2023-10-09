@@ -163,61 +163,6 @@ export default function usePhoneDigits({
     return `+${getCallingCodeOfCountry(country)}${inputValue}`
   }
 
-  const setCursorPosition = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    newValue: string,
-    prevValue: string,
-    cursorStart: number
-  ) => {
-    let cursor = event.target?.selectionStart ?? 0
-    const cursorCur = (event.target?.selectionStart ?? 0) + cursorStart
-
-    const previousValueLenActual = prevValue.replace(/\s/g, '').length
-
-    const newValueLen = newValue.length
-    const newValueLenAccActual = newValue.replace(/\s/g, '').length
-
-    const spacesPrevVal =
-      prevValue.substring(cursorStart, cursorCur).split(' ').length - 1
-    const spacesNewVal =
-      newValue.substring(cursorStart, cursorCur + 1).split(' ').length - 1
-
-    if (
-      newValueLenAccActual > previousValueLenActual &&
-      newValue[cursorCur - 1] === ' '
-    ) {
-      cursor += 1
-    } else if (
-      newValueLenAccActual > previousValueLenActual &&
-      spacesPrevVal > spacesNewVal
-    ) {
-      if (prevValue[cursor - 1] === ' ') {
-        cursor -= spacesPrevVal - spacesNewVal - 1
-      } else {
-        cursor -= spacesPrevVal - spacesNewVal
-      }
-    }
-
-    if (
-      newValueLenAccActual < previousValueLenActual &&
-      spacesNewVal > spacesPrevVal
-    ) {
-      if (newValue[cursor + 1] === ' ') {
-        cursor += spacesNewVal - spacesPrevVal + 1
-      } else {
-        cursor += spacesNewVal - spacesPrevVal
-      }
-    }
-
-    if (cursor > newValueLen) {
-      cursor = newValueLen
-    }
-
-    window.requestAnimationFrame(() => {
-      event.target.setSelectionRange(cursor, cursor)
-    })
-  }
-
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const inputValue = forceCallingCode
       ? makeSureStartWithPlusIsoCode(
@@ -237,8 +182,6 @@ export default function usePhoneDigits({
     const numberValue = asYouTypeRef.current.getNumberValue() || ''
 
     previousCountryRef.current = country
-
-    const previousValueStore = previousValue
 
     const phoneInfo = buildOnChangeInfo('input')
 
@@ -264,16 +207,6 @@ export default function usePhoneDigits({
         isoCode: country,
         inputValue: valueToSet
       })
-    }
-
-    if (!disableFormatting) {
-      const countryCallingCodeLen = phoneInfo.countryCallingCode?.length
-      const cursorStart =
-        forceCallingCode && countryCallingCodeLen
-          ? // +33 3 => starts at 4
-            countryCallingCodeLen + 2
-          : 0
-      setCursorPosition(event, formattedValue, previousValueStore, cursorStart)
     }
   }
 
