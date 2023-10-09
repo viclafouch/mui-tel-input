@@ -16,8 +16,8 @@
   "exports": {
     ".": {
       "import": "./dist/mui-tel-input.es.js",
-      "default": "./dist/mui-tel-input.es.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/mui-tel-input.es.js"
     }
   },
   "repository": {
