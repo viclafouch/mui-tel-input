@@ -122,7 +122,11 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
     })
   }
 
-  const getOptionLabel = (option: MuiTelAutocompleteOption) => {
+  const getOptionLabel = (option: string | MuiTelAutocompleteOption) => {
+    if (typeof option === 'string') {
+      return ''
+    }
+
     return option.countryCode
   }
 
@@ -138,6 +142,7 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
         <Autocomplete
           autoHighlight
           filterOptions={filterOptions}
+          freeSolo
           getOptionLabel={getOptionLabel}
           onChange={(event, newValue, reason) => {
             if (
@@ -149,16 +154,20 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
             }
 
             if (newValue !== null) {
-              onSelectCountry(newValue.countryCode)
+              if (typeof newValue !== 'string') {
+                onSelectCountry(newValue.countryCode)
+              }
             }
           }}
+          openOnFocus
           onClose={onClose}
-          open
           options={countriesFilteredOptions}
           PopperComponent={PopperComponent}
           renderInput={(params) => {
             return (
               <Styled.Input
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus
                 className="MuiTelInput-FlagsAutocomplete-Input"
                 inputProps={{
                   ...params.inputProps,
