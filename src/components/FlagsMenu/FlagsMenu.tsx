@@ -1,6 +1,5 @@
 import React from 'react'
 import FlagMenuItem from '@components/FlagMenuItem/FlagMenuItem'
-import Menu, { MenuProps } from '@mui/material/Menu'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
 import { ISO_CODES, MuiTelInputCountry } from '@shared/constants/countries'
 import { DEFAULT_LANG } from '@shared/constants/lang'
@@ -9,6 +8,7 @@ import {
   sortAlphabeticallyCountryCodes
 } from '@shared/helpers/country'
 import { getDisplayNames } from '@shared/helpers/intl'
+import Menu, { MenuProps } from '@mui/material/Menu'
 import { FlagSize } from '../../index.types'
 
 export type FlagsMenuProps = Partial<MenuProps> & {
@@ -22,15 +22,20 @@ export type FlagsMenuProps = Partial<MenuProps> & {
   onSelectCountry: (isoCode: MuiTelInputCountry) => void
 }
 
+const defaultExcludedCountries: MuiTelInputCountry[] = []
+const defaultOnlyCountries: MuiTelInputCountry[] = []
+const defaultContinents: MuiTelInputContinent[] = []
+const defaultPreferredCountries: MuiTelInputCountry[] = []
+
 const FlagsMenu = ({
   anchorEl,
   isoCode,
   onSelectCountry,
-  excludedCountries = [],
-  onlyCountries = [],
+  excludedCountries = defaultExcludedCountries,
+  onlyCountries = defaultOnlyCountries,
   langOfCountryName = DEFAULT_LANG,
-  continents = [],
-  preferredCountries = [],
+  continents = defaultContinents,
+  preferredCountries = defaultPreferredCountries,
   className,
   flagSize = 'small',
   ...rest

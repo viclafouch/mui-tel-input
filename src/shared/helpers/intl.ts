@@ -8,6 +8,7 @@ export function getDisplayNames(lang = DEFAULT_LANG): Intl.DisplayNames {
     })
   } catch (error) {
     log(error)
+
     return new Intl.DisplayNames(DEFAULT_LANG, {
       type: 'region'
     })

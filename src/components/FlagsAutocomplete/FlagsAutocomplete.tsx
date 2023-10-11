@@ -3,14 +3,6 @@
 import React from 'react'
 import { matchSorter } from 'match-sorter'
 import Flag from '@components/Flag/Flag'
-import Autocomplete, { AutocompleteProps } from '@mui/material/Autocomplete'
-import ClickAwayListener from '@mui/material/ClickAwayListener'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import Typography from '@mui/material/Typography'
-import type { FilterOptionsState } from '@mui/material/useAutocomplete'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
 import {
   COUNTRIES,
@@ -23,6 +15,14 @@ import {
   sortAlphabeticallyCountryCodes
 } from '@shared/helpers/country'
 import { getDisplayNames } from '@shared/helpers/intl'
+import Autocomplete, { AutocompleteProps } from '@mui/material/Autocomplete'
+import ClickAwayListener from '@mui/material/ClickAwayListener'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import Typography from '@mui/material/Typography'
+import type { FilterOptionsState } from '@mui/material/useAutocomplete'
 import { FlagSize } from '../../index.types'
 import { Styled } from './FlagsAutocomplete.styled'
 
@@ -34,6 +34,7 @@ type PopperComponentProps = {
 
 const PopperComponent = (props: PopperComponentProps) => {
   const { disablePortal, anchorEl, open, ...other } = props
+
   return <Styled.AutocompletePopper {...other} />
 }
 
@@ -158,7 +159,6 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
           renderInput={(params) => {
             return (
               <Styled.Input
-                autoFocus
                 className="MuiTelInput-FlagsAutocomplete-Input"
                 inputProps={{
                   ...params.inputProps,

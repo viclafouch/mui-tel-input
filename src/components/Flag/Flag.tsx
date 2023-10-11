@@ -15,6 +15,7 @@ const getSourceByIsoCode = (isoCode: MuiTelInputCountry | null) => {
   if (!isoCode) {
     return unknownFlag
   }
+
   // Not exist on https://flagcdn.com
   if (isoCode === 'TA' || isoCode === 'AC') {
     return {
@@ -22,6 +23,7 @@ const getSourceByIsoCode = (isoCode: MuiTelInputCountry | null) => {
       AC: FLAGS_SVG.AC
     }[isoCode]
   }
+
   return ''
 }
 

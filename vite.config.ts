@@ -2,7 +2,6 @@ import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import dts from 'vite-plugin-dts'
-import { ViteAliases } from 'vite-aliases'
 
 
 const path = require('path')
@@ -13,10 +12,18 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true
   },
+  resolve:{
+    alias:{
+      '@assets' : path.resolve(__dirname, './src/assets'),
+      '@shared' : path.resolve(__dirname, './src/shared'),
+      '@components' : path.resolve(__dirname, './src/components'),
+    },
+  },
   build: {
     target: 'esnext',
     minify: true,
     lib: {
+      formats: ['es'],
       entry: path.resolve(__dirname, 'src/index.tsx'),
       name: 'Mui-tel-input',
       fileName: format => `mui-tel-input.${format}.js`
@@ -47,14 +54,6 @@ export default defineConfig({
   plugins: [
     peerDepsExternal(),
     react(),
-    ViteAliases({
-      deep: false,
-      createGlobalAlias: false,
-      useTypescript: true
-    }),
-    dts({
-      exclude: ['src/components/**/*'],
-      insertTypesEntry: true
-    })
+    dts({ rollupTypes: true })
   ]
 })

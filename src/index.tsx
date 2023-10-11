@@ -4,8 +4,6 @@ import FlagsAutocomplete, {
   FlagsAutocompleteProps
 } from '@components/FlagsAutocomplete/FlagsAutocomplete'
 import FlagsMenu, { FlagsMenuProps } from '@components/FlagsMenu/FlagsMenu'
-import InputAdornment from '@mui/material/InputAdornment'
-import TextField from '@mui/material/TextField'
 import {
   getCallingCodeOfCountry,
   getValidCountry
@@ -15,6 +13,8 @@ import { assocRefToPropRef } from '@shared/helpers/ref'
 import { removeOccurrence } from '@shared/helpers/string'
 import { useMismatchProps } from '@shared/hooks/useMissmatchProps'
 import usePhoneDigits from '@shared/hooks/usePhoneDigits'
+import InputAdornment from '@mui/material/InputAdornment'
+import TextField from '@mui/material/TextField'
 import type {
   MuiTelInputContinent,
   MuiTelInputCountry,
@@ -24,17 +24,17 @@ import type {
 } from './index.types'
 
 export {
-  isValidPhoneNumber as matchIsValidTel,
   AsYouType,
-  getNumberType
+  getNumberType,
+  isValidPhoneNumber as matchIsValidTel
 } from 'libphonenumber-js'
 
 export type {
-  MuiTelInputProps,
-  MuiTelInputReason,
-  MuiTelInputInfo,
+  MuiTelInputContinent,
   MuiTelInputCountry,
-  MuiTelInputContinent
+  MuiTelInputInfo,
+  MuiTelInputProps,
+  MuiTelInputReason
 }
 
 type FlagsDropdownProps = Pick<MuiTelInputProps, 'allowSearch' | 'MenuProps'> &
@@ -54,7 +54,7 @@ const FlagsDropdown = (props: FlagsDropdownProps) => {
 const MuiTelInput = React.forwardRef(
   (props: MuiTelInputProps, propRef: MuiTelInputProps['ref']) => {
     const {
-      forceCallingCode,
+      forceCallingCode = false,
       onlyCountries,
       excludedCountries,
       defaultCountry,
@@ -68,7 +68,7 @@ const MuiTelInput = React.forwardRef(
       disabled,
       onChange,
       disableDropdown,
-      disableFormatting,
+      disableFormatting = false,
       focusOnSelectCountry,
       langOfCountryName,
       continents,
@@ -103,6 +103,7 @@ const MuiTelInput = React.forwardRef(
       event: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ): void => {
       event.preventDefault()
+
       if (!disabled || !disableDropdown) {
         setAnchorEl(textFieldRef.current)
       }
@@ -111,6 +112,7 @@ const MuiTelInput = React.forwardRef(
     const handleChangeCountry = (newCountry: MuiTelInputCountry): void => {
       setAnchorEl(null)
       onCountryChange(newCountry)
+
       if (focusOnSelectCountry && inputRef.current) {
         inputRef.current.focus()
       }
@@ -140,9 +142,12 @@ const MuiTelInput = React.forwardRef(
     ): void => {
       if (onCopy) {
         onCopy(event)
+
         return
       }
+
       const currentSelection = window.getSelection()
+
       if (currentSelection) {
         const valueWithoutSpaces = currentSelection
           .toString()
@@ -155,9 +160,11 @@ const MuiTelInput = React.forwardRef(
     const handleRefInput = (ref: React.RefObject<HTMLInputElement>): void => {
       // @ts-ignore
       inputRef.current = ref
+
       if (InputProps?.inputRef) {
         assocRefToPropRef(ref, InputProps.inputRef)
       }
+
       if (inputRefFromProps) {
         assocRefToPropRef(ref, inputRefFromProps)
       }
@@ -166,6 +173,7 @@ const MuiTelInput = React.forwardRef(
     const handleRef = (ref: HTMLDivElement | null): void => {
       // @ts-ignore
       textFieldRef.current = ref
+
       if (propRef) {
         assocRefToPropRef(ref, propRef)
       }
@@ -200,7 +208,6 @@ const MuiTelInput = React.forwardRef(
           }}
           onFocus={handleFocus}
           InputProps={{
-            ...InputProps,
             startAdornment: (
               <InputAdornment position="start" sx={{ flexShrink: 0 }}>
                 <FlagButton
@@ -213,7 +220,8 @@ const MuiTelInput = React.forwardRef(
                   disableDropdown={Boolean(disableDropdown)}
                 />
               </InputAdornment>
-            )
+            ),
+            ...InputProps
           }}
           {...restTextFieldProps}
         />

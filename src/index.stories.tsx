@@ -1,7 +1,7 @@
 import React from 'react'
 import { ISO_CODES } from '@shared/constants/countries'
 import { action } from '@storybook/addon-actions'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import { MuiTelInput, MuiTelInputProps } from './index'
 
 export default {
@@ -41,9 +41,9 @@ export default {
       control: { type: 'object' }
     }
   }
-} as ComponentMeta<typeof MuiTelInput>
+} as Meta<typeof MuiTelInput>
 
-export const Primary: ComponentStory<typeof MuiTelInput> = (args) => {
+export const Primary: StoryFn<typeof MuiTelInput> = (args) => {
   const { value, ...rest } = args
   const [state, setState] = React.useState<string | undefined>(undefined)
 
@@ -58,6 +58,8 @@ export const Primary: ComponentStory<typeof MuiTelInput> = (args) => {
     <MuiTelInput
       {...rest}
       value={state}
+      defaultCountry="FR"
+      forceCallingCode
       preferredCountries={['FR']}
       onChange={handleChange}
     />

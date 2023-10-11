@@ -14,8 +14,8 @@ type UsePhoneDigitsParams = {
   value: string
   onChange?: (value: string, info: MuiTelInputInfo) => void
   defaultCountry?: MuiTelInputCountry
-  forceCallingCode?: boolean
-  disableFormatting?: boolean
+  forceCallingCode: boolean
+  disableFormatting: boolean
   excludedCountries?: MuiTelInputCountry[]
   onlyCountries?: MuiTelInputCountry[]
   continents?: MuiTelInputContinent[]
@@ -29,8 +29,8 @@ type State = {
 type GetInitialStateParams = {
   defaultCountry?: MuiTelInputCountry
   initialValue: string
-  forceCallingCode?: boolean
-  disableFormatting?: boolean
+  forceCallingCode: boolean
+  disableFormatting: boolean
 }
 
 export function getInitialState(params: GetInitialStateParams): State {
@@ -71,21 +71,25 @@ function matchIsIsoCodeAccepted(
   filters: Filters
 ): boolean {
   const { excludedCountries, onlyCountries, continents } = filters
+
   if (
     matchIsArray(excludedCountries, true) &&
     excludedCountries.includes(isoCode)
   ) {
     return false
   }
+
   if (matchIsArray(onlyCountries) && !onlyCountries.includes(isoCode)) {
     return false
   }
+
   if (
     matchIsArray(continents) &&
     !matchContinentsIncludeCountry(continents, isoCode)
   ) {
     return false
   }
+
   return true
 }
 
@@ -142,6 +146,7 @@ export default function usePhoneDigits({
 
   const typeNewValue = (inputValue: string): string => {
     asYouTypeRef.current.reset()
+
     return asYouTypeRef.current.input(inputValue)
   }
 
@@ -178,10 +183,12 @@ export default function usePhoneDigits({
 
     previousCountryRef.current = country
 
+    const phoneInfo = buildOnChangeInfo('input')
+
     // Check if the country is excluded, or not part on onlyCountries, etc..
     if (numberValue && (!country || !matchIsIsoCodeValid(country))) {
       onChange?.(numberValue, {
-        ...buildOnChangeInfo('input'),
+        ...phoneInfo,
         // we show the input value but without any formatting, or country..
         countryCode: null,
         countryCallingCode: null,
@@ -192,19 +199,13 @@ export default function usePhoneDigits({
         isoCode: null,
         inputValue: numberValue
       })
-    } else if (disableFormatting) {
-      onChange?.(numberValue, buildOnChangeInfo('input'))
-      setPreviousValue(numberValue)
-      setState({
-        isoCode: country,
-        inputValue: numberValue
-      })
     } else {
-      onChange?.(formattedValue, buildOnChangeInfo('input'))
-      setPreviousValue(formattedValue)
+      const valueToSet = disableFormatting ? numberValue : formattedValue
+      onChange?.(valueToSet, phoneInfo)
+      setPreviousValue(valueToSet)
       setState({
         isoCode: country,
-        inputValue: formattedValue
+        inputValue: valueToSet
       })
     }
   }
@@ -215,12 +216,19 @@ export default function usePhoneDigits({
       const newState = getInitialState({
         initialValue: value,
         defaultCountry,
-        forceCallingCode
+        forceCallingCode,
+        disableFormatting
       })
       previousCountryRef.current = newState.isoCode
       setState(newState)
     }
-  }, [value, previousValue, defaultCountry, forceCallingCode])
+  }, [
+    value,
+    previousValue,
+    defaultCountry,
+    forceCallingCode,
+    disableFormatting
+  ])
 
   React.useEffect(() => {
     if (defaultCountry !== previousDefaultCountry) {
@@ -229,7 +237,8 @@ export default function usePhoneDigits({
       const { inputValue, isoCode } = getInitialState({
         initialValue: '',
         defaultCountry,
-        forceCallingCode
+        forceCallingCode,
+        disableFormatting
       })
       setPreviousValue(inputValue)
       asYouTypeRef.current.input(inputValue)
@@ -240,12 +249,19 @@ export default function usePhoneDigits({
         isoCode
       })
     }
-  }, [defaultCountry, previousDefaultCountry, onChange, forceCallingCode])
+  }, [
+    defaultCountry,
+    previousDefaultCountry,
+    onChange,
+    forceCallingCode,
+    disableFormatting
+  ])
 
   const onCountryChange = (newCountry: MuiTelInputCountry): void => {
     if (newCountry === state.isoCode) {
       return
     }
+
     const callingCode = COUNTRIES[newCountry]?.[0] as string
     const { inputValue, isoCode } = state
     const inputValueWithoutCallingCode = isoCode
