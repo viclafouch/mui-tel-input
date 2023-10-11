@@ -37,7 +37,7 @@ export type {
 const MuiTelInput = React.forwardRef(
   (props: MuiTelInputProps, propRef: MuiTelInputProps['ref']) => {
     const {
-      forceCallingCode,
+      forceCallingCode = false,
       onlyCountries,
       excludedCountries,
       defaultCountry,
@@ -51,7 +51,7 @@ const MuiTelInput = React.forwardRef(
       disabled,
       onChange,
       disableDropdown,
-      disableFormatting,
+      disableFormatting = false,
       focusOnSelectCountry,
       langOfCountryName,
       continents,

@@ -14,8 +14,8 @@ type UsePhoneDigitsParams = {
   value: string
   onChange?: (value: string, info: MuiTelInputInfo) => void
   defaultCountry?: MuiTelInputCountry
-  forceCallingCode?: boolean
-  disableFormatting?: boolean
+  forceCallingCode: boolean
+  disableFormatting: boolean
   excludedCountries?: MuiTelInputCountry[]
   onlyCountries?: MuiTelInputCountry[]
   continents?: MuiTelInputContinent[]
@@ -29,8 +29,8 @@ type State = {
 type GetInitialStateParams = {
   defaultCountry?: MuiTelInputCountry
   initialValue: string
-  forceCallingCode?: boolean
-  disableFormatting?: boolean
+  forceCallingCode: boolean
+  disableFormatting: boolean
 }
 
 export function getInitialState(params: GetInitialStateParams): State {
@@ -216,12 +216,19 @@ export default function usePhoneDigits({
       const newState = getInitialState({
         initialValue: value,
         defaultCountry,
-        forceCallingCode
+        forceCallingCode,
+        disableFormatting
       })
       previousCountryRef.current = newState.isoCode
       setState(newState)
     }
-  }, [value, previousValue, defaultCountry, forceCallingCode])
+  }, [
+    value,
+    previousValue,
+    defaultCountry,
+    forceCallingCode,
+    disableFormatting
+  ])
 
   React.useEffect(() => {
     if (defaultCountry !== previousDefaultCountry) {
@@ -230,7 +237,8 @@ export default function usePhoneDigits({
       const { inputValue, isoCode } = getInitialState({
         initialValue: '',
         defaultCountry,
-        forceCallingCode
+        forceCallingCode,
+        disableFormatting
       })
       setPreviousValue(inputValue)
       asYouTypeRef.current.input(inputValue)
@@ -241,7 +249,13 @@ export default function usePhoneDigits({
         isoCode
       })
     }
-  }, [defaultCountry, previousDefaultCountry, onChange, forceCallingCode])
+  }, [
+    defaultCountry,
+    previousDefaultCountry,
+    onChange,
+    forceCallingCode,
+    disableFormatting
+  ])
 
   const onCountryChange = (newCountry: MuiTelInputCountry): void => {
     if (newCountry === state.isoCode) {
