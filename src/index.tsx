@@ -42,13 +42,13 @@ type FlagsDropdownProps = Pick<MuiTelInputProps, 'allowSearch' | 'MenuProps'> &
   FlagsMenuProps
 
 const FlagsDropdown = (props: FlagsDropdownProps) => {
-  const { allowSearch, MenuProps, ...rest } = props
+  const { allowSearch, MenuProps, ...restProps } = props
 
   if (allowSearch) {
-    return <FlagsAutocomplete {...rest} />
+    return <FlagsAutocomplete {...restProps} />
   }
 
-  return <FlagsMenu {...MenuProps} {...rest} />
+  return <FlagsMenu {...MenuProps} {...restProps} />
 }
 
 const MuiTelInput = React.forwardRef(

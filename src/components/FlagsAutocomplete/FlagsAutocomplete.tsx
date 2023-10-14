@@ -1,5 +1,3 @@
-/* eslint-disable react/require-default-props */
-
 import React from 'react'
 import { matchSorter } from 'match-sorter'
 import Flag from '@components/Flag/Flag'
@@ -21,26 +19,16 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
+import type { PopperProps } from '@mui/material/Popper'
 import Typography from '@mui/material/Typography'
 import type { FilterOptionsState } from '@mui/material/useAutocomplete'
 import { FlagSize } from '../../index.types'
 import { Styled } from './FlagsAutocomplete.styled'
 
-type PopperComponentProps = {
-  anchorEl?: unknown
-  disablePortal?: boolean
-  open: boolean
-}
-
-const PopperComponent = (props: PopperComponentProps) => {
-  const { disablePortal, anchorEl, open, ...other } = props
-
-  return <Styled.AutocompletePopper {...other} />
-}
-
-PopperComponent.defaultProps = {
-  anchorEl: null,
-  disablePortal: false
+const PopperComponent = (
+  props: Omit<PopperProps, 'anchorEl' | 'disablePortal' | 'children' | 'open'>
+) => {
+  return <Styled.AutocompletePopper {...props} />
 }
 
 export type FlagsAutocompleteProps = Partial<
@@ -68,21 +56,28 @@ export type MuiTelAutocompleteOption = {
   callingCode: string
   displayName: string
 }
+type MuiTelAutocompleteChangeHandlerValue =
+  | string
+  | MuiTelAutocompleteOption
+  | null
 
-const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
-  const {
-    anchorEl,
-    onSelectCountry,
-    excludedCountries,
-    onlyCountries,
-    langOfCountryName,
-    continents,
-    preferredCountries,
-    className,
-    flagSize,
-    onClose
-  } = props
+const defaultExcludedCountries: MuiTelInputCountry[] = []
+const defaultOnlyCountries: MuiTelInputCountry[] = []
+const defaultContinents: MuiTelInputContinent[] = []
+const defaultPreferredCountries: MuiTelInputCountry[] = []
 
+const FlagsAutocomplete = ({
+  anchorEl,
+  className,
+  onClose,
+  onSelectCountry,
+  continents = defaultContinents,
+  excludedCountries = defaultExcludedCountries,
+  onlyCountries = defaultOnlyCountries,
+  preferredCountries = defaultPreferredCountries,
+  flagSize = 'small' as FlagSize,
+  langOfCountryName = DEFAULT_LANG
+}: FlagsAutocompleteProps) => {
   // Idem for the translations
   const displayNames = React.useMemo(() => {
     return getDisplayNames(langOfCountryName)
@@ -130,6 +125,32 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
     return option.countryCode
   }
 
+  const handleSelectCountry = (
+    event: React.SyntheticEvent<Element, Event>,
+    newValue: MuiTelAutocompleteChangeHandlerValue,
+    reason: string
+  ) => {
+    if (
+      event.type === 'keydown' &&
+      (event as React.KeyboardEvent).key === 'Backspace' &&
+      reason === 'removeOption'
+    ) {
+      return
+    }
+
+    if (newValue !== null) {
+      // NOTE: Suppose that newValue is not null
+      // this means that newValue can satisfy either string or MuiTelAutocompleteOption
+      // If the type of newValue is a string, this means that we're in our initial case where
+      // no country is selected.
+      // Otherwise, we should call `onSelectCountry` to updated the country code that's
+      // been selected.
+      if (typeof newValue !== 'string') {
+        onSelectCountry(newValue.countryCode)
+      }
+    }
+  }
+
   return (
     <Styled.FlagsAutocompletePopper
       anchorEl={anchorEl}
@@ -144,21 +165,7 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
           filterOptions={filterOptions}
           freeSolo
           getOptionLabel={getOptionLabel}
-          onChange={(event, newValue, reason) => {
-            if (
-              event.type === 'keydown' &&
-              (event as React.KeyboardEvent).key === 'Backspace' &&
-              reason === 'removeOption'
-            ) {
-              return
-            }
-
-            if (newValue !== null) {
-              if (typeof newValue !== 'string') {
-                onSelectCountry(newValue.countryCode)
-              }
-            }
-          }}
+          onChange={handleSelectCountry}
           openOnFocus
           onClose={onClose}
           options={countriesFilteredOptions}
@@ -173,7 +180,6 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
                   ...params.inputProps,
                   'data-testid': 'flagsautocomplete-input'
                 }}
-                placeholder="Search for a country"
                 ref={params.InputProps.ref}
               />
             )
@@ -213,15 +219,6 @@ const FlagsAutocomplete = (props: FlagsAutocompleteProps) => {
       </ClickAwayListener>
     </Styled.FlagsAutocompletePopper>
   )
-}
-
-FlagsAutocomplete.defaultProps = {
-  continents: [],
-  excludedCountries: [],
-  flagSize: 'small' as FlagSize,
-  langOfCountryName: DEFAULT_LANG,
-  onlyCountries: [],
-  preferredCountries: []
 }
 
 export default FlagsAutocomplete

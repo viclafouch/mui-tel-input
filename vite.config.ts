@@ -45,7 +45,7 @@ export default defineConfig({
           '@mui/material/ListItemIcon': 'ListItemIcon',
           '@mui/material/ListItemText': 'ListItemText',
           '@mui/material/colors': 'colors',
-          '@mui/material/Autocompelte': 'Autocomplete',
+          '@mui/material/Autocomplete': 'Autocomplete',
           '@mui/material/ClickAwayListener': 'ClickAwayListener',
         }
       }
