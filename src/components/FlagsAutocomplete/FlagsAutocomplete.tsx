@@ -22,7 +22,7 @@ import ListItemText from '@mui/material/ListItemText'
 import type { PopperProps } from '@mui/material/Popper'
 import Typography from '@mui/material/Typography'
 import type { FilterOptionsState } from '@mui/material/useAutocomplete'
-import { FlagSize } from '../../index.types'
+import type { FlagSize } from '../../index.types'
 import { Styled } from './FlagsAutocomplete.styled'
 
 const PopperComponent = (
