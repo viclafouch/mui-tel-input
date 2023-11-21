@@ -3,7 +3,7 @@ import Flag from '@components/Flag/Flag'
 import { COUNTRIES, MuiTelInputCountry } from '@shared/constants/countries'
 import MenuItem, { MenuItemProps } from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
-import { FlagSize } from '../../index.types'
+import { FlagSize, GetFlagSources } from '../../index.types'
 import { Styled } from './FlagsMenuItem.styled'
 
 export type FlagMenuItemProps = MenuItemProps & {
@@ -11,6 +11,7 @@ export type FlagMenuItemProps = MenuItemProps & {
   onSelectCountry: (isoCode: MuiTelInputCountry) => void
   countryName: string | undefined
   flagSize?: FlagSize
+  getFlagSources?: GetFlagSources
 }
 
 const FlagMenuItem = ({
@@ -18,6 +19,7 @@ const FlagMenuItem = ({
   onSelectCountry,
   countryName,
   flagSize = 'small',
+  getFlagSources = undefined,
   ...menuItemProps
 }: FlagMenuItemProps) => {
   const handleClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
@@ -34,7 +36,12 @@ const FlagMenuItem = ({
       className="MuiTelInput-MenuItem"
     >
       <Styled.ListItemIcon className="MuiTelInput-ListItemIcon-flag">
-        <Flag size={flagSize} isoCode={isoCode} countryName={countryName} />
+        <Flag
+          size={flagSize}
+          isoCode={isoCode}
+          countryName={countryName}
+          getFlagSources={getFlagSources}
+        />
       </Styled.ListItemIcon>
       <Styled.ListItemText className="MuiTelInput-ListItemText-country">
         {countryName}

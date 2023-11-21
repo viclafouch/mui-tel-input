@@ -9,7 +9,7 @@ import {
 } from '@shared/helpers/country'
 import { getDisplayNames } from '@shared/helpers/intl'
 import Menu, { MenuProps } from '@mui/material/Menu'
-import { FlagSize } from '../../index.types'
+import { FlagSize, GetFlagSources } from '../../index.types'
 
 export type FlagsMenuProps = Partial<MenuProps> & {
   isoCode: MuiTelInputCountry | null
@@ -20,6 +20,7 @@ export type FlagsMenuProps = Partial<MenuProps> & {
   flagSize?: FlagSize
   continents?: MuiTelInputContinent[]
   onSelectCountry: (isoCode: MuiTelInputCountry) => void
+  getFlagSources?: GetFlagSources
 }
 
 const defaultExcludedCountries: MuiTelInputCountry[] = []
@@ -38,6 +39,7 @@ const FlagsMenu = ({
   preferredCountries = defaultPreferredCountries,
   className,
   flagSize = 'small',
+  getFlagSources = undefined,
   ...rest
 }: FlagsMenuProps) => {
   // Idem for the translations
@@ -80,6 +82,7 @@ const FlagsMenu = ({
             selected={isoCodeItem === isoCode}
             id={`country-${isoCodeItem}`}
             flagSize={flagSize}
+            getFlagSources={getFlagSources}
           />
         )
       })}
