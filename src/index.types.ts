@@ -15,6 +15,24 @@ export type FlagSize = `small` | 'medium'
 
 export type MuiTelInputReason = 'country' | 'input'
 
+type FlagSource =
+  | {
+      type: string
+      width: number
+      srcSet: string
+      src?: never
+    }
+  | {
+      type?: never
+      width: number
+      srcSet?: never
+      src: string
+    }
+export type GetFlagSources = (
+  isoCode: MuiTelInputCountry | null,
+  size: FlagSize
+) => FlagSource[]
+
 export interface MuiTelInputInfo {
   countryCode: MuiTelInputCountry | null
   countryCallingCode: string | null
@@ -40,4 +58,5 @@ export interface MuiTelInputProps extends BaseTextFieldProps {
   onChange?: (value: string, info: MuiTelInputInfo) => void
   value?: string | undefined
   MenuProps?: Partial<MenuProps>
+  getFlagSources?: GetFlagSources
 }

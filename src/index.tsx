@@ -59,6 +59,7 @@ const MuiTelInput = React.forwardRef(
       MenuProps,
       className,
       flagSize = 'small',
+      getFlagSources,
       ...restTextFieldProps
     } = props
     const textFieldRef = React.useRef<HTMLDivElement>(null)
@@ -219,6 +220,7 @@ const MuiTelInput = React.forwardRef(
             langOfCountryName={langOfCountryName}
             onSelectCountry={handleChangeCountry}
             flagSize={flagSize}
+            getFlagSources={getFlagSources}
             {...MenuProps}
           />
         ) : null}
