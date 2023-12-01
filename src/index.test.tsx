@@ -1,8 +1,8 @@
 import React from 'react'
 import { vi } from 'vitest'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MuiTelInput, MuiTelInputInfo, MuiTelInputProps } from './index'
+import { MuiTelInput, MuiTelInputInfo } from './index'
 import {
   closeFlagsMenu,
   expectButtonContainsCallingCode,
@@ -15,8 +15,10 @@ import {
 } from './testUtils'
 import '@testing-library/jest-dom'
 
-const MuiTelWrapper = (props: Partial<MuiTelInputProps>) => {
-  const { onChange, ...rest } = props
+const MuiTelWrapper = ({
+  onChange,
+  ...rest
+}: React.ComponentProps<typeof MuiTelInput>) => {
   const [state, setState] = React.useState<string | undefined>(undefined)
 
   const handleChange = (newValue: string, info: MuiTelInputInfo) => {
@@ -88,7 +90,7 @@ describe('components/MuiTelInput', () => {
 
   describe('prop/disableDropdown', () => {
     test('should not displayed the button if disableDropdown is true', () => {
-      render(<MuiTelWrapper disableDropdown />)
+      const screen = render(<MuiTelWrapper disableDropdown />)
       const button = screen.queryByRole('button')
       expect(button).toBe(null)
     })
@@ -127,7 +129,7 @@ describe('components/MuiTelInput', () => {
   describe('prop/onDoubleClick', () => {
     test('should fire the onDoubleClick callback prop', () => {
       const callback = vi.fn(() => {})
-      render(<MuiTelWrapper onDoubleClick={callback} />)
+      const screen = render(<MuiTelWrapper onDoubleClick={callback} />)
       const input = screen.getByRole('textbox')
       fireEvent.doubleClick(input)
       expect(callback).toHaveBeenCalledTimes(1)
@@ -137,8 +139,10 @@ describe('components/MuiTelInput', () => {
   describe('prop/onFocus', () => {
     test('should fire the onFocus callback prop', () => {
       const callback = vi.fn(() => {})
-      render(<MuiTelWrapper onFocus={callback} />)
+
+      const screen = render(<MuiTelWrapper onFocus={callback} />)
       const input = screen.getByRole('textbox')
+
       fireEvent.focus(input)
       expect(callback).toHaveBeenCalledTimes(1)
     })
@@ -168,7 +172,7 @@ describe('components/MuiTelInput', () => {
     })
 
     test('should display US country if `defaultCountry` is not provided', () => {
-      render(<MuiTelWrapper forceCallingCode />)
+      render(<MuiTelWrapper forceCallingCode defaultCountry="US" />)
       expectButtonIsFlagOf('US')
       expectButtonContainsCallingCode('1')
       expect(getInputElement().value).toBe('')
@@ -184,7 +188,7 @@ describe('components/MuiTelInput', () => {
 
     test('should not change country even if same country code', async () => {
       // JM and US have the same country code, +1
-      render(<MuiTelWrapper forceCallingCode />)
+      render(<MuiTelWrapper forceCallingCode defaultCountry="US" />)
       expectButtonIsFlagOf('US')
       expectButtonContainsCallingCode('1')
       await typeInInputElement('87654')
@@ -226,12 +230,14 @@ describe('components/MuiTelInput', () => {
 
     test('should update the inputValue if rerender a new value', () => {
       const { rerender } = render(
-        <MuiTelWrapper forceCallingCode value="+33626" />
+        <MuiTelWrapper forceCallingCode defaultCountry="US" value="+33626" />
       )
       expectButtonIsFlagOf('FR')
       expectButtonContainsCallingCode('33')
       expect(getInputElement().value).toBe('6 26')
-      rerender(<MuiTelWrapper forceCallingCode value="+32721" />)
+      rerender(
+        <MuiTelWrapper defaultCountry="US" forceCallingCode value="+32721" />
+      )
       expectButtonIsFlagOf('BE')
       expectButtonContainsCallingCode('32')
       expect(getInputElement().value).toBe('72 1')
@@ -348,7 +354,7 @@ describe('components/MuiTelInput', () => {
 
   describe('prop/excludedCountries', () => {
     test('should not displayed excluded countries in the flags list', () => {
-      render(<MuiTelWrapper excludedCountries={['FR', 'BE']} />)
+      const screen = render(<MuiTelWrapper excludedCountries={['FR', 'BE']} />)
       fireEvent.click(getButtonElement())
       expect(screen.getAllByRole('option').length).toBeGreaterThan(0)
       expect(screen.queryByTestId('option-FR')).toBeFalsy()
@@ -372,7 +378,9 @@ describe('components/MuiTelInput', () => {
     })
 
     test('should only displayed only countries', () => {
-      render(<MuiTelWrapper onlyCountries={['FR', 'BE', 'GB']} />)
+      const screen = render(
+        <MuiTelWrapper onlyCountries={['FR', 'BE', 'GB']} />
+      )
       fireEvent.click(getButtonElement())
       expect(screen.getByTestId('option-FR')).toBeTruthy()
       expect(screen.getByTestId('option-BE')).toBeTruthy()
@@ -383,7 +391,7 @@ describe('components/MuiTelInput', () => {
 
   describe('prop/continents', () => {
     test('should only displayed the correct countries of the country', () => {
-      render(<MuiTelWrapper continents={['EU']} />)
+      const screen = render(<MuiTelWrapper continents={['EU']} />)
       fireEvent.click(getButtonElement())
       expect(screen.getAllByRole('option').length).toBe(53)
     })
@@ -440,14 +448,14 @@ describe('components/MuiTelInput', () => {
 
   describe('Flags Menu', () => {
     test('should open flags menu', () => {
-      render(<MuiTelWrapper />)
+      const screen = render(<MuiTelWrapper />)
       expect(screen.queryByRole('presentation')).toBeFalsy()
       fireEvent.click(getButtonElement())
       expect(screen.getByRole('presentation')).toBeTruthy()
     })
 
     test('should close flags menu', async () => {
-      render(<MuiTelWrapper />)
+      const screen = render(<MuiTelWrapper />)
       fireEvent.click(getButtonElement())
       expect(screen.getByRole('presentation')).toBeTruthy()
       await closeFlagsMenu()

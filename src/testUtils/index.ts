@@ -3,7 +3,8 @@ import { MuiTelInputCountry } from '@shared/constants/countries'
 import {
   fireEvent,
   screen,
-  waitForElementToBeRemoved
+  waitForElementToBeRemoved,
+  within
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -16,15 +17,15 @@ export function getButtonElement(): HTMLButtonElement {
 }
 
 export function expectButtonIsFlagOf(isoCode: MuiTelInputCountry) {
-  expect(getButtonElement()).toHaveTextContent(isoCode)
+  expect(within(getButtonElement()).getByTestId(isoCode)).toBeInTheDocument()
+}
+
+export function expectButtonNotIsFlagOf(isoCode: MuiTelInputCountry) {
+  expect(within(getButtonElement()).queryByRole(isoCode)).toBeNull()
 }
 
 export function expectButtonContainsCallingCode(callingCode: string) {
   expect(screen.getByText(`+${callingCode}`)).toBeInTheDocument()
-}
-
-export function expectButtonNotIsFlagOf(isoCode: MuiTelInputCountry) {
-  expect(getButtonElement()).not.toHaveTextContent(isoCode)
 }
 
 export async function typeInInputElement(

@@ -58,8 +58,12 @@ export const Primary: StoryFn<typeof MuiTelInput> = (args) => {
     <MuiTelInput
       {...rest}
       value={state}
-      defaultCountry="FR"
+      getFlagElement={(isoCode, { imgProps }) => {
+        // eslint-disable-next-line jsx-a11y/alt-text
+        return <img {...imgProps} />
+      }}
       forceCallingCode
+      defaultCountry="FR"
       preferredCountries={['FR']}
       onChange={handleChange}
     />

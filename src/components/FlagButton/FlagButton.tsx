@@ -1,27 +1,53 @@
 import React from 'react'
 import Flag from '@components/Flag/Flag'
 import type { MuiTelInputCountry } from '@shared/constants/countries'
+import { DEFAULT_LANG } from '@shared/constants/lang'
 import { getCallingCodeOfCountry } from '@shared/helpers/country'
+import { getDefaultImgProps } from '@shared/helpers/flag'
+import { getDisplayNames } from '@shared/helpers/intl'
 import IconButton, { IconButtonProps } from '@mui/material/IconButton'
-import { FlagSize } from '../../index.types'
+import type { GetFlagElement } from '../../index.types'
 import { Styled } from './FlagButton.styled'
 
 export type FlagButtonProps = IconButtonProps & {
   isoCode: MuiTelInputCountry | null
   forceCallingCode?: boolean
   isFlagsMenuOpened: boolean
+  langOfCountryName?: string
   disableDropdown?: boolean
-  flagSize?: FlagSize
+  getFlagElement: GetFlagElement
+  unknownFlagElement: React.ReactNode
 }
 
 const FlagButton = ({
   disableDropdown = false,
   forceCallingCode = false,
-  flagSize = 'small',
+  langOfCountryName = DEFAULT_LANG,
   isFlagsMenuOpened = false,
+  getFlagElement,
+  unknownFlagElement,
   isoCode,
   ...iconButtonProps
 }: FlagButtonProps) => {
+  const displayNames = React.useMemo(() => {
+    return getDisplayNames(langOfCountryName)
+  }, [langOfCountryName])
+
+  const flagElement = (
+    <Flag isoCode={isoCode}>
+      {isoCode
+        ? getFlagElement(isoCode, {
+            countryName: displayNames.of(isoCode) || '',
+            isSelected: true,
+            imgProps: getDefaultImgProps({
+              isoCode,
+              countryName: displayNames.of(isoCode) || ''
+            })
+          })
+        : unknownFlagElement}
+    </Flag>
+  )
+
   return (
     <>
       {disableDropdown ? (
@@ -35,7 +61,7 @@ const FlagButton = ({
           sx={{ pointerEvents: 'none', aspectRatio: '1 / 1' }}
           component="span"
         >
-          <Flag size={flagSize} isoCode={isoCode} />
+          {flagElement}
         </IconButton>
       ) : (
         <IconButton
@@ -47,7 +73,7 @@ const FlagButton = ({
           aria-controls={isFlagsMenuOpened ? 'select-country' : undefined}
           aria-expanded={isFlagsMenuOpened ? 'true' : 'false'}
         >
-          <Flag size={flagSize} isoCode={isoCode} />
+          {flagElement}
         </IconButton>
       )}
       {forceCallingCode && isoCode ? (

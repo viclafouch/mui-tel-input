@@ -9,6 +9,7 @@ describe('helpers/dom', () => {
     it('should have the correct selectionStart', () => {
       render(<input defaultValue="Hello" />)
       const element: HTMLInputElement = screen.getByRole('textbox')
+      element.focus()
       element.setSelectionRange(0, 0)
       putCursorAtEndOfInput(element)
       expect(element.selectionStart).toBe(5)

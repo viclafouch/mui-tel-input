@@ -6,6 +6,10 @@ import {
   getValidCountry
 } from '@shared/helpers/country'
 import { putCursorAtEndOfInput } from '@shared/helpers/dom'
+import {
+  defaultUnknownFlagElement,
+  getDefaultFlagElement
+} from '@shared/helpers/flag'
 import { assocRefToPropRef } from '@shared/helpers/ref'
 import { removeOccurrence } from '@shared/helpers/string'
 import { useMismatchProps } from '@shared/hooks/useMissmatchProps'
@@ -15,6 +19,7 @@ import TextField from '@mui/material/TextField'
 import type {
   MuiTelInputContinent,
   MuiTelInputCountry,
+  MuiTelInputFlagElement,
   MuiTelInputInfo,
   MuiTelInputProps,
   MuiTelInputReason
@@ -29,6 +34,7 @@ export {
 export type {
   MuiTelInputContinent,
   MuiTelInputCountry,
+  MuiTelInputFlagElement,
   MuiTelInputInfo,
   MuiTelInputProps,
   MuiTelInputReason
@@ -58,8 +64,8 @@ const MuiTelInput = React.forwardRef(
       preferredCountries,
       MenuProps,
       className,
-      flagSize = 'small',
-      getFlagSources,
+      getFlagElement = getDefaultFlagElement,
+      unknownFlagElement = defaultUnknownFlagElement,
       ...restTextFieldProps
     } = props
     const textFieldRef = React.useRef<HTMLDivElement>(null)
@@ -104,11 +110,10 @@ const MuiTelInput = React.forwardRef(
     const handleFocus = (
       event: React.FocusEvent<HTMLInputElement, Element>
     ): void => {
-      setTimeout(() => {
-        if (inputRef.current) {
-          putCursorAtEndOfInput(inputRef.current)
-        }
-      }, 0)
+      if (inputRef.current) {
+        putCursorAtEndOfInput(inputRef.current)
+      }
+
       onFocus?.(event)
     }
 
@@ -199,7 +204,8 @@ const MuiTelInput = React.forwardRef(
                   forceCallingCode={forceCallingCode}
                   onClick={handleOpenFlagsMenu}
                   disabled={disabled}
-                  flagSize={flagSize}
+                  getFlagElement={getFlagElement}
+                  unknownFlagElement={unknownFlagElement}
                   disableDropdown={Boolean(disableDropdown)}
                 />
               </InputAdornment>
@@ -219,8 +225,7 @@ const MuiTelInput = React.forwardRef(
             onClose={handleCloseFlagsMenu}
             langOfCountryName={langOfCountryName}
             onSelectCountry={handleChangeCountry}
-            flagSize={flagSize}
-            getFlagSources={getFlagSources}
+            getFlagElement={getFlagElement}
             {...MenuProps}
           />
         ) : null}

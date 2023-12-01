@@ -1,6 +1,7 @@
 import React from 'react'
 import { expect, vi } from 'vitest'
 import { ISO_CODES, MuiTelInputCountry } from '@shared/constants/countries'
+import { getDefaultFlagElement } from '@shared/helpers/flag'
 import { fireEvent, render, screen } from '@testing-library/react'
 import FlagsMenu from './FlagsMenu'
 import '@testing-library/jest-dom'
@@ -19,6 +20,7 @@ describe('components/FlagsMenu', () => {
       <FlagsMenu
         anchorEl={getAnchorEl()}
         isoCode="FR"
+        getFlagElement={getDefaultFlagElement}
         onSelectCountry={() => {}}
       />
     )
@@ -28,6 +30,7 @@ describe('components/FlagsMenu', () => {
     render(
       <FlagsMenu
         isoCode="FR"
+        getFlagElement={getDefaultFlagElement}
         excludedCountries={['FR']}
         onSelectCountry={() => {}}
       />
@@ -38,6 +41,7 @@ describe('components/FlagsMenu', () => {
     render(
       <FlagsMenu
         anchorEl={getAnchorEl()}
+        getFlagElement={getDefaultFlagElement}
         isoCode="FR"
         onSelectCountry={() => {}}
       />
@@ -52,6 +56,7 @@ describe('components/FlagsMenu', () => {
     render(
       <FlagsMenu
         anchorEl={getAnchorEl()}
+        getFlagElement={getDefaultFlagElement}
         isoCode="FR"
         onSelectCountry={callback}
       />
@@ -65,6 +70,7 @@ describe('components/FlagsMenu', () => {
     render(
       <FlagsMenu
         anchorEl={getAnchorEl()}
+        getFlagElement={getDefaultFlagElement}
         onlyCountries={['FR']}
         isoCode="FR"
         onSelectCountry={() => {}}
@@ -79,6 +85,7 @@ describe('components/FlagsMenu', () => {
     render(
       <FlagsMenu
         anchorEl={getAnchorEl()}
+        getFlagElement={getDefaultFlagElement}
         excludedCountries={['FR']}
         isoCode="FR"
         onSelectCountry={() => {}}
@@ -92,6 +99,7 @@ describe('components/FlagsMenu', () => {
       <FlagsMenu
         anchorEl={getAnchorEl()}
         excludedCountries={['FR']}
+        getFlagElement={getDefaultFlagElement}
         continents={['EU']}
         isoCode="FR"
         onSelectCountry={() => {}}
@@ -107,6 +115,7 @@ describe('components/FlagsMenu', () => {
       <FlagsMenu
         anchorEl={getAnchorEl()}
         onlyCountries={['VE']}
+        getFlagElement={getDefaultFlagElement}
         continents={['EU']}
         isoCode="FR"
         onSelectCountry={() => {}}
@@ -121,14 +130,20 @@ describe('components/FlagsMenu', () => {
       <FlagsMenu
         anchorEl={getAnchorEl()}
         preferredCountries={['FR', 'BE', 'VE']}
+        getFlagElement={getDefaultFlagElement}
         isoCode="FR"
         onSelectCountry={() => {}}
       />
     )
     const options = screen.getAllByRole('option')
-    expect(options[0]).toHaveTextContent('FR')
-    expect(options[1]).toHaveTextContent('BE')
-    expect(options[2]).toHaveTextContent('VE')
+    const imgs = screen.getAllByRole('img')
+
+    expect(options[0]).toContainElement(imgs[0])
+    expect(imgs[0]).toHaveAttribute('alt', 'France')
+    expect(options[1]).toContainElement(imgs[1])
+    expect(imgs[1]).toHaveAttribute('alt', 'Belgium')
+    expect(options[2]).toContainElement(imgs[2])
+    expect(imgs[2]).toHaveAttribute('alt', 'Venezuela')
   })
 
   test('should highlight preferred countries not excluded', () => {
@@ -136,13 +151,18 @@ describe('components/FlagsMenu', () => {
       <FlagsMenu
         anchorEl={getAnchorEl()}
         preferredCountries={['FR', 'BE', 'VE']}
+        getFlagElement={getDefaultFlagElement}
         excludedCountries={['FR']}
         isoCode="FR"
         onSelectCountry={() => {}}
       />
     )
     const options = screen.getAllByRole('option')
-    expect(options[0]).toHaveTextContent('BE')
-    expect(options[1]).toHaveTextContent('VE')
+    const imgs = screen.getAllByRole('img')
+
+    expect(options[0]).toContainElement(imgs[0])
+    expect(imgs[0]).toHaveAttribute('alt', 'Belgium')
+    expect(options[1]).toContainElement(imgs[1])
+    expect(imgs[1]).toHaveAttribute('alt', 'Venezuela')
   })
 })

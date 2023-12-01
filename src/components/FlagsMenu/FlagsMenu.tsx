@@ -9,7 +9,7 @@ import {
 } from '@shared/helpers/country'
 import { getDisplayNames } from '@shared/helpers/intl'
 import Menu, { MenuProps } from '@mui/material/Menu'
-import { FlagSize, GetFlagSources } from '../../index.types'
+import type { GetFlagElement } from '../../index.types'
 
 export type FlagsMenuProps = Partial<MenuProps> & {
   isoCode: MuiTelInputCountry | null
@@ -17,10 +17,9 @@ export type FlagsMenuProps = Partial<MenuProps> & {
   excludedCountries?: MuiTelInputCountry[]
   preferredCountries?: MuiTelInputCountry[]
   langOfCountryName?: string
-  flagSize?: FlagSize
   continents?: MuiTelInputContinent[]
   onSelectCountry: (isoCode: MuiTelInputCountry) => void
-  getFlagSources?: GetFlagSources
+  getFlagElement: GetFlagElement
 }
 
 const defaultExcludedCountries: MuiTelInputCountry[] = []
@@ -38,11 +37,9 @@ const FlagsMenu = ({
   continents = defaultContinents,
   preferredCountries = defaultPreferredCountries,
   className,
-  flagSize = 'small',
-  getFlagSources = undefined,
-  ...rest
+  getFlagElement,
+  ...restMenuProps
 }: FlagsMenuProps) => {
-  // Idem for the translations
   const displayNames = React.useMemo(() => {
     return getDisplayNames(langOfCountryName)
   }, [langOfCountryName])
@@ -70,7 +67,7 @@ const FlagsMenu = ({
         'aria-activedescendant': isoCode ? `country-${isoCode}` : '',
         'aria-labelledby': 'select-country'
       }}
-      {...rest}
+      {...restMenuProps}
     >
       {countriesFiltered.map((isoCodeItem) => {
         return (
@@ -78,11 +75,10 @@ const FlagsMenu = ({
             onSelectCountry={onSelectCountry}
             key={isoCodeItem}
             isoCode={isoCodeItem}
-            countryName={displayNames.of(isoCodeItem)}
+            countryName={displayNames.of(isoCodeItem) || ''}
             selected={isoCodeItem === isoCode}
             id={`country-${isoCodeItem}`}
-            flagSize={flagSize}
-            getFlagSources={getFlagSources}
+            getFlagElement={getFlagElement}
           />
         )
       })}
