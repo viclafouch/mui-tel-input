@@ -180,19 +180,6 @@ An `Intl` locale to translate country names (see [Intl locales](https://develope
 <MuiTelInput langOfCountryName="fr" />
 ```
 
-## `flagSize`
-
-- Type: `small` | `medium`
-- Default: `small`
-
-The size corresponding to the flag component.
-
-### Example
-
-```tsx
-<MuiTelInput flagSize="medium" />
-```
-
 ## `MenuProps`
 
 - Type: [MenuProps](https://mui.com/material-ui/api/menu/)
@@ -206,29 +193,82 @@ Props for the MUI [Menu](https://mui.com/material-ui/api/menu/) component.
 <MuiTelInput MenuProps={{ disableAutoFocusItem: true }} />
 ```
 
-## `getFlagSources`
+## `getFlagElement`
 
-- Type: `GetFlagSources`
-- Default: `undefined`
+- Type: `GetFlagElement`
+- Default: `(isoCode, { imgProps, countryName, isSelected }) => <img {...imgProps} />`
 
-By default the flag icons are loaded from https://flagcdn.com, if you want to override this behavior you can do this via `getFlagSources`.
+By default, the flag icons are loaded from https://flagcdn.com.
+But, with this prop, you can customize the `img` element, or use another CDN, or use SVG, etc..
 
-You can provide the `FlagSource` object with a `srcSet` or a `src` attribute. With a `srcSet` it will be rendered as a `<source />` tag within a `<picture />`, with a `src` attribute it will be rendered as a regular image (`<img src=...`). Render a regular image could be usefull for example for a inline svg which is not allowed to be rendered in a `<picture />`.
+`getFlagElement` empower you to use your own flag library, CDN, SVGs, etc. For those who desire offline functionality, it's possible as you can pass your own SVG components (no internet connection required).
+
+You could also customize the CSS of the `img` element.
 
 ### Example
 
 ```tsx
-const getFlagSources = (isoCode, size) => {
-  const isoCodeFormatted = isoCode ? isoCode.toLowerCase() : ''
+import React from 'react'
+import FlagFR from 'my-svg/fr/flag'
+import FlagBE from 'my-svg/be/flag'
+import { MuiTelInput, MuiTelInputCountry } from 'mui-tel-input'
 
-  return [
-    {
-      type: "image/png",
-      srcSet: `https://flagcdn.com/w${width}/${isoCodeFormatted}.png`,
-      width: size === "small" ? 40 : 80,
-    },
-  ]
+const flags: Partial<Record<MuiTelInputCountry, React.ElementType>> = {
+  FR: FlagFR,
+  BE: FlagBE
 }
 
-<MuiTelInput getFlagSources={getFlagSources} />
+export const MyComponent = () => {
+  const [phone, setPhone] = React.useState('')
+
+  const handleChange = (newPhone: string) => {
+    setPhone(newPhone)
+  }
+
+  return (
+    <MuiTelInput
+      onlyCountries={['FR', 'BE']}
+      value={phone}
+      {/* You could also use another CDN, use 'styled-component', or whatever you want...
+      isSelected is for the `button` that contains the selected country flag, maybe you want to add border for example... */}
+      getFlagElement={(isoCode, { imgProps, countryName, isSelected }) => {
+        const Component = flags[isoCode]
+        return <Component aria-label={countryName} />
+      }}
+      onChange={handleChange}
+    />
+  )
+}
+```
+
+## `unknownFlagElement`
+
+- Type: `React.ReactNode`
+- Default: `<img src="base64.." loading="lazy" width={26} alt="unknown" />`
+
+This prop let you to customize the `unknown flag`, changed the `width` or `height`, use CDN or SVG component, etc..
+
+### Example
+
+```tsx
+import React from 'react'
+import { MuiTelInput } from 'mui-tel-input'
+import unknownFlag from 'path/to/what/u/want'
+
+const MyComponent = () => {
+  const [phone, setPhone] = React.useState('')
+
+  const handleChange = (newPhone: string) => {
+    setPhone(newPhone)
+  }
+
+  return (
+    <MuiTelInput
+       value={phone}
+       onChange={handleChange}
+       {/* Could be SVG, another CDN, etc... */}
+       unknownFlagElement={<img src={unknownFlag} width={26} alt="unknown" />}
+    />
+  )
+}
 ```
