@@ -63,6 +63,7 @@ const MuiTelInput = React.forwardRef(
       continents,
       preferredCountries,
       MenuProps,
+      FlagButtonProps,
       className,
       getFlagElement = getDefaultFlagElement,
       unknownFlagElement = defaultUnknownFlagElement,
@@ -199,6 +200,7 @@ const MuiTelInput = React.forwardRef(
             startAdornment: (
               <InputAdornment position="start" sx={{ flexShrink: 0 }}>
                 <FlagButton
+                  {...FlagButtonProps}
                   isFlagsMenuOpened={Boolean(anchorEl)}
                   isoCode={isoCode}
                   forceCallingCode={forceCallingCode}
