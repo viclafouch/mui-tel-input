@@ -23,7 +23,7 @@ export default defineConfig({
     target: 'esnext',
     minify: true,
     lib: {
-      formats: ['es'],
+      formats: ['es', 'cjs'],
       entry: path.resolve(__dirname, 'src/index.tsx'),
       name: 'Mui-tel-input',
       fileName: format => `mui-tel-input.${format}.js`

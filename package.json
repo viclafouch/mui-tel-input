@@ -7,15 +7,17 @@
     "url": "https://github.com/viclafouch/mui-tel-input/issues"
   },
   "homepage": "https://viclafouch.github.io/mui-tel-input",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "files": [
     "dist"
   ],
-  "main": "./dist/mui-tel-input.es.js",
+  "main": "./dist/mui-tel-input.cjs.js",
+  "module": "./dist/mui-tel-input.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/mui-tel-input.es.js",
+      "require": "./dist/mui-tel-input.cjs.js",
       "types": "./dist/index.d.ts",
       "default": "./dist/mui-tel-input.es.js"
     }
