@@ -1,5 +1,5 @@
 import React from 'react'
-import { AsYouType } from 'libphonenumber-js'
+import parsePhoneNumberFromString, { AsYouType } from 'libphonenumber-js'
 import { MuiTelInputContinent } from '@shared/constants/continents'
 import { COUNTRIES, MuiTelInputCountry } from '@shared/constants/countries'
 import { matchIsArray } from '@shared/helpers/array'
@@ -7,6 +7,7 @@ import {
   getCallingCodeOfCountry,
   matchContinentsIncludeCountry
 } from '@shared/helpers/country'
+import { isValidExtension } from '@shared/helpers/ext'
 import { removeOccurrence } from '@shared/helpers/string'
 import { MuiTelInputInfo, MuiTelInputReason } from '../../index.types'
 
@@ -24,6 +25,7 @@ type UsePhoneDigitsParams = {
 type State = {
   inputValue: string
   isoCode: MuiTelInputCountry | null
+  extensionValue: string | null
 }
 
 type GetInitialStateParams = {
@@ -44,6 +46,8 @@ export function getInitialState(params: GetInitialStateParams): State {
   const asYouType = new AsYouType(defaultCountry)
   let inputValue = asYouType.input(initialValue)
 
+  const ext = parsePhoneNumberFromString(initialValue, defaultCountry)?.ext
+
   if (forceCallingCode && inputValue === '+' && defaultCountry) {
     inputValue = `+${COUNTRIES[defaultCountry]?.[0] as string}`
   }
@@ -56,7 +60,8 @@ export function getInitialState(params: GetInitialStateParams): State {
 
   return {
     inputValue: inputValue || fallbackValue,
-    isoCode: asYouType.getCountry() || defaultCountry || null
+    isoCode: asYouType.getCountry() || defaultCountry || null,
+    extensionValue: ext || null
   }
 }
 
@@ -108,9 +113,12 @@ export default function usePhoneDigits({
   )
   const asYouTypeRef = React.useRef<AsYouType>(new AsYouType(defaultCountry))
   const inputRef = React.useRef<HTMLInputElement>(null)
+  const extensionInputRef = React.useRef<HTMLInputElement>(null)
+
   const [previousDefaultCountry, setPreviousDefaultCountry] = React.useState<
     MuiTelInputCountry | undefined
   >(defaultCountry)
+
   const [state, setState] = React.useState<State>(() => {
     return getInitialState({
       initialValue: value,
@@ -127,6 +135,7 @@ export default function usePhoneDigits({
       countryCallingCode: asYouTypeRef.current.getCallingCode() || null,
       countryCode: asYouTypeRef.current.getCountry() || null,
       nationalNumber: asYouTypeRef.current.getNationalNumber(),
+      extension: state.extensionValue,
       numberType: asYouTypeRef.current.getNumber()?.getType() ?? null,
       numberValue: asYouTypeRef.current.getNumberValue() || null,
       reason
@@ -197,7 +206,8 @@ export default function usePhoneDigits({
       setPreviousValue(numberValue)
       setState({
         isoCode: null,
-        inputValue: numberValue
+        inputValue: numberValue,
+        extensionValue: null
       })
     } else {
       const valueToSet = disableFormatting ? numberValue : formattedValue
@@ -205,7 +215,8 @@ export default function usePhoneDigits({
       setPreviousValue(valueToSet)
       setState({
         isoCode: country,
-        inputValue: valueToSet
+        inputValue: valueToSet,
+        extensionValue: phoneInfo.extension
       })
     }
   }
@@ -234,7 +245,7 @@ export default function usePhoneDigits({
     if (defaultCountry !== previousDefaultCountry) {
       setPreviousDefaultCountry(defaultCountry)
       asYouTypeRef.current = new AsYouType(defaultCountry)
-      const { inputValue, isoCode } = getInitialState({
+      const { inputValue, isoCode, extensionValue } = getInitialState({
         initialValue: '',
         defaultCountry,
         forceCallingCode,
@@ -246,9 +257,11 @@ export default function usePhoneDigits({
       onChange?.(inputValue, buildOnChangeInfo('country'))
       setState({
         inputValue,
-        isoCode
+        isoCode,
+        extensionValue
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     defaultCountry,
     previousDefaultCountry,
@@ -279,19 +292,40 @@ export default function usePhoneDigits({
       // Some country have the same calling code, so we choose what the user has selected
       countryCode: newCountry
     })
+
     previousCountryRef.current = newCountry
     setPreviousValue(newValue)
-    setState({
-      isoCode: newCountry,
-      inputValue: newValue
+    setState((prev) => {
+      return {
+        ...prev,
+        isoCode: newCountry,
+        inputValue: newValue
+      }
     })
+  }
+
+  const onExtensionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (isValidExtension(event.target.value)) {
+      // do not allow user to enter non digit or dash characters
+      return
+    }
+
+    setState((prev) => {
+      return { ...prev, extensionValue: event.target.value }
+    })
+
+    const { inputValue } = state
+    onChange?.(inputValue, buildOnChangeInfo('extension'))
   }
 
   return {
     inputValue: state.inputValue,
     isoCode: state.isoCode,
+    extensionValue: state.extensionValue,
     onInputChange,
     onCountryChange,
-    inputRef
+    onExtensionChange,
+    inputRef,
+    extensionInputRef
   }
 }

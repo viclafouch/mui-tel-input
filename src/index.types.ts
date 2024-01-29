@@ -1,4 +1,5 @@
 import { NumberType } from 'libphonenumber-js'
+import { ExtensionFieldProps } from '@components/ExtensionField/ExtensionField'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
 import type { MuiTelInputCountry } from '@shared/constants/countries'
 import type { MenuProps } from '@mui/material/Menu'
@@ -11,7 +12,7 @@ type BaseTextFieldProps = Omit<
 
 export type { MuiTelInputContinent, MuiTelInputCountry }
 
-export type MuiTelInputReason = 'country' | 'input'
+export type MuiTelInputReason = 'country' | 'input' | 'extension'
 
 export type MuiTelInputFlagElement = React.ReactNode
 
@@ -32,6 +33,7 @@ export interface MuiTelInputInfo {
   countryCode: MuiTelInputCountry | null
   countryCallingCode: string | null
   nationalNumber: string | null
+  extension: string | null
   numberType: Exclude<NumberType, undefined> | null
   numberValue: string | null
   reason: MuiTelInputReason
@@ -62,4 +64,6 @@ export type MuiTelInputProps = BaseTextFieldProps &
     MenuProps?: Partial<MenuProps>
     getFlagElement?: GetFlagElement
     unknownFlagElement?: MuiTelInputFlagElement
+    enableExtensions?: boolean
+    ExtensionFieldProps?: ExtensionFieldProps
   }

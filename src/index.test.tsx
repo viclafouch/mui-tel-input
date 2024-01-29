@@ -120,6 +120,7 @@ describe('components/MuiTelInput', () => {
         countryCode: 'FR',
         nationalNumber: '626',
         numberType: null,
+        extension: null,
         numberValue: '+33626',
         reason: 'input'
       })
@@ -212,6 +213,7 @@ describe('components/MuiTelInput', () => {
         countryCode: 'FR',
         nationalNumber: '626922631',
         numberType: null,
+        extension: null,
         numberValue: '+33626922631',
         reason: 'input'
       })
@@ -258,6 +260,7 @@ describe('components/MuiTelInput', () => {
         countryCode: 'BE',
         nationalNumber: '',
         numberType: null,
+        extension: null,
         numberValue: '+32',
         reason: 'country'
       })
@@ -272,6 +275,7 @@ describe('components/MuiTelInput', () => {
         countryCode: 'BE',
         nationalNumber: '',
         numberType: null,
+        extension: null,
         numberValue: '+32',
         reason: 'country'
       })
@@ -314,6 +318,7 @@ describe('components/MuiTelInput', () => {
         countryCallingCode: '33',
         countryCode: 'FR',
         nationalNumber: '626',
+        extension: null,
         numberType: null,
         numberValue: '+33626',
         reason: 'input'
@@ -329,6 +334,7 @@ describe('components/MuiTelInput', () => {
         countryCode: 'US',
         nationalNumber: '2133734253',
         numberType: 'FIXED_LINE_OR_MOBILE',
+        extension: null,
         numberValue: '+12133734253',
         reason: 'input'
       })
