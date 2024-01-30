@@ -45,7 +45,7 @@ const MuiTelInput = React.forwardRef(
   (props: MuiTelInputProps, propRef: MuiTelInputProps['ref']) => {
     const {
       forceCallingCode = false,
-      enableExtensions = false,
+      enableExtensionField = false,
       onlyCountries,
       excludedCountries,
       defaultCountry,
@@ -221,7 +221,7 @@ const MuiTelInput = React.forwardRef(
                 />
               </InputAdornment>
             ),
-            endAdornment: enableExtensions ? (
+            endAdornment: enableExtensionField ? (
               <InputAdornment position="end" sx={{ flexShrink: 1 }}>
                 <ExtensionField
                   ref={extensionInputRef}

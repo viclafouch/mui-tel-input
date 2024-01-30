@@ -64,6 +64,6 @@ export type MuiTelInputProps = BaseTextFieldProps &
     MenuProps?: Partial<MenuProps>
     getFlagElement?: GetFlagElement
     unknownFlagElement?: MuiTelInputFlagElement
-    enableExtensions?: boolean
+    enableExtensionField?: boolean
     ExtensionFieldProps?: ExtensionFieldProps
   }
