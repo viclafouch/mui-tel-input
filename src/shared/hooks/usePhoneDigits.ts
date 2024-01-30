@@ -135,7 +135,7 @@ export default function usePhoneDigits({
       countryCallingCode: asYouTypeRef.current.getCallingCode() || null,
       countryCode: asYouTypeRef.current.getCountry() || null,
       nationalNumber: asYouTypeRef.current.getNationalNumber(),
-      extension: state.extensionValue,
+      extension: state.extensionValue || null,
       numberType: asYouTypeRef.current.getNumber()?.getType() ?? null,
       numberValue: asYouTypeRef.current.getNumberValue() || null,
       reason
@@ -280,6 +280,7 @@ export default function usePhoneDigits({
     const inputValueWithoutCallingCode = isoCode
       ? removeOccurrence(inputValue, `+${getCallingCodeOfCountry(isoCode)}`)
       : inputValue
+
     // replace the old calling code with the new one, keeping the rest of the number
     let newValue = `+${callingCode}${inputValueWithoutCallingCode}`
 
@@ -305,10 +306,8 @@ export default function usePhoneDigits({
   }
 
   const onExtensionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (isValidExtension(event.target.value)) {
-      // do not allow user to enter non digit or dash characters
-      return
-    }
+    // do not allow user to enter invalid characters
+    if (!isValidExtension(event.target.value)) return
 
     setState((prev) => {
       return { ...prev, extensionValue: event.target.value }
