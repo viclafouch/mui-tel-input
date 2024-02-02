@@ -309,15 +309,20 @@ export default function usePhoneDigits({
   }
 
   const onExtensionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const extInputVal = event.target.value
+
     // do not allow user to enter invalid characters
-    if (!isValidExtension(event.target.value)) return
+    if (!isValidExtension(extInputVal)) return
 
     setState((prev) => {
-      return { ...prev, extensionValue: event.target.value }
+      return { ...prev, extensionValue: extInputVal }
     })
 
     const { inputValue } = state
-    onChange?.(inputValue, buildOnChangeInfo('extension'))
+    onChange?.(inputValue, {
+      ...buildOnChangeInfo('extension'),
+      extension: extInputVal
+    })
   }
 
   return {
