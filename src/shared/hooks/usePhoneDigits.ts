@@ -130,17 +130,20 @@ export default function usePhoneDigits({
 
   const [previousValue, setPreviousValue] = React.useState(value)
 
-  const buildOnChangeInfo = (reason: MuiTelInputReason): MuiTelInputInfo => {
-    return {
-      countryCallingCode: asYouTypeRef.current.getCallingCode() || null,
-      countryCode: asYouTypeRef.current.getCountry() || null,
-      nationalNumber: asYouTypeRef.current.getNationalNumber(),
-      extension: state.extensionValue || null,
-      numberType: asYouTypeRef.current.getNumber()?.getType() ?? null,
-      numberValue: asYouTypeRef.current.getNumberValue() || null,
-      reason
-    }
-  }
+  const buildOnChangeInfo = React.useCallback(
+    (reason: MuiTelInputReason): MuiTelInputInfo => {
+      return {
+        countryCallingCode: asYouTypeRef.current.getCallingCode() || null,
+        countryCode: asYouTypeRef.current.getCountry() || null,
+        nationalNumber: asYouTypeRef.current.getNationalNumber(),
+        extension: state.extensionValue || null,
+        numberType: asYouTypeRef.current.getNumber()?.getType() ?? null,
+        numberValue: asYouTypeRef.current.getNumberValue() || null,
+        reason
+      }
+    },
+    [state.extensionValue]
+  )
 
   const matchIsIsoCodeValid = (isoCode: MuiTelInputCountry | null) => {
     return (
@@ -261,13 +264,13 @@ export default function usePhoneDigits({
         extensionValue
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     defaultCountry,
     previousDefaultCountry,
     onChange,
     forceCallingCode,
-    disableFormatting
+    disableFormatting,
+    buildOnChangeInfo
   ])
 
   const onCountryChange = (newCountry: MuiTelInputCountry): void => {
