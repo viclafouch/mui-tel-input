@@ -10,6 +10,9 @@ const ExtensionField = React.forwardRef(
       <Styled.ExtensionFieldSplitted
         placeholder="ext."
         type="tel"
+        inputProps={{
+          'data-testId': 'ext-input'
+        }}
         {...props}
         inputRef={propRef}
       />

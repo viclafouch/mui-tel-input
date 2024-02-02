@@ -9,6 +9,7 @@ import {
   expectButtonIsFlagOf,
   expectButtonNotIsFlagOf,
   getButtonElement,
+  getExtensionInputElement,
   getInputElement,
   selectCountry,
   typeInInputElement
@@ -523,4 +524,49 @@ describe('components/MuiTelInput', () => {
   //   await user.copy()
   //   expect(callback).toHaveBeenCalledTimes(1)
   // })
+})
+
+describe('ExtensionField', () => {
+  it('should render if extensions are enabled', () => {
+    render(<MuiTelWrapper enableExtensionField />)
+    const extInputEl = getExtensionInputElement()
+
+    expect(extInputEl).toBeInTheDocument()
+  })
+
+  it('should not render if extensions are not enabled', () => {
+    render(<MuiTelWrapper />)
+
+    expect(getExtensionInputElement).toThrowError()
+  })
+
+  it('should initialize with the extension number if one is passed', () => {
+    const ext = '321'
+    const numVal = `+1 777 888 9999 ext. ${ext}`
+
+    render(<MuiTelWrapper enableExtensionField value={numVal} />)
+    const extInputEl = getExtensionInputElement()
+
+    expect(extInputEl.value).toBe(ext)
+  })
+
+  it('should call onChange with the extension reason and latest extension value', async () => {
+    const changeHandler = vi.fn(() => {})
+
+    render(<MuiTelWrapper enableExtensionField onChange={changeHandler} />)
+    const extInputEl = getExtensionInputElement()
+
+    const input = '323'
+    await userEvent.type(extInputEl, input, { delay: 1 })
+
+    expect(changeHandler).toHaveBeenLastCalledWith('', {
+      countryCallingCode: null,
+      countryCode: null,
+      nationalNumber: '',
+      extension: input,
+      numberType: null,
+      numberValue: null,
+      reason: 'extension'
+    })
+  })
 })

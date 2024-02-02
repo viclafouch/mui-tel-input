@@ -12,6 +12,10 @@ export function getInputElement(): HTMLInputElement {
   return screen.getByRole('textbox')
 }
 
+export function getExtensionInputElement(): HTMLInputElement {
+  return screen.getByTestId('ext-input')
+}
+
 export function getButtonElement(): HTMLButtonElement {
   return screen.getByRole('button')
 }
