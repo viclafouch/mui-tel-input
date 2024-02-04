@@ -11,7 +11,7 @@ const ExtensionField = React.forwardRef(
         placeholder="ext."
         type="tel"
         inputProps={{
-          'data-testId': 'ext-input'
+          'data-testid': 'ext-input'
         }}
         {...props}
         inputRef={propRef}

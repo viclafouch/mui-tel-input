@@ -96,6 +96,7 @@ const MuiTelInput = React.forwardRef(
       excludedCountries,
       onlyCountries,
       disableFormatting,
+      enableExtensions: enableExtensionField,
       continents
     })
 
@@ -203,6 +204,7 @@ const MuiTelInput = React.forwardRef(
           onChange={onInputChange}
           inputProps={{
             onCopy: handleCopy,
+            'data-testid': 'tel-num-input',
             ...inputProps
           }}
           onFocus={handleFocus}

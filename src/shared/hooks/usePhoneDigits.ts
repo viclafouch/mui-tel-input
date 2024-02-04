@@ -7,16 +7,25 @@ import {
   getCallingCodeOfCountry,
   matchContinentsIncludeCountry
 } from '@shared/helpers/country'
-import { isValidExtension } from '@shared/helpers/ext'
+import {
+  appendExtension,
+  isValidExtension,
+  removeExtension
+} from '@shared/helpers/ext'
 import { removeOccurrence } from '@shared/helpers/string'
-import { MuiTelInputInfo, MuiTelInputReason } from '../../index.types'
+import {
+  MuiTelInputChangeHandler,
+  MuiTelInputInfo,
+  MuiTelInputReason
+} from '../../index.types'
 
 type UsePhoneDigitsParams = {
   value: string
-  onChange?: (value: string, info: MuiTelInputInfo) => void
+  onChange?: MuiTelInputChangeHandler
   defaultCountry?: MuiTelInputCountry
   forceCallingCode: boolean
   disableFormatting: boolean
+  enableExtensions: boolean
   excludedCountries?: MuiTelInputCountry[]
   onlyCountries?: MuiTelInputCountry[]
   continents?: MuiTelInputContinent[]
@@ -30,14 +39,20 @@ type State = {
 
 type GetInitialStateParams = {
   defaultCountry?: MuiTelInputCountry
+  rawInputValue: string
   initialValue: string
   forceCallingCode: boolean
   disableFormatting: boolean
 }
 
 export function getInitialState(params: GetInitialStateParams): State {
-  const { defaultCountry, initialValue, disableFormatting, forceCallingCode } =
-    params
+  const {
+    defaultCountry,
+    rawInputValue,
+    initialValue,
+    disableFormatting,
+    forceCallingCode
+  } = params
 
   const fallbackValue = defaultCountry
     ? `+${COUNTRIES[defaultCountry]?.[0] as string}`
@@ -46,7 +61,7 @@ export function getInitialState(params: GetInitialStateParams): State {
   const asYouType = new AsYouType(defaultCountry)
   let inputValue = asYouType.input(initialValue)
 
-  const ext = parsePhoneNumberFromString(initialValue, defaultCountry)?.ext
+  const ext = parsePhoneNumberFromString(rawInputValue, defaultCountry)?.ext
 
   if (forceCallingCode && inputValue === '+' && defaultCountry) {
     inputValue = `+${COUNTRIES[defaultCountry]?.[0] as string}`
@@ -106,6 +121,7 @@ export default function usePhoneDigits({
   excludedCountries,
   continents,
   disableFormatting,
+  enableExtensions,
   forceCallingCode
 }: UsePhoneDigitsParams) {
   const previousCountryRef = React.useRef<MuiTelInputCountry | null>(
@@ -119,16 +135,21 @@ export default function usePhoneDigits({
     MuiTelInputCountry | undefined
   >(defaultCountry)
 
+  const _value = React.useMemo(() => {
+    return removeExtension(value)
+  }, [value])
+
   const [state, setState] = React.useState<State>(() => {
     return getInitialState({
-      initialValue: value,
+      rawInputValue: value,
+      initialValue: _value,
       defaultCountry,
       disableFormatting,
       forceCallingCode
     })
   })
 
-  const [previousValue, setPreviousValue] = React.useState(value)
+  const [previousValue, setPreviousValue] = React.useState(_value)
 
   const buildOnChangeInfo = React.useCallback(
     (reason: MuiTelInputReason): MuiTelInputInfo => {
@@ -175,6 +196,20 @@ export default function usePhoneDigits({
     return `+${getCallingCodeOfCountry(country)}${inputValue}`
   }
 
+  // * a wrapper for the onChange callback where we can handle formatting logic
+  const _onChange = React.useCallback<MuiTelInputChangeHandler>(
+    (num, info) => {
+      if (enableExtensions && info.extension && num) {
+        const numWithExt = appendExtension(num, info.extension)
+
+        onChange?.(numWithExt, info)
+      } else {
+        onChange?.(num, info)
+      }
+    },
+    [enableExtensions, onChange]
+  )
+
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const inputValue = forceCallingCode
       ? makeSureStartWithPlusIsoCode(
@@ -197,9 +232,11 @@ export default function usePhoneDigits({
 
     const phoneInfo = buildOnChangeInfo('input')
 
+    // * builder wrapper around onChange which can contain extension logic?
+
     // Check if the country is excluded, or not part on onlyCountries, etc..
     if (numberValue && (!country || !matchIsIsoCodeValid(country))) {
-      onChange?.(numberValue, {
+      _onChange(numberValue, {
         ...phoneInfo,
         // we show the input value but without any formatting, or country..
         countryCode: null,
@@ -214,7 +251,7 @@ export default function usePhoneDigits({
       })
     } else {
       const valueToSet = disableFormatting ? numberValue : formattedValue
-      onChange?.(valueToSet, phoneInfo)
+      _onChange(valueToSet, phoneInfo)
       setPreviousValue(valueToSet)
       setState({
         isoCode: country,
@@ -225,10 +262,12 @@ export default function usePhoneDigits({
   }
 
   React.useEffect(() => {
-    if (value !== previousValue) {
-      setPreviousValue(value)
+    if (_value !== previousValue) {
+      console.log({ _value, previousValue })
+      setPreviousValue(_value)
       const newState = getInitialState({
-        initialValue: value,
+        rawInputValue: value,
+        initialValue: _value,
         defaultCountry,
         forceCallingCode,
         disableFormatting
@@ -238,6 +277,7 @@ export default function usePhoneDigits({
     }
   }, [
     value,
+    _value,
     previousValue,
     defaultCountry,
     forceCallingCode,
@@ -249,6 +289,7 @@ export default function usePhoneDigits({
       setPreviousDefaultCountry(defaultCountry)
       asYouTypeRef.current = new AsYouType(defaultCountry)
       const { inputValue, isoCode, extensionValue } = getInitialState({
+        rawInputValue: '',
         initialValue: '',
         defaultCountry,
         forceCallingCode,
@@ -257,7 +298,7 @@ export default function usePhoneDigits({
       setPreviousValue(inputValue)
       asYouTypeRef.current.input(inputValue)
       previousCountryRef.current = asYouTypeRef.current.getCountry() || null
-      onChange?.(inputValue, buildOnChangeInfo('country'))
+      _onChange?.(inputValue, buildOnChangeInfo('country'))
       setState({
         inputValue,
         isoCode,
@@ -267,7 +308,7 @@ export default function usePhoneDigits({
   }, [
     defaultCountry,
     previousDefaultCountry,
-    onChange,
+    _onChange,
     forceCallingCode,
     disableFormatting,
     buildOnChangeInfo
@@ -291,7 +332,7 @@ export default function usePhoneDigits({
       newValue = typeNewValue(newValue)
     }
 
-    onChange?.(newValue, {
+    _onChange(newValue, {
       ...buildOnChangeInfo('country'),
       // Some country have the same calling code, so we choose what the user has selected
       countryCode: newCountry
@@ -310,8 +351,6 @@ export default function usePhoneDigits({
 
   const onExtensionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const extInputVal = event.target.value
-
-    // do not allow user to enter invalid characters
     if (!isValidExtension(extInputVal)) return
 
     setState((prev) => {
@@ -319,7 +358,7 @@ export default function usePhoneDigits({
     })
 
     const { inputValue } = state
-    onChange?.(inputValue, {
+    _onChange(inputValue, {
       ...buildOnChangeInfo('extension'),
       extension: extInputVal
     })

@@ -553,20 +553,33 @@ describe('ExtensionField', () => {
   it('should call onChange with the extension reason and latest extension value', async () => {
     const changeHandler = vi.fn(() => {})
 
-    render(<MuiTelWrapper enableExtensionField onChange={changeHandler} />)
+    render(
+      <MuiTelWrapper
+        enableExtensionField
+        onChange={changeHandler}
+        defaultCountry="US"
+      />
+    )
+
+    const inputEl = getInputElement()
+    const inputVal = '777 888 9999'
+    await userEvent.type(inputEl, inputVal, { delay: 1 })
+
     const extInputEl = getExtensionInputElement()
+    const extInputVal = '323'
+    await userEvent.type(extInputEl, extInputVal, { delay: 1 })
 
-    const input = '323'
-    await userEvent.type(extInputEl, input, { delay: 1 })
-
-    expect(changeHandler).toHaveBeenLastCalledWith('', {
-      countryCallingCode: null,
-      countryCode: null,
-      nationalNumber: '',
-      extension: input,
-      numberType: null,
-      numberValue: null,
-      reason: 'extension'
-    })
+    expect(changeHandler).toHaveBeenLastCalledWith(
+      '+1 777 888 9999 extension 323',
+      {
+        countryCallingCode: '1',
+        countryCode: null,
+        nationalNumber: '7778889999',
+        extension: extInputVal,
+        numberType: null,
+        numberValue: '+17778889999',
+        reason: 'extension'
+      }
+    )
   })
 })

@@ -49,6 +49,11 @@ type ForceCallingCodeWithDefaultCountry =
       defaultCountry?: MuiTelInputCountry
     }
 
+export type MuiTelInputChangeHandler = (
+  value: string,
+  info: MuiTelInputInfo
+) => void
+
 export type MuiTelInputProps = BaseTextFieldProps &
   ForceCallingCodeWithDefaultCountry & {
     excludedCountries?: MuiTelInputCountry[]
@@ -59,7 +64,7 @@ export type MuiTelInputProps = BaseTextFieldProps &
     langOfCountryName?: string
     disableFormatting?: boolean
     continents?: MuiTelInputContinent[]
-    onChange?: (value: string, info: MuiTelInputInfo) => void
+    onChange?: MuiTelInputChangeHandler
     value?: string | undefined
     MenuProps?: Partial<MenuProps>
     getFlagElement?: GetFlagElement
