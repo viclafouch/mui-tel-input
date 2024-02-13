@@ -13,7 +13,7 @@ import {
   selectCountry,
   typeInInputElement
 } from './testUtils'
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
 
 const MuiTelWrapper = ({
   onChange,

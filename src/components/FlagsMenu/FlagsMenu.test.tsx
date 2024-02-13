@@ -4,7 +4,7 @@ import { ISO_CODES, MuiTelInputCountry } from '@shared/constants/countries'
 import { getDefaultFlagElement } from '@shared/helpers/flag'
 import { fireEvent, render, screen } from '@testing-library/react'
 import FlagsMenu from './FlagsMenu'
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
 
 function getAnchorEl() {
   return screen.getByText('My textfield')
