@@ -9,7 +9,11 @@ import {
 import userEvent from '@testing-library/user-event'
 
 export function getInputElement(): HTMLInputElement {
-  return screen.getByRole('textbox')
+  return screen.getByTestId('tel-num-input')
+}
+
+export function getExtensionInputElement(): HTMLInputElement {
+  return screen.getByTestId('ext-input')
 }
 
 export function getButtonElement(): HTMLButtonElement {
