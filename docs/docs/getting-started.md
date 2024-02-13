@@ -19,14 +19,12 @@ We have completed installing the package.
 
 Learn how to use MUI tel input with Next.js
 
-Once you have installed MUI tel input in your next.js project, it is important to transpile this package so that it is compatible with the project, both in development and production.
+Once you have installed `MUI Tel Input` in your next.js project, it is important to transpile it as it is an ESM package first.
 
 ```js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
- transpilePackages: [
-   'mui-tel-input',
- ],
+ transpilePackages: ['mui-tel-input'],
  // your config
 }
 
