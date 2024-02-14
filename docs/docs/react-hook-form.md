@@ -25,7 +25,7 @@ const App = () => {
       <Controller
         name="tel"
         control={control}
-        rules={{ validate: matchIsValidTel }}
+        rules={{ validate: (value) => matchIsValidTel(value, { onlyCountries: ['FR'] }) }}
         render={({ field: { ref: fieldRef, value, ...fieldProps }, fieldState }) => (
           <MuiTelInput
             {...fieldProps}
