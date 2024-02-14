@@ -73,7 +73,7 @@ Displays the calling code (e.g: +33) as read-only next to the flag and with a di
 ### Example
 
 ```tsx
-<MuiTelInput forceCallingCode />
+<MuiTelInput forceCallingCode defaultCountry="BE" />
 ```
 
 ## `focusOnSelectCountry`
