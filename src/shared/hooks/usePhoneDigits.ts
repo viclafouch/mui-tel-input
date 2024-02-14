@@ -264,9 +264,18 @@ export default function usePhoneDigits({
 
     const callingCode = COUNTRIES[newCountry]?.[0] as string
     const { inputValue, isoCode } = state
-    const inputValueWithoutCallingCode = isoCode
-      ? removeOccurrence(inputValue, `+${getCallingCodeOfCountry(isoCode)}`)
-      : inputValue
+    let inputValueWithoutCallingCode = inputValue
+
+    if (isoCode) {
+      const callingCodeOfPreviousCountry = getCallingCodeOfCountry(isoCode)
+      // if the input value start with wrong calling code, set it to empty string
+      inputValueWithoutCallingCode = inputValue.startsWith(
+        `+${callingCodeOfPreviousCountry}`
+      )
+        ? removeOccurrence(inputValue, `+${callingCodeOfPreviousCountry}`)
+        : ''
+    }
+
     // replace the old calling code with the new one, keeping the rest of the number
     let newValue = `+${callingCode}${inputValueWithoutCallingCode}`
 
