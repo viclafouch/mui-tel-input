@@ -25,11 +25,7 @@ import type {
   MuiTelInputReason
 } from './index.types'
 
-export {
-  AsYouType,
-  getNumberType,
-  isValidPhoneNumber as matchIsValidTel
-} from 'libphonenumber-js'
+export { AsYouType, getNumberType } from 'libphonenumber-js'
 
 export type {
   MuiTelInputContinent,
@@ -39,6 +35,8 @@ export type {
   MuiTelInputProps,
   MuiTelInputReason
 }
+
+export { matchIsValidTel } from '@shared/helpers/valid-phone-number'
 
 const MuiTelInput = React.forwardRef(
   (props: MuiTelInputProps, propRef: MuiTelInputProps['ref']) => {
