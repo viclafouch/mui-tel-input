@@ -505,6 +505,16 @@ describe('components/MuiTelInput', () => {
     expectButtonIsFlagOf('FR')
   })
 
+  // https://github.com/viclafouch/mui-tel-input/issues/107
+  test('should reset clean correctly the value', async () => {
+    render(<MuiTelWrapper defaultCountry="FR" disableFormatting />)
+    const inputElement = getInputElement()
+    await userEvent.clear(inputElement)
+    await typeInInputElement('2')
+    await selectCountry('BE')
+    expect(getInputElement().value).toBe('+32')
+  })
+
   /** Copy doesn't work in user-event@beta */
   // test('should fire the onCopy prop', async () => {
   //   const user = userEvent.setup({

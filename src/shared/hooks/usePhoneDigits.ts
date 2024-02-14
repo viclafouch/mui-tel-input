@@ -268,11 +268,10 @@ export default function usePhoneDigits({
 
     if (isoCode) {
       const callingCodeOfPreviousCountry = getCallingCodeOfCountry(isoCode)
+      const callingCodeWithPlus = `+${callingCodeOfPreviousCountry}`
       // if the input value start with wrong calling code, set it to empty string
-      inputValueWithoutCallingCode = inputValue.startsWith(
-        `+${callingCodeOfPreviousCountry}`
-      )
-        ? removeOccurrence(inputValue, `+${callingCodeOfPreviousCountry}`)
+      inputValueWithoutCallingCode = inputValue.startsWith(callingCodeWithPlus)
+        ? removeOccurrence(inputValue, callingCodeWithPlus)
         : ''
     }
 
