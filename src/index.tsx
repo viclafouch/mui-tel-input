@@ -45,7 +45,7 @@ export type {
 
 export { matchIsValidTel } from '@shared/helpers/valid-phone-number'
 
-export const textFieldClass = 'MuiTelInput-TextField '
+export const textFieldClass = 'MuiTelInput-TextField'
 
 const MuiTelInput = React.forwardRef(
   (props: MuiTelInputProps, propRef: MuiTelInputProps['ref']) => {
@@ -250,6 +250,6 @@ export const classes = {
   listItemIconFlag: listItemIconFlagClass,
   listItemTextCountry: listItemTextCountryClass,
   callingCode: callingCodeClass
-}
+} as const satisfies Record<string, string>
 
 export { MuiTelInput }

@@ -10,7 +10,7 @@ Like any component, if you want to override a component's styles using custom cl
 <MuiTelInput className="my-class-name" />
 ```
 
-Then, you can use the differents global class names (see below) to target an element of `MuiTelInput`. 
+Then, you can use the differents global class names (see below) to target an element of `MuiTelInput`.
 Classes are also abstracted and exported as `classes`, to keep a stable interface for consumers.
 
 | 	Global class       | exported constant          | Description                                                                                                                   |
@@ -40,5 +40,23 @@ const MuiTelInputStyled = styled(MuiTelInput)`
 
 function MyComponent() {
   return <MuiTelInputStyled />
+}
+```
+
+Or using `classes`:
+
+```jsx
+import { styled } from 'styled-component' // or emotion
+import { MuiTelInput } from 'mui-tel-input'
+
+const WithStyledFlag = styled(MuiTelInput)`
+  .${classes.flag} > img {
+    filter: grayscale(100%);
+    width: 20px;
+  }
+`
+
+function MyComponent() {
+  return <WithStyledFlag />
 }
 ```
