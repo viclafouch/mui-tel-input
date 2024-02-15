@@ -27,6 +27,8 @@ const defaultOnlyCountries: MuiTelInputCountry[] = []
 const defaultContinents: MuiTelInputContinent[] = []
 const defaultPreferredCountries: MuiTelInputCountry[] = []
 
+export const menuClass = 'MuiTelInput-Menu'
+
 const FlagsMenu = ({
   anchorEl,
   isoCode,
@@ -61,7 +63,7 @@ const FlagsMenu = ({
       anchorEl={anchorEl}
       open={Boolean(anchorEl)}
       id="select-country"
-      className={`MuiTelInput-Menu ${className || ''}`}
+      className={`${menuClass} ${className || ''}`}
       MenuListProps={{
         role: 'listbox',
         'aria-activedescendant': isoCode ? `country-${isoCode}` : '',
