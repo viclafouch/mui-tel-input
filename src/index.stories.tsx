@@ -72,7 +72,7 @@ export const Primary: StoryFn<typeof MuiTelInput> = (args) => {
 }
 
 const WithStyledFlag = styled(MuiTelInput)`
-  .${classes.flag} > img {
+  .${classes.flagImage} {
     filter: grayscale(100%);
     width: 20px;
   }
@@ -95,7 +95,7 @@ export const CustomizationByClassNameConstant: StoryFn<typeof MuiTelInput> = (
     <Box>
       <pre>
         <code>{`const WithStyledFlag = styled(MuiTelInput)
-  .\${classes.flag} > img {
+  .\${classes.flagImage} {
     filter: grayscale(100%);
     width: 20px;
   }
