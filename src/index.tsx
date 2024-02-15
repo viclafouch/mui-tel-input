@@ -245,7 +245,7 @@ const MuiTelInput = React.forwardRef(
 export const classes = {
   textField: textFieldClass,
   flagContainer: flagContainerClass,
-  flagImage: flagImageClass,
+  flagImg: flagImageClass,
   flagButton: flagButtonClass,
   menu: menuClass,
   menuItem: menuItemClass,
