@@ -1,6 +1,13 @@
 import React from 'react'
-import FlagButton from '@components/FlagButton/FlagButton'
-import FlagsMenu from '@components/FlagsMenu/FlagsMenu'
+import { flagClass } from '@components/Flag/Flag'
+import FlagButton, { flagButtonClass } from '@components/FlagButton/FlagButton'
+import {
+  callingCodeClass,
+  listItemIconFlagClass,
+  listItemTextCountryClass,
+  menuItemClass
+} from '@components/FlagMenuItem/FlagMenuItem'
+import FlagsMenu, { menuClass } from '@components/FlagsMenu/FlagsMenu'
 import {
   getCallingCodeOfCountry,
   getValidCountry
@@ -37,6 +44,8 @@ export type {
 }
 
 export { matchIsValidTel } from '@shared/helpers/valid-phone-number'
+
+export const textFieldClass = 'MuiTelInput-TextField '
 
 const MuiTelInput = React.forwardRef(
   (props: MuiTelInputProps, propRef: MuiTelInputProps['ref']) => {
@@ -186,7 +195,7 @@ const MuiTelInput = React.forwardRef(
           ref={handleRef}
           onDoubleClick={handleDoubleClick}
           inputRef={handleRefInput}
-          className={`MuiTelInput-TextField ${className || ''}`}
+          className={`${textFieldClass} ${className || ''}`}
           onChange={onInputChange}
           inputProps={{
             onCopy: handleCopy,
@@ -231,5 +240,16 @@ const MuiTelInput = React.forwardRef(
     )
   }
 )
+
+export const classes = {
+  textField: textFieldClass,
+  flag: flagClass,
+  flagButton: flagButtonClass,
+  menu: menuClass,
+  menuItem: menuItemClass,
+  listItemIconFlag: listItemIconFlagClass,
+  listItemTextCountry: listItemTextCountryClass,
+  callingCode: callingCodeClass
+}
 
 export { MuiTelInput }

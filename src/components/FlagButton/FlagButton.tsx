@@ -19,6 +19,8 @@ export type FlagButtonProps = IconButtonProps & {
   unknownFlagElement: React.ReactNode
 }
 
+export const flagButtonClass = 'MuiTelInput-IconButton'
+
 const FlagButton = ({
   disableDropdown = false,
   forceCallingCode = false,
@@ -53,7 +55,7 @@ const FlagButton = ({
       {disableDropdown ? (
         <IconButton
           tabIndex={-1}
-          className="MuiTelInput-IconButton"
+          className={flagButtonClass}
           // eslint-disable-next-line jsx-a11y/aria-role
           role=""
           disableRipple
@@ -67,7 +69,7 @@ const FlagButton = ({
         <IconButton
           {...iconButtonProps}
           aria-label="Select country"
-          className="MuiTelInput-IconButton"
+          className={flagButtonClass}
           aria-haspopup="listbox"
           sx={{ aspectRatio: '1 / 1' }}
           aria-controls={isFlagsMenuOpened ? 'select-country' : undefined}
