@@ -47,7 +47,7 @@ Or using `classes`:
 
 ```jsx
 import { styled } from 'styled-component' // or emotion
-import { MuiTelInput } from 'mui-tel-input'
+import { MuiTelInput, classes } from 'mui-tel-input'
 
 const WithStyledFlag = styled(MuiTelInput)`
   .${classes.flag} > img {
