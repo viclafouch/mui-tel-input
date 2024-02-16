@@ -16,6 +16,8 @@ const getDefaultImageSrc = (isoCode: MuiTelInputCountry) => {
   return `https://flagcdn.com/w40/${isoCode.toLowerCase()}.webp`
 }
 
+export const flagImgClass = 'MuiTelInput-FlagImg'
+
 export const getDefaultImgProps = ({
   isoCode,
   countryName
@@ -27,7 +29,8 @@ export const getDefaultImgProps = ({
     src: getDefaultImageSrc(isoCode),
     loading: 'lazy',
     width: 26,
-    alt: countryName
+    alt: countryName,
+    className: flagImgClass
   } satisfies React.ComponentPropsWithoutRef<'img'>
 }
 
@@ -41,5 +44,11 @@ export const getDefaultFlagElement: GetFlagElement = (
 }
 
 export const defaultUnknownFlagElement = (
-  <img src={unknownFlag} loading="lazy" width={26} alt="unknown" />
+  <img
+    src={unknownFlag}
+    loading="lazy"
+    width={26}
+    alt="unknown"
+    className={flagImgClass}
+  />
 )
