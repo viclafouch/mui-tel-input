@@ -15,7 +15,7 @@ import {
 import { putCursorAtEndOfInput } from '@shared/helpers/dom'
 import {
   defaultUnknownFlagElement,
-  flagImageClass,
+  flagImgClass,
   getDefaultFlagElement
 } from '@shared/helpers/flag'
 import { assocRefToPropRef } from '@shared/helpers/ref'
@@ -245,7 +245,7 @@ const MuiTelInput = React.forwardRef(
 export const classes = {
   textField: textFieldClass,
   flagContainer: flagContainerClass,
-  flagImg: flagImageClass,
+  flagImg: flagImgClass,
   flagButton: flagButtonClass,
   menu: menuClass,
   menuItem: menuItemClass,
