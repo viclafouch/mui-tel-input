@@ -16,7 +16,7 @@ const getDefaultImageSrc = (isoCode: MuiTelInputCountry) => {
   return `https://flagcdn.com/w40/${isoCode.toLowerCase()}.webp`
 }
 
-export const flagImgClass = 'MuiTelInput-Flag-Image'
+export const flagImgClass = 'MuiTelInput-FlagImg'
 
 export const getDefaultImgProps = ({
   isoCode,

@@ -18,7 +18,7 @@ Classes are also abstracted and exported as `classes`, to keep a stable interfac
 | `.MuiTelInput-TextField`               | `classes.textField`         | 	Styles applied to the root element.                                                                   |
 | `.MuiTelInput-IconButton`              | `classes.flagButton`        | 	Styles applied to the [IconButton](https://mui.com/material-ui/api/icon-button/) of the current flag. |
 | `.MuiTelInput-Flag`                    | `classes.flagContainer`     | 	Styles applied to the element around the image of a flag.                                             |
-| `.MuiTelInput-Flag-Image`              | `classes.flagImg`           | 	Styles applied to the image within a flag element.                                                    |
+| `.MuiTelInput-FlagImg`              | `classes.flagImg`           | 	Styles applied to the image within a flag element.                                                    |
 | `.MuiTelInput-Menu`                    | `classes.menu`              | 	Styles applied to [Menu](https://mui.com/material-ui/api/menu/) component.                            |
 | `.MuiTelInput-MenuItem`                | `classes.menuItem`          | 	Styles applied to a flag item of the [Menu](https://mui.com/material-ui/api/menu/).                   |
 | `.MuiTelInput-ListItemIcon-flag`       | `classes.listItemIconFlag`  | 	Styles applied to the [ListItemIcon](https://mui.com/material-ui/api/list-item-icon/) of a flag item  |
