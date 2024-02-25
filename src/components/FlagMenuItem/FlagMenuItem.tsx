@@ -56,7 +56,12 @@ const FlagMenuItem = ({
         color="text.secondary"
         className={callingCodeClass}
       >
-        +{COUNTRIES[isoCode]?.[0]}
+        +{COUNTRIES[isoCode]?.[10] != '0' &&
+        COUNTRIES[isoCode]?.[0] == '1' &&
+        !COUNTRIES[isoCode]?.[10]?.includes('[') &&
+        !COUNTRIES[isoCode]?.[10]?.includes('|')
+          ? `${COUNTRIES[isoCode]?.[0]}-${COUNTRIES[isoCode]?.[10]}`
+          : COUNTRIES[isoCode]?.[0]}
       </Typography>
     </MenuItem>
   )
