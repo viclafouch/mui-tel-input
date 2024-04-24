@@ -1,37 +1,44 @@
 import { expect } from 'vitest'
 import { MuiTelInputCountry } from '@shared/constants/countries'
+import { DEFAULT_LANG } from '@shared/constants/lang'
 import { filterCountries, sortAlphabeticallyCountryCodes } from '../country'
+import { getDisplayNames } from '../intl'
 
-const COUNTRIES: readonly MuiTelInputCountry[] = ['FR', 'BE', 'US', 'VE']
+const COUNTRIES: readonly MuiTelInputCountry[] = ['BE', 'FR', 'US', 'VE']
+const COUNTRIES_DISPLAY_NAME = getDisplayNames(DEFAULT_LANG)
 
 describe('helpers/country', () => {
   describe('filterCountries', () => {
     it('should return an array', () => {
-      expect(filterCountries(COUNTRIES, {})).toBeInstanceOf(Array)
+      expect(
+        filterCountries(COUNTRIES, COUNTRIES_DISPLAY_NAME, {})
+      ).toBeInstanceOf(Array)
     })
     it('should return the exact same array when no filters options', () => {
-      expect(filterCountries(COUNTRIES, {})).toBe(COUNTRIES)
+      expect(
+        filterCountries(COUNTRIES, COUNTRIES_DISPLAY_NAME, {})
+      ).toStrictEqual(COUNTRIES)
     })
 
     it('should return the exact same array when filters options are empty', () => {
       expect(
-        filterCountries(COUNTRIES, {
+        filterCountries(COUNTRIES, COUNTRIES_DISPLAY_NAME, {
           onlyCountries: [],
           excludedCountries: []
         })
-      ).toBe(COUNTRIES)
+      ).toStrictEqual(COUNTRIES)
     })
 
     it('should remove FR when exclude FR', () => {
       expect(
-        filterCountries(COUNTRIES, {
+        filterCountries(COUNTRIES, COUNTRIES_DISPLAY_NAME, {
           excludedCountries: ['FR']
         })
       ).toEqual(['BE', 'US', 'VE'])
     })
     it('should only contain FR when only FR', () => {
       expect(
-        filterCountries(COUNTRIES, {
+        filterCountries(COUNTRIES, COUNTRIES_DISPLAY_NAME, {
           onlyCountries: ['FR']
         })
       ).toEqual(['FR'])
@@ -39,7 +46,7 @@ describe('helpers/country', () => {
 
     it('should only contain BE when onlyCountries is BE and even exclude BE', () => {
       expect(
-        filterCountries(COUNTRIES, {
+        filterCountries(COUNTRIES, COUNTRIES_DISPLAY_NAME, {
           onlyCountries: ['BE'],
           excludedCountries: ['BE']
         })
@@ -48,7 +55,7 @@ describe('helpers/country', () => {
 
     it('should only contain EU and SA countries', () => {
       expect(
-        filterCountries(COUNTRIES, {
+        filterCountries(COUNTRIES, COUNTRIES_DISPLAY_NAME, {
           continents: ['EU', 'SA']
         }).length
       ).toBe(67)
@@ -56,7 +63,7 @@ describe('helpers/country', () => {
 
     it('should only contain EU and SA countries except excluded countries', () => {
       expect(
-        filterCountries(COUNTRIES, {
+        filterCountries(COUNTRIES, COUNTRIES_DISPLAY_NAME, {
           continents: ['EU', 'SA'],
           excludedCountries: ['BE', 'FR', 'VE']
         }).length
@@ -65,11 +72,11 @@ describe('helpers/country', () => {
 
     it('should only contain onlyCountries even with continents filled', () => {
       expect(
-        filterCountries(COUNTRIES, {
+        filterCountries(COUNTRIES, COUNTRIES_DISPLAY_NAME, {
           continents: ['EU', 'SA'],
           onlyCountries: ['BE', 'FR', 'VE']
         })
-      ).toEqual(['FR', 'BE', 'VE'])
+      ).toEqual(['BE', 'FR', 'VE'])
     })
   })
 
