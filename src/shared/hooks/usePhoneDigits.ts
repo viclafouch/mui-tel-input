@@ -160,7 +160,9 @@ export default function usePhoneDigits({
     inputValue: string,
     country: MuiTelInputCountry
   ): string => {
-    return `+${getCallingCodeOfCountry(country)}${inputValue}`
+    return inputValue.startsWith('+') || inputValue === ''
+      ? inputValue
+      : `+${getCallingCodeOfCountry(country)}${inputValue}`
   }
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -174,10 +176,11 @@ export default function usePhoneDigits({
     // formatted : e.g: +33 6 26 92..
     const formattedValue = typeNewValue(inputValue)
     const newCountryCode = asYouTypeRef.current.getCountry()
-    const country = forceCallingCode
-      ? // always the same country, can't change
-        (state.isoCode as MuiTelInputCountry)
-      : newCountryCode || previousCountryRef.current
+    const country =
+      newCountryCode ||
+      (forceCallingCode
+        ? (state.isoCode as MuiTelInputCountry)
+        : previousCountryRef.current)
     // Not formatted : e.g: +336269226..
     const numberValue = asYouTypeRef.current.getNumberValue() || ''
 

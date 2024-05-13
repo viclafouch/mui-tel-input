@@ -178,24 +178,6 @@ describe('components/MuiTelInput', () => {
       expect(getInputElement().value).toBe('')
     })
 
-    test('should not accept the + at the beginning', async () => {
-      render(<MuiTelWrapper defaultCountry="FR" forceCallingCode />)
-      await typeInInputElement('+33626')
-      expect(getInputElement().value).toBe('3 36 26')
-      expectButtonIsFlagOf('FR')
-      expectButtonContainsCallingCode('33')
-    })
-
-    test('should not change country even if same country code', async () => {
-      // JM and US have the same country code, +1
-      render(<MuiTelWrapper forceCallingCode defaultCountry="US" />)
-      expectButtonIsFlagOf('US')
-      expectButtonContainsCallingCode('1')
-      await typeInInputElement('87654')
-      expectButtonIsFlagOf('US')
-      expectButtonContainsCallingCode('1')
-    })
-
     test('should give same value on the onChange callback', async () => {
       const callbackOnChange = vi.fn(() => {})
 
@@ -241,6 +223,40 @@ describe('components/MuiTelInput', () => {
       expectButtonIsFlagOf('BE')
       expectButtonContainsCallingCode('32')
       expect(getInputElement().value).toBe('72 1')
+    })
+
+    test('should remove the country code on paste', async () => {
+      render(<MuiTelWrapper defaultCountry="FI" forceCallingCode />)
+      await userEvent.click(getInputElement())
+      await userEvent.paste('+358 40 123456')
+      expect(getInputElement().value).toBe('40 123456')
+      expectButtonIsFlagOf('FI')
+      expectButtonContainsCallingCode('358')
+    })
+
+    test('should remove the country code on input', async () => {
+      render(<MuiTelWrapper defaultCountry="FI" forceCallingCode />)
+      await typeInInputElement('+358 40 123456')
+      expect(getInputElement().value).toBe('40 123456')
+      expectButtonIsFlagOf('FI')
+      expectButtonContainsCallingCode('358')
+    })
+
+    test('should remove the country code on paste, non-default country', async () => {
+      render(<MuiTelWrapper defaultCountry="SE" forceCallingCode />)
+      await userEvent.click(getInputElement())
+      await userEvent.paste('+358 40 123456')
+      expect(getInputElement().value).toBe('40 123456')
+      expectButtonIsFlagOf('FI')
+      expectButtonContainsCallingCode('358')
+    })
+
+    test('should remove the country code on input, non-default country', async () => {
+      render(<MuiTelWrapper defaultCountry="SE" forceCallingCode />)
+      await typeInInputElement('+358 40 123456')
+      expect(getInputElement().value).toBe('40 123456')
+      expectButtonIsFlagOf('FI')
+      expectButtonContainsCallingCode('358')
     })
   })
 
