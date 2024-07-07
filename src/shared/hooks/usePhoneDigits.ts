@@ -107,7 +107,7 @@ export default function usePhoneDigits({
     defaultCountry || null
   )
   const asYouTypeRef = React.useRef<AsYouType>(new AsYouType(defaultCountry))
-  const inputRef = React.useRef<HTMLInputElement>(null)
+  const inputRef = React.useRef<HTMLInputElement | null>(null)
   const [previousDefaultCountry, setPreviousDefaultCountry] = React.useState<
     MuiTelInputCountry | undefined
   >(defaultCountry)

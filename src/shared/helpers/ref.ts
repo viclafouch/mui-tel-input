@@ -1,15 +1,15 @@
 import React from 'react'
 import { matchIsObject } from './object'
 
-export function assocRefToPropRef(
-  ref: unknown,
-  propRef: React.Ref<unknown> | undefined
-): void {
-  if (typeof propRef === 'function') {
-    propRef(ref)
-  } else if (propRef && matchIsObject(propRef) && 'current' in propRef) {
-    // @ts-ignore
-    // eslint-disable-next-line no-param-reassign
-    propRef.current = ref
+export function refToRefs(refs: (React.Ref<unknown> | undefined)[]) {
+  return (refInstance: unknown) => {
+    refs.forEach((toRef) => {
+      if (typeof toRef === 'function') {
+        toRef(refInstance)
+      } else if (toRef && matchIsObject(toRef) && 'current' in toRef) {
+        // @ts-expect-error
+        toRef.current = refInstance
+      }
+    })
   }
 }
