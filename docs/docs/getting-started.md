@@ -15,22 +15,6 @@ yarn add mui-tel-input
 
 We have completed installing the package.
 
-## Next.js integration
-
-Learn how to use MUI tel input with Next.js
-
-Once you have installed `MUI Tel Input` in your next.js project, it is important to transpile it as it is an ESM package first.
-
-```js
-/** @type {import('next').NextConfig} */
-const nextConfig = {
- transpilePackages: ['mui-tel-input'],
- // your config
-}
-
-module.exports = nextConfig
-```
-
 ## Simple usage
 
 Here is a simple usage for using the component:
@@ -50,6 +34,22 @@ const MyComponent = () => {
     <MuiTelInput value={phone} onChange={handleChange} />
   )
 }
+```
+
+## Next.js integration
+
+Learn how to use MUI Tel Input with [Next.js](https://nextjs.org/).
+
+Once you have installed `MUI Tel Input` in your next.js project, it is important to transpile it as it is an ESM package first.
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+ transpilePackages: ['mui-tel-input'],
+ // your config
+}
+
+module.exports = nextConfig
 ```
 
 ## Congratulations !
