@@ -3,10 +3,7 @@ import FlagMenuItem from '@components/FlagMenuItem/FlagMenuItem'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
 import { ISO_CODES, MuiTelInputCountry } from '@shared/constants/countries'
 import { DEFAULT_LANG } from '@shared/constants/lang'
-import {
-  filterCountries,
-  sortAlphabeticallyCountryCodes
-} from '@shared/helpers/country'
+import { filterCountries } from '@shared/helpers/country'
 import { getDisplayNames } from '@shared/helpers/intl'
 import Menu, { MenuProps } from '@mui/material/Menu'
 import type { GetFlagElement } from '../../index.types'
@@ -46,12 +43,7 @@ const FlagsMenu = ({
     return getDisplayNames(langOfCountryName)
   }, [langOfCountryName])
 
-  const ISO_CODES_SORTED = sortAlphabeticallyCountryCodes(
-    ISO_CODES,
-    displayNames
-  )
-
-  const countriesFiltered = filterCountries(ISO_CODES_SORTED, {
+  const countriesFiltered = filterCountries(ISO_CODES, displayNames, {
     onlyCountries,
     excludedCountries,
     continents,
