@@ -236,8 +236,6 @@ export default function usePhoneDigits({
 
     const phoneInfo = buildOnChangeInfo('input')
 
-    // * builder wrapper around onChange which can contain extension logic?
-
     // Check if the country is excluded, or not part on onlyCountries, etc..
     if (numberValue && (!country || !matchIsIsoCodeValid(country))) {
       _onChange(numberValue, {
