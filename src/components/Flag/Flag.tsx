@@ -7,9 +7,11 @@ export type FlagProps = {
   children: React.ReactNode
 }
 
+export const flagContainerClass = 'MuiTelInput-Flag'
+
 const Flag = ({ isoCode, children }: FlagProps) => {
   return (
-    <Styled.Flag data-testid={isoCode} className="MuiTelInput-Flag">
+    <Styled.Flag data-testid={isoCode} className={flagContainerClass}>
       {children}
     </Styled.Flag>
   )

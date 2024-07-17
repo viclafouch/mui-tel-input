@@ -4,7 +4,7 @@ import { getDefaultFlagElement } from '@shared/helpers/flag'
 import { getDisplayNames } from '@shared/helpers/intl'
 import { fireEvent, render } from '@testing-library/react'
 import FlagMenuItem from './FlagMenuItem'
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
 
 describe('components/FlagMenuItem', () => {
   test('should have aria-expanded to true', () => {

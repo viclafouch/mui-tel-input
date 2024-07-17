@@ -5,7 +5,7 @@ import {
 } from '@shared/helpers/flag'
 import { render } from '@testing-library/react'
 import FlagButton from './FlagButton'
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
 
 describe('components/FlagButton', () => {
   test('should have aria-expanded to true', () => {

@@ -42,6 +42,9 @@ const config = {
         },
         docs: {
           sidebarPath: require.resolve('./sidebars.js')
+        },
+        gtag: {
+          trackingID: 'G-EYM50LZ40L'
         }
       })
     ]

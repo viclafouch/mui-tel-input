@@ -131,6 +131,7 @@ export default function usePhoneDigits({
   const inputRef = React.useRef<HTMLInputElement>(null)
   const extensionInputRef = React.useRef<HTMLInputElement>(null)
 
+  // const inputRef = React.useRef<HTMLInputElement | null>(null)
   const [previousDefaultCountry, setPreviousDefaultCountry] = React.useState<
     MuiTelInputCountry | undefined
   >(defaultCountry)
@@ -193,7 +194,9 @@ export default function usePhoneDigits({
     inputValue: string,
     country: MuiTelInputCountry
   ): string => {
-    return `+${getCallingCodeOfCountry(country)}${inputValue}`
+    return inputValue.startsWith('+') || inputValue === ''
+      ? inputValue
+      : `+${getCallingCodeOfCountry(country)}${inputValue}`
   }
 
   // * a wrapper for the onChange callback where we can handle formatting logic
@@ -221,10 +224,11 @@ export default function usePhoneDigits({
     // formatted : e.g: +33 6 26 92..
     const formattedValue = typeNewValue(inputValue)
     const newCountryCode = asYouTypeRef.current.getCountry()
-    const country = forceCallingCode
-      ? // always the same country, can't change
-        (state.isoCode as MuiTelInputCountry)
-      : newCountryCode || previousCountryRef.current
+    const country =
+      newCountryCode ||
+      (forceCallingCode
+        ? (state.isoCode as MuiTelInputCountry)
+        : previousCountryRef.current)
     // Not formatted : e.g: +336269226..
     const numberValue = asYouTypeRef.current.getNumberValue() || ''
 
@@ -263,7 +267,6 @@ export default function usePhoneDigits({
 
   React.useEffect(() => {
     if (_value !== previousValue) {
-      console.log({ _value, previousValue })
       setPreviousValue(_value)
       const newState = getInitialState({
         rawInputValue: value,
@@ -321,9 +324,17 @@ export default function usePhoneDigits({
 
     const callingCode = COUNTRIES[newCountry]?.[0] as string
     const { inputValue, isoCode } = state
-    const inputValueWithoutCallingCode = isoCode
-      ? removeOccurrence(inputValue, `+${getCallingCodeOfCountry(isoCode)}`)
-      : inputValue
+
+    let inputValueWithoutCallingCode = inputValue
+
+    if (isoCode) {
+      const callingCodeOfPreviousCountry = getCallingCodeOfCountry(isoCode)
+      const callingCodeWithPlus = `+${callingCodeOfPreviousCountry}`
+      // if the input value start with wrong calling code, set it to empty string
+      inputValueWithoutCallingCode = inputValue.startsWith(callingCodeWithPlus)
+        ? removeOccurrence(inputValue, callingCodeWithPlus)
+        : ''
+    }
 
     // replace the old calling code with the new one, keeping the rest of the number
     let newValue = `+${callingCode}${inputValueWithoutCallingCode}`
@@ -351,7 +362,10 @@ export default function usePhoneDigits({
 
   const onExtensionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const extInputVal = event.target.value
-    if (!isValidExtension(extInputVal)) return
+
+    if (!isValidExtension(extInputVal)) {
+      return
+    }
 
     setState((prev) => {
       return { ...prev, extensionValue: extInputVal }

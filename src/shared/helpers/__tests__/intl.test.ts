@@ -1,5 +1,5 @@
 import { getDisplayNames } from '../intl'
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
 
 describe('helpers/intl', () => {
   describe('getDisplayNames', () => {

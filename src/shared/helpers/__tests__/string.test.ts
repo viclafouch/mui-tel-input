@@ -1,6 +1,6 @@
 import { expect } from 'vitest'
 import { removeOccurrence } from '../string'
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
 
 describe('helpers/string', () => {
   describe('removeOccurrence', () => {

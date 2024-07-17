@@ -14,7 +14,11 @@ const MyComponent = () => {
   const [value, setValue] = React.useState('+33123456789')
 
   const handleChange = (newValue) => {
-    matchIsValidTel(newValue) // boolean
+    matchIsValidTel(newValue, {
+      onlyCountryies: [], // optional,
+      excludedCountryies: [], // optional
+      continents: [] // optional
+    }) // true | false
   }
 
   return <MuiTelInput value={value} onChange={handleChange} />

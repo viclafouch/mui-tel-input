@@ -2,7 +2,7 @@ import React from 'react'
 import { getDefaultFlagElement, getDefaultImgProps } from '@shared/helpers/flag'
 import { render } from '@testing-library/react'
 import Flag from './Flag'
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
 
 describe('components/Flag', () => {
   test('should render correctly', () => {

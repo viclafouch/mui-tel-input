@@ -1,8 +1,9 @@
 import React from 'react'
 import { ISO_CODES } from '@shared/constants/countries'
+import { Box, styled } from '@mui/material'
 import { action } from '@storybook/addon-actions'
 import { Meta, StoryFn } from '@storybook/react'
-import { MuiTelInput, MuiTelInputProps } from './index'
+import { classes, MuiTelInput, MuiTelInputProps } from './index'
 
 export default {
   title: 'MuiTelInput',
@@ -67,5 +68,52 @@ export const Primary: StoryFn<typeof MuiTelInput> = (args) => {
       preferredCountries={['FR']}
       onChange={handleChange}
     />
+  )
+}
+
+const WithStyledFlag = styled(MuiTelInput)`
+  .${classes.flagImg} {
+    filter: grayscale(100%);
+    width: 20px;
+  }
+`
+
+export const CustomizationByClassNameConstant: StoryFn<typeof MuiTelInput> = (
+  args
+) => {
+  const { value, ...rest } = args
+  const [state, setState] = React.useState<string | undefined>(undefined)
+
+  const handleChange = (
+    ...argsChange: Parameters<NonNullable<MuiTelInputProps['onChange']>>
+  ) => {
+    action('onChange')(argsChange)
+    setState(argsChange[0])
+  }
+
+  return (
+    <Box>
+      <pre>
+        <code>{`const WithStyledFlag = styled(MuiTelInput)
+  .\${classes.flagImg} {
+    filter: grayscale(100%);
+    width: 20px;
+  }
+`}</code>
+      </pre>
+
+      <WithStyledFlag
+        {...rest}
+        value={state}
+        getFlagElement={(isoCode, { imgProps }) => {
+          // eslint-disable-next-line jsx-a11y/alt-text
+          return <img {...imgProps} />
+        }}
+        forceCallingCode
+        defaultCountry="FR"
+        preferredCountries={['FR']}
+        onChange={handleChange}
+      />
+    </Box>
   )
 }

@@ -23,7 +23,7 @@ export function getValidCountry(
   return country || DEFAULT_ISO_CODE
 }
 
-export function sortedPreferredCountries(
+export function sortPreferredCountries(
   countries: readonly MuiTelInputCountry[],
   preferredCountries: readonly MuiTelInputCountry[]
 ): readonly MuiTelInputCountry[] {
@@ -60,43 +60,6 @@ export function excludeCountries(
   return countries
 }
 
-export function filterCountries(
-  countries: readonly MuiTelInputCountry[],
-  options: FilterCountriesOptions
-): readonly MuiTelInputCountry[] {
-  const { onlyCountries, excludedCountries, continents, preferredCountries } =
-    options
-
-  if (matchIsArray(onlyCountries, true)) {
-    const filteredCountries = getOnlyCountries(countries, onlyCountries)
-
-    return matchIsArray(preferredCountries, true)
-      ? sortedPreferredCountries(filteredCountries, preferredCountries)
-      : filteredCountries
-  }
-
-  const theCountries = matchIsArray(continents, true)
-    ? getCountriesOfContinents(continents)
-    : countries
-
-  const sortedCountries = matchIsArray(preferredCountries, true)
-    ? sortedPreferredCountries(theCountries, preferredCountries)
-    : theCountries
-
-  return matchIsArray(excludedCountries, true)
-    ? excludeCountries(sortedCountries, excludedCountries)
-    : sortedCountries
-}
-
-export function matchContinentsIncludeCountry(
-  continents: MuiTelInputContinent[],
-  isoCode: MuiTelInputCountry
-) {
-  return continents.some((continentCode) => {
-    return CONTINENTS[continentCode].includes(isoCode)
-  })
-}
-
 export function sortAlphabeticallyCountryCodes(
   countryCodes: readonly MuiTelInputCountry[],
   displayNames: Intl.DisplayNames
@@ -106,5 +69,51 @@ export function sortAlphabeticallyCountryCodes(
     const countryB = displayNames.of(countryCodeB) as string
 
     return countryA.localeCompare(countryB)
+  })
+}
+
+export function filterCountries(
+  countries: readonly MuiTelInputCountry[],
+  displayNames: Intl.DisplayNames,
+  options: FilterCountriesOptions
+): readonly MuiTelInputCountry[] {
+  const { onlyCountries, excludedCountries, continents, preferredCountries } =
+    options
+
+  if (matchIsArray(onlyCountries, true)) {
+    const filteredCountries = sortAlphabeticallyCountryCodes(
+      getOnlyCountries(countries, onlyCountries),
+      displayNames
+    )
+
+    return matchIsArray(preferredCountries, true)
+      ? sortPreferredCountries(filteredCountries, preferredCountries)
+      : filteredCountries
+  }
+
+  const theCountries = matchIsArray(continents, true)
+    ? getCountriesOfContinents(continents)
+    : countries
+
+  const sortedCountries = sortAlphabeticallyCountryCodes(
+    theCountries,
+    displayNames
+  )
+
+  const sortedPreferredCountries = matchIsArray(preferredCountries, true)
+    ? sortPreferredCountries(sortedCountries, preferredCountries)
+    : sortedCountries
+
+  return matchIsArray(excludedCountries, true)
+    ? excludeCountries(sortedPreferredCountries, excludedCountries)
+    : sortedPreferredCountries
+}
+
+export function matchContinentsIncludeCountry(
+  continents: MuiTelInputContinent[],
+  isoCode: MuiTelInputCountry
+) {
+  return continents.some((continentCode) => {
+    return CONTINENTS[continentCode].includes(isoCode)
   })
 }

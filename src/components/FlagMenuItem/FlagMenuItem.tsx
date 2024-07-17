@@ -14,6 +14,11 @@ export type FlagMenuItemProps = MenuItemProps & {
   getFlagElement: GetFlagElement
 }
 
+export const menuItemClass = 'MuiTelInput-MenuItem'
+export const listItemIconFlagClass = 'MuiTelInput-ListItemIcon-flag'
+export const listItemTextCountryClass = 'MuiTelInput-ListItemText-country'
+export const callingCodeClass = 'MuiTelInput-Typography-calling-code'
+
 const FlagMenuItem = ({
   isoCode,
   onSelectCountry,
@@ -32,9 +37,9 @@ const FlagMenuItem = ({
       onClick={handleClick}
       role="option"
       data-testid={`option-${isoCode}`}
-      className="MuiTelInput-MenuItem"
+      className={menuItemClass}
     >
-      <Styled.ListItemIcon className="MuiTelInput-ListItemIcon-flag">
+      <Styled.ListItemIcon className={listItemIconFlagClass}>
         <Flag isoCode={isoCode}>
           {getFlagElement(isoCode, {
             countryName,
@@ -43,13 +48,13 @@ const FlagMenuItem = ({
           })}
         </Flag>
       </Styled.ListItemIcon>
-      <Styled.ListItemText className="MuiTelInput-ListItemText-country">
+      <Styled.ListItemText className={listItemTextCountryClass}>
         {countryName}
       </Styled.ListItemText>
       <Typography
         variant="body2"
         color="text.secondary"
-        className="MuiTelInput-Typography-calling-code"
+        className={callingCodeClass}
       >
         +{COUNTRIES[isoCode]?.[0]}
       </Typography>

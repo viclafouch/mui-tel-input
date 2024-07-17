@@ -36,6 +36,22 @@ const MyComponent = () => {
 }
 ```
 
+## Next.js integration
+
+Learn how to use MUI Tel Input with [Next.js](https://nextjs.org/).
+
+Once you have installed `MUI Tel Input` in your next.js project, it is important to transpile it as it is an ESM package first.
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+ transpilePackages: ['mui-tel-input'],
+ // your config
+}
+
+module.exports = nextConfig
+```
+
 ## Congratulations !
 
 That's all, now let's deep dive into the [props](/docs/api-reference).

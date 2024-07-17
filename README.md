@@ -10,7 +10,6 @@
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/viclafouch/mui-tel-input/blob/master/LICENSE)
 ![ts](https://badgen.net/badge/Built%20With/TypeScript/blue)
 [![npm](https://img.shields.io/npm/v/mui-tel-input)](https://www.npmjs.com/package/mui-tel-input)
-[![CircleCI](https://circleci.com/gh/viclafouch/mui-tel-input/tree/master.svg?style=svg)](https://circleci.com/gh/viclafouch/mui-tel-input/tree/master)
 
 <div align="center">
   <img src="https://github.com/viclafouch/mui-tel-input/blob/master/mui-tel-input.gif" width="100%" />
@@ -46,6 +45,23 @@ const MyComponent = () => {
   return <MuiTelInput value={value} onChange={handleChange} />
 }
 ```
+
+## Next.js integration
+
+Learn how to use MUI Tel Input with [Next.js](https://nextjs.org/).
+
+Once you have installed `MUI Tel Input` in your next.js project, it is important to transpile it as it is an ESM package first.
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+ transpilePackages: ['mui-tel-input'],
+ // your config
+}
+
+module.exports = nextConfig
+```
+
 ## [Documentation](https://viclafouch.github.io/mui-tel-input/)
 
 ## Changelog

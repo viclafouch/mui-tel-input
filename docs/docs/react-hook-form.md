@@ -25,10 +25,12 @@ const App = () => {
       <Controller
         name="tel"
         control={control}
-        rules={{ validate: matchIsValidTel }}
-        render={({ field, fieldState }) => (
+        rules={{ validate: (value) => matchIsValidTel(value, { onlyCountries: ['FR'] }) }}
+        render={({ field: { ref: fieldRef, value, ...fieldProps }, fieldState }) => (
           <MuiTelInput
-            {...field}
+            {...fieldProps}
+            value={value ?? ''}
+            inputRef={fieldRef}
             onlyCountries={["FR"]}
             helperText={fieldState.invalid ? "Tel is invalid" : ""}
             error={fieldState.invalid}
