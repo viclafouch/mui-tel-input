@@ -89,6 +89,7 @@
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.5.2",
+    "@tsconfig/docusaurus": "^2.0.3",
     "@types/react": "^18.3.3",
     "@viclafouch/eslint-config-viclafouch": "^4.11.0",
     "@vitejs/plugin-react": "^4.3.1",

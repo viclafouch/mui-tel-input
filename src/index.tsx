@@ -1,4 +1,5 @@
 import React from 'react'
+import ExtensionField from '@components/ExtensionField/ExtensionField'
 import { flagContainerClass } from '@components/Flag/Flag'
 import FlagButton, { flagButtonClass } from '@components/FlagButton/FlagButton'
 import {
@@ -53,6 +54,7 @@ const MuiTelInput = React.forwardRef(
   (props: MuiTelInputProps, propRef: MuiTelInputProps['ref']) => {
     const {
       forceCallingCode = false,
+      enableExtensionField = false,
       onlyCountries,
       excludedCountries,
       defaultCountry,
@@ -75,6 +77,7 @@ const MuiTelInput = React.forwardRef(
       className,
       getFlagElement = getDefaultFlagElement,
       unknownFlagElement = defaultUnknownFlagElement,
+      ExtensionFieldProps,
       ...restTextFieldProps
     } = props
     const validDefaultCountry = forceCallingCode
@@ -83,17 +86,26 @@ const MuiTelInput = React.forwardRef(
 
     useMismatchProps(props)
 
-    const { onInputChange, onCountryChange, inputRef, isoCode, inputValue } =
-      usePhoneDigits({
-        forceCallingCode,
-        defaultCountry: validDefaultCountry,
-        value: value ?? '',
-        onChange,
-        excludedCountries,
-        onlyCountries,
-        disableFormatting,
-        continents
-      })
+    const {
+      onInputChange,
+      onCountryChange,
+      onExtensionChange,
+      inputRef,
+      isoCode,
+      inputValue,
+      extensionValue,
+      extensionInputRef
+    } = usePhoneDigits({
+      forceCallingCode,
+      defaultCountry: validDefaultCountry,
+      value: value ?? '',
+      onChange,
+      excludedCountries,
+      onlyCountries,
+      disableFormatting,
+      enableExtensions: enableExtensionField,
+      continents
+    })
 
     const { openMenu, anchorEl, anchorRef, closeMenu } = useAnchor({
       disabled,
@@ -141,6 +153,7 @@ const MuiTelInput = React.forwardRef(
           onChange={onInputChange}
           inputProps={{
             onCopy: handleCopy,
+            'data-testid': 'tel-num-input',
             ...inputProps
           }}
           onFocus={handleFocus}
@@ -159,6 +172,20 @@ const MuiTelInput = React.forwardRef(
                 />
               </InputAdornment>
             ),
+            endAdornment: enableExtensionField ? (
+              <InputAdornment position="end" sx={{ flexShrink: 1 }}>
+                <ExtensionField
+                  ref={extensionInputRef}
+                  value={extensionValue ?? ''}
+                  onChange={onExtensionChange}
+                  disabled={disabled}
+                  {...ExtensionFieldProps}
+                  className={`MuiTelInput-Extension-InputField ${
+                    ExtensionFieldProps?.className || ''
+                  }`}
+                />
+              </InputAdornment>
+            ) : undefined,
             ...InputProps
           }}
           {...restTextFieldProps}

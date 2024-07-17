@@ -9,6 +9,7 @@ import {
   expectButtonIsFlagOf,
   expectButtonNotIsFlagOf,
   getButtonElement,
+  getExtensionInputElement,
   getInputElement,
   selectCountry,
   typeInInputElement
@@ -120,6 +121,7 @@ describe('components/MuiTelInput', () => {
         countryCode: 'FR',
         nationalNumber: '626',
         numberType: null,
+        extension: null,
         numberValue: '+33626',
         reason: 'input'
       })
@@ -194,6 +196,7 @@ describe('components/MuiTelInput', () => {
         countryCode: 'FR',
         nationalNumber: '626922631',
         numberType: null,
+        extension: null,
         numberValue: '+33626922631',
         reason: 'input'
       })
@@ -274,6 +277,7 @@ describe('components/MuiTelInput', () => {
         countryCode: 'BE',
         nationalNumber: '',
         numberType: null,
+        extension: null,
         numberValue: '+32',
         reason: 'country'
       })
@@ -288,6 +292,7 @@ describe('components/MuiTelInput', () => {
         countryCode: 'BE',
         nationalNumber: '',
         numberType: null,
+        extension: null,
         numberValue: '+32',
         reason: 'country'
       })
@@ -330,6 +335,7 @@ describe('components/MuiTelInput', () => {
         countryCallingCode: '33',
         countryCode: 'FR',
         nationalNumber: '626',
+        extension: null,
         numberType: null,
         numberValue: '+33626',
         reason: 'input'
@@ -345,6 +351,7 @@ describe('components/MuiTelInput', () => {
         countryCode: 'US',
         nationalNumber: '2133734253',
         numberType: 'FIXED_LINE_OR_MOBILE',
+        extension: null,
         numberValue: '+12133734253',
         reason: 'input'
       })
@@ -543,4 +550,62 @@ describe('components/MuiTelInput', () => {
   //   await user.copy()
   //   expect(callback).toHaveBeenCalledTimes(1)
   // })
+})
+
+describe('ExtensionField', () => {
+  it('should render if extensions are enabled', () => {
+    render(<MuiTelWrapper enableExtensionField />)
+    const extInputEl = getExtensionInputElement()
+
+    expect(extInputEl).toBeInTheDocument()
+  })
+
+  it('should not render if extensions are not enabled', () => {
+    render(<MuiTelWrapper />)
+
+    expect(getExtensionInputElement).toThrowError()
+  })
+
+  it('should initialize with the extension number if one is passed', () => {
+    const ext = '321'
+    const numVal = `+1 777 888 9999 ext. ${ext}`
+
+    render(<MuiTelWrapper enableExtensionField value={numVal} />)
+    const extInputEl = getExtensionInputElement()
+
+    expect(extInputEl.value).toBe(ext)
+  })
+
+  it('should call onChange with the extension reason and latest extension value', async () => {
+    const changeHandler = vi.fn(() => {})
+
+    render(
+      <MuiTelWrapper
+        enableExtensionField
+        onChange={changeHandler}
+        defaultCountry="US"
+      />
+    )
+
+    const inputEl = getInputElement()
+    const inputVal = '777 888 9999'
+    await userEvent.type(inputEl, inputVal, { delay: 1 })
+
+    const extInputEl = getExtensionInputElement()
+    const extInputVal = '323'
+    await userEvent.type(extInputEl, extInputVal, { delay: 1 })
+
+    expect(changeHandler).toHaveBeenLastCalledWith(
+      '+1 777 888 9999 extension 323',
+      {
+        countryCallingCode: '1',
+        countryCode: null,
+        nationalNumber: '7778889999',
+        extension: extInputVal,
+        numberType: null,
+        numberValue: '+17778889999',
+        reason: 'extension'
+      }
+    )
+  })
 })

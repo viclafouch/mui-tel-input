@@ -1,4 +1,5 @@
 import { NumberType } from 'libphonenumber-js'
+import { ExtensionFieldProps } from '@components/ExtensionField/ExtensionField'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
 import type { MuiTelInputCountry } from '@shared/constants/countries'
 import type { MenuProps } from '@mui/material/Menu'
@@ -11,7 +12,7 @@ type BaseTextFieldProps = Omit<
 
 export type { MuiTelInputContinent, MuiTelInputCountry }
 
-export type MuiTelInputReason = 'country' | 'input'
+export type MuiTelInputReason = 'country' | 'input' | 'extension'
 
 export type MuiTelInputFlagElement = React.ReactNode
 
@@ -32,6 +33,7 @@ export interface MuiTelInputInfo {
   countryCode: MuiTelInputCountry | null
   countryCallingCode: string | null
   nationalNumber: string | null
+  extension: string | null
   numberType: Exclude<NumberType, undefined> | null
   numberValue: string | null
   reason: MuiTelInputReason
@@ -47,6 +49,11 @@ type ForceCallingCodeWithDefaultCountry =
       defaultCountry?: MuiTelInputCountry
     }
 
+export type MuiTelInputChangeHandler = (
+  value: string,
+  info: MuiTelInputInfo
+) => void
+
 export type MuiTelInputProps = BaseTextFieldProps &
   ForceCallingCodeWithDefaultCountry & {
     excludedCountries?: MuiTelInputCountry[]
@@ -57,9 +64,11 @@ export type MuiTelInputProps = BaseTextFieldProps &
     langOfCountryName?: string
     disableFormatting?: boolean
     continents?: MuiTelInputContinent[]
-    onChange?: (value: string, info: MuiTelInputInfo) => void
+    onChange?: MuiTelInputChangeHandler
     value?: string | undefined
     MenuProps?: Partial<MenuProps>
     getFlagElement?: GetFlagElement
     unknownFlagElement?: MuiTelInputFlagElement
+    enableExtensionField?: boolean
+    ExtensionFieldProps?: ExtensionFieldProps
   }
