@@ -12,10 +12,10 @@ This package is written in **TypeScript**. So you don't need to create your own 
 import React from 'react'
 import {
   MuiTelInput,
-  MuiTelInputCountry,
-  MuiTelInputInfo,
-  MuiTelInputContinent,
-  MuiTelInputFlagElement
+  type MuiTelInputCountry,
+  type MuiTelInputInfo,
+  type MuiTelInputContinent,
+  type MuiTelInputFlagElement
 } from 'mui-tel-input'
 
 const MyComponent = () => {
