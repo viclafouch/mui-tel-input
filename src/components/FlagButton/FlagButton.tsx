@@ -25,7 +25,7 @@ const FlagButton = ({
   disableDropdown = false,
   forceCallingCode = false,
   langOfCountryName = DEFAULT_LANG,
-  isFlagsMenuOpened = false,
+  isFlagsMenuOpened,
   getFlagElement,
   unknownFlagElement,
   isoCode,
