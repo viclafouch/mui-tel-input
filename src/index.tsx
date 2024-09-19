@@ -63,6 +63,7 @@ const MuiTelInput = React.forwardRef(
       inputProps,
       InputProps,
       inputRef: inputRefFromProps,
+      slotProps = {},
       disabled,
       onChange,
       disableDropdown,
@@ -77,6 +78,7 @@ const MuiTelInput = React.forwardRef(
       unknownFlagElement = defaultUnknownFlagElement,
       ...restTextFieldProps
     } = props
+
     const validDefaultCountry = forceCallingCode
       ? getValidCountry(defaultCountry)
       : defaultCountry
@@ -160,6 +162,26 @@ const MuiTelInput = React.forwardRef(
               </InputAdornment>
             ),
             ...InputProps
+          }}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start" sx={{ flexShrink: 0 }}>
+                  <FlagButton
+                    isFlagsMenuOpened={Boolean(anchorEl)}
+                    isoCode={isoCode}
+                    forceCallingCode={forceCallingCode}
+                    onClick={openMenu}
+                    disabled={disabled}
+                    getFlagElement={getFlagElement}
+                    unknownFlagElement={unknownFlagElement}
+                    disableDropdown={Boolean(disableDropdown)}
+                  />
+                </InputAdornment>
+              ),
+              ...slotProps.input
+            },
+            ...slotProps
           }}
           {...restTextFieldProps}
         />
