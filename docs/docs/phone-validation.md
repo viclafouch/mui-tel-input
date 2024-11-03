@@ -15,8 +15,8 @@ const MyComponent = () => {
 
   const handleChange = (newValue) => {
     matchIsValidTel(newValue, {
-      onlyCountryies: [], // optional,
-      excludedCountryies: [], // optional
+      onlyCountries: [], // optional,
+      excludedCountries: [], // optional
       continents: [] // optional
     }) // true | false
   }
