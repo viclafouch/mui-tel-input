@@ -1,8 +1,11 @@
-import { CONTINENTS, MuiTelInputContinent } from '@shared/constants/continents'
+import {
+  CONTINENTS,
+  type MuiTelInputContinent
+} from '@shared/constants/continents'
 import {
   COUNTRIES,
   DEFAULT_ISO_CODE,
-  MuiTelInputCountry
+  type MuiTelInputCountry
 } from '@shared/constants/countries'
 import { matchIsArray } from '@shared/helpers/array'
 

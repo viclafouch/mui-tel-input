@@ -2,7 +2,7 @@ import React from 'react'
 import { vi } from 'vitest'
 import { fireEvent, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MuiTelInput, MuiTelInputInfo } from './index'
+import { MuiTelInput, type MuiTelInputInfo } from './index'
 import {
   closeFlagsMenu,
   expectButtonContainsCallingCode,
@@ -57,18 +57,6 @@ describe('components/MuiTelInput', () => {
       // call
       const refCallback = vi.fn(() => {})
       render(<MuiTelWrapper inputRef={refCallback} />)
-      expect(refCallback).toHaveBeenCalled()
-    })
-
-    test('should assign or call InputProps.inputRef prop', () => {
-      // assign
-      const ref = React.createRef<HTMLDivElement>()
-      const InputProps = { inputRef: ref }
-      render(<MuiTelWrapper InputProps={InputProps} />)
-      expect(InputProps.inputRef.current).toBeTruthy()
-      // call
-      const refCallback = vi.fn(() => {})
-      render(<MuiTelWrapper InputProps={{ inputRef: refCallback }} />)
       expect(refCallback).toHaveBeenCalled()
     })
   })

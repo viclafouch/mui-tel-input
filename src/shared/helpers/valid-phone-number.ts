@@ -1,6 +1,6 @@
-import { MuiTelInputContinent } from 'index.types'
+import type { MuiTelInputContinent } from 'index.types'
 import { AsYouType, isValidPhoneNumber } from 'libphonenumber-js'
-import { MuiTelInputCountry } from '@shared/constants/countries'
+import type { MuiTelInputCountry } from '@shared/constants/countries'
 import {
   excludeCountries,
   getOnlyCountries,

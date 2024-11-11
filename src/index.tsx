@@ -60,8 +60,7 @@ const MuiTelInput = React.forwardRef(
       onFocus,
       onCopy,
       value = '',
-      inputProps,
-      InputProps,
+      slotProps,
       inputRef: inputRefFromProps,
       disabled,
       onChange,
@@ -132,34 +131,32 @@ const MuiTelInput = React.forwardRef(
           value={validInputValue}
           ref={refToRefs([propRef, anchorRef])}
           onDoubleClick={handleDoubleClick}
-          inputRef={refToRefs([
-            inputRef,
-            inputRefFromProps,
-            InputProps?.inputRef
-          ])}
+          inputRef={refToRefs([inputRef, inputRefFromProps])}
           className={`${textFieldClass} ${className || ''}`}
           onChange={onInputChange}
-          inputProps={{
-            onCopy: handleCopy,
-            ...inputProps
-          }}
           onFocus={handleFocus}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start" sx={{ flexShrink: 0 }}>
-                <FlagButton
-                  isFlagsMenuOpened={Boolean(anchorEl)}
-                  isoCode={isoCode}
-                  forceCallingCode={forceCallingCode}
-                  onClick={openMenu}
-                  disabled={disabled}
-                  getFlagElement={getFlagElement}
-                  unknownFlagElement={unknownFlagElement}
-                  disableDropdown={Boolean(disableDropdown)}
-                />
-              </InputAdornment>
-            ),
-            ...InputProps
+          slotProps={{
+            htmlInput: {
+              onCopy: handleCopy,
+              ...slotProps?.htmlInput
+            },
+            input: {
+              startAdornment: (
+                <InputAdornment position="start" sx={{ flexShrink: 0 }}>
+                  <FlagButton
+                    isFlagsMenuOpened={Boolean(anchorEl)}
+                    isoCode={isoCode}
+                    forceCallingCode={forceCallingCode}
+                    onClick={openMenu}
+                    disabled={disabled}
+                    getFlagElement={getFlagElement}
+                    unknownFlagElement={unknownFlagElement}
+                    disableDropdown={Boolean(disableDropdown)}
+                  />
+                </InputAdornment>
+              ),
+              ...slotProps?.input
+            }
           }}
           {...restTextFieldProps}
         />

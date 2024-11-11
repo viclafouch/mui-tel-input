@@ -1,6 +1,6 @@
 import React from 'react'
 import { expect, vi } from 'vitest'
-import { ISO_CODES, MuiTelInputCountry } from '@shared/constants/countries'
+import { ISO_CODES, type MuiTelInputCountry } from '@shared/constants/countries'
 import { getDefaultFlagElement } from '@shared/helpers/flag'
 import { fireEvent, render, screen } from '@testing-library/react'
 import FlagsMenu from './FlagsMenu'

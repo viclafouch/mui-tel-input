@@ -10,8 +10,6 @@ module.exports = {
     project: ['./tsconfig.json', './docs/tsconfig.json']
   },
   rules: {
-    // inputProps / InputProps
-    'react/jsx-no-duplicate-props': 'off',
     'import/no-extraneous-dependencies': [
       'error',
       {

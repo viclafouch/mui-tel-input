@@ -5,7 +5,7 @@ import { DEFAULT_LANG } from '@shared/constants/lang'
 import { getCallingCodeOfCountry } from '@shared/helpers/country'
 import { getDefaultImgProps } from '@shared/helpers/flag'
 import { getDisplayNames } from '@shared/helpers/intl'
-import IconButton, { IconButtonProps } from '@mui/material/IconButton'
+import IconButton, { type IconButtonProps } from '@mui/material/IconButton'
 import type { GetFlagElement } from '../../index.types'
 import { Styled } from './FlagButton.styled'
 

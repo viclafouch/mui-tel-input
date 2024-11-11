@@ -1,5 +1,5 @@
 import React from 'react'
-import { MuiTelInputProps } from '../../index.types'
+import { type MuiTelInputProps } from '../../index.types'
 
 type Options = Pick<MuiTelInputProps, 'disableDropdown' | 'disabled'>
 

@@ -12,7 +12,7 @@ describe('hooks/useMissmatchProps', () => {
         excludedCountries: ['FR']
       })
     })
-    expect(consoleSpy).toHaveBeenCalledTimes(2)
+    expect(consoleSpy).toHaveBeenCalledTimes(1)
   })
 
   test('should log.error when onlyCoutries AND excludedCountries include the same country', () => {

@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { MuiTelInputCountry } from '@shared/constants/countries'
+import type { MuiTelInputCountry } from '@shared/constants/countries'
 import {
   fireEvent,
   screen,

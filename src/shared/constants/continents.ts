@@ -1,4 +1,4 @@
-import { MuiTelInputCountry } from '@shared/constants/countries'
+import type { MuiTelInputCountry } from '@shared/constants/countries'
 
 export type MuiTelInputContinent = 'EU' | 'AS' | 'NA' | 'SA' | 'OC' | 'AF'
 

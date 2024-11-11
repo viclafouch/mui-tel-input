@@ -1,5 +1,5 @@
 import { expect } from 'vitest'
-import { MuiTelInputCountry } from '@shared/constants/countries'
+import type { MuiTelInputCountry } from '@shared/constants/countries'
 import { DEFAULT_LANG } from '@shared/constants/lang'
 import { filterCountries, sortAlphabeticallyCountryCodes } from '../country'
 import { getDisplayNames } from '../intl'
