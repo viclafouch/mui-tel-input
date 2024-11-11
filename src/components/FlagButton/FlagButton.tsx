@@ -29,6 +29,7 @@ const FlagButton = ({
   getFlagElement,
   unknownFlagElement,
   isoCode,
+  className,
   ...iconButtonProps
 }: FlagButtonProps) => {
   const displayNames = React.useMemo(() => {
@@ -55,11 +56,9 @@ const FlagButton = ({
       {disableDropdown ? (
         <IconButton
           tabIndex={-1}
-          className={flagButtonClass}
-          // eslint-disable-next-line jsx-a11y/aria-role
-          role=""
+          className={`${flagButtonClass} ${className || ''}`}
+          role="presentation"
           disableRipple
-          // @ts-ignore
           sx={{ pointerEvents: 'none', aspectRatio: '1 / 1' }}
           component="span"
         >
@@ -67,13 +66,13 @@ const FlagButton = ({
         </IconButton>
       ) : (
         <IconButton
-          {...iconButtonProps}
-          aria-label="Select country"
-          className={flagButtonClass}
+          aria-label="Open flags menu"
+          className={`${flagButtonClass} ${className || ''}`}
           aria-haspopup="listbox"
           sx={{ aspectRatio: '1 / 1' }}
           aria-controls={isFlagsMenuOpened ? 'select-country' : undefined}
           aria-expanded={isFlagsMenuOpened ? 'true' : 'false'}
+          {...iconButtonProps}
         >
           {flagElement}
         </IconButton>

@@ -75,6 +75,7 @@ const MuiTelInput = React.forwardRef(
       className,
       getFlagElement = getDefaultFlagElement,
       unknownFlagElement = defaultUnknownFlagElement,
+      FlagIconButtonProps,
       ...restTextFieldProps
     } = props
     const validDefaultCountry = forceCallingCode
@@ -155,6 +156,7 @@ const MuiTelInput = React.forwardRef(
                     getFlagElement={getFlagElement}
                     unknownFlagElement={unknownFlagElement}
                     disableDropdown={Boolean(disableDropdown)}
+                    {...FlagIconButtonProps}
                   />
                 </InputAdornment>
               ),

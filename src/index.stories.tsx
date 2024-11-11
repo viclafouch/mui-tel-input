@@ -65,6 +65,7 @@ export const Primary: StoryFn<typeof MuiTelInput> = (args) => {
       }}
       forceCallingCode
       focusOnSelectCountry
+      FlagIconButtonProps={{ 'aria-label': 'Select country' }}
       defaultCountry="FR"
       preferredCountries={['FR']}
       onChange={handleChange}

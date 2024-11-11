@@ -241,6 +241,19 @@ export const MyComponent = () => {
 }
 ```
 
+## `FlagIconButtonProps`
+
+- Type: `Partial<IconButtonProps>`
+- Default: `undefined`
+
+This prop let you to customize the `IconButton` component of the flag.
+
+### Example
+
+```tsx
+<MuiTelInput FlagIconButtonProps={{ 'aria-label': 'Ouvrir la liste des pays' }} />
+```
+
 ## `unknownFlagElement`
 
 - Type: `React.ReactNode`

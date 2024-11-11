@@ -1,6 +1,7 @@
 import type { NumberType } from 'libphonenumber-js'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
 import type { MuiTelInputCountry } from '@shared/constants/countries'
+import type { IconButtonProps } from '@mui/material/IconButton'
 import type { MenuProps } from '@mui/material/Menu'
 import type { TextFieldProps } from '@mui/material/TextField'
 
@@ -68,4 +69,5 @@ export type MuiTelInputProps = BaseTextFieldProps &
     MenuProps?: Partial<MenuProps>
     getFlagElement?: GetFlagElement
     unknownFlagElement?: MuiTelInputFlagElement
+    FlagIconButtonProps?: Partial<IconButtonProps>
   }
