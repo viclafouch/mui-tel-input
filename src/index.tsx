@@ -60,6 +60,7 @@ const MuiTelInput = React.forwardRef(
       onDoubleClick,
       onFocus,
       onCopy,
+      onBlur,
       value = '',
       slotProps,
       inputRef: inputRefFromProps,
@@ -84,17 +85,23 @@ const MuiTelInput = React.forwardRef(
 
     useMismatchProps(props)
 
-    const { onInputChange, onCountryChange, inputRef, isoCode, inputValue } =
-      usePhoneDigits({
-        forceCallingCode,
-        defaultCountry: validDefaultCountry,
-        value: value ?? '',
-        onChange,
-        excludedCountries,
-        onlyCountries,
-        disableFormatting,
-        continents
-      })
+    const {
+      onInputChange,
+      onCountryChange,
+      inputRef,
+      isoCode,
+      inputValue,
+      buildInputInfo
+    } = usePhoneDigits({
+      forceCallingCode,
+      defaultCountry: validDefaultCountry,
+      value: value ?? '',
+      onChange,
+      excludedCountries,
+      onlyCountries,
+      disableFormatting,
+      continents
+    })
 
     const { openMenu, anchorEl, anchorRef, closeMenu } = useAnchor({
       disabled,
@@ -119,6 +126,10 @@ const MuiTelInput = React.forwardRef(
       }
     }
 
+    const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+      onBlur?.(event, buildInputInfo('blur'))
+    }
+
     const isoCodeWithPlus = isoCode
       ? `+${getCallingCodeOfCountry(isoCode)}`
       : ''
@@ -138,6 +149,7 @@ const MuiTelInput = React.forwardRef(
           inputRef={refToRefs([inputRef, inputRefFromProps])}
           className={`${textFieldClass} ${className || ''}`}
           onChange={onInputChange}
+          onBlur={handleBlur}
           onFocus={handleFocus}
           slotProps={{
             htmlInput: {

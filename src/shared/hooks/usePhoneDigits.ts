@@ -122,7 +122,7 @@ export default function usePhoneDigits({
 
   const [previousValue, setPreviousValue] = React.useState(value)
 
-  const buildOnChangeInfo = (reason: MuiTelInputReason): MuiTelInputInfo => {
+  const buildInputInfo = (reason: MuiTelInputReason): MuiTelInputInfo => {
     return {
       countryCallingCode: asYouTypeRef.current.getCallingCode() || null,
       countryCode: asYouTypeRef.current.getCountry() || null,
@@ -186,7 +186,7 @@ export default function usePhoneDigits({
 
     previousCountryRef.current = country
 
-    const phoneInfo = buildOnChangeInfo('input')
+    const phoneInfo = buildInputInfo('input')
 
     // Check if the country is excluded, or not part on onlyCountries, etc..
     if (numberValue && (!country || !matchIsIsoCodeValid(country))) {
@@ -246,7 +246,7 @@ export default function usePhoneDigits({
       setPreviousValue(inputValue)
       asYouTypeRef.current.input(inputValue)
       previousCountryRef.current = asYouTypeRef.current.getCountry() || null
-      onChange?.(inputValue, buildOnChangeInfo('country'))
+      onChange?.(inputValue, buildInputInfo('country'))
       setState({
         inputValue,
         isoCode
@@ -286,7 +286,7 @@ export default function usePhoneDigits({
     }
 
     onChange?.(newValue, {
-      ...buildOnChangeInfo('country'),
+      ...buildInputInfo('country'),
       // Some country have the same calling code, so we choose what the user has selected
       countryCode: newCountry
     })
@@ -303,6 +303,7 @@ export default function usePhoneDigits({
     isoCode: state.isoCode,
     onInputChange,
     onCountryChange,
-    inputRef
+    inputRef,
+    buildInputInfo
   }
 }

@@ -18,7 +18,7 @@ type BaseTextFieldProps = Omit<
 
 export type { MuiTelInputContinent, MuiTelInputCountry }
 
-export type MuiTelInputReason = 'country' | 'input'
+export type MuiTelInputReason = 'country' | 'input' | 'blur'
 
 export type MuiTelInputFlagElement = React.ReactNode
 
@@ -65,6 +65,10 @@ export type MuiTelInputProps = BaseTextFieldProps &
     disableFormatting?: boolean
     continents?: MuiTelInputContinent[]
     onChange?: (value: string, info: MuiTelInputInfo) => void
+    onBlur?: (
+      event: React.FocusEvent<HTMLInputElement>,
+      info: MuiTelInputInfo
+    ) => void
     value?: string | undefined
     MenuProps?: Partial<MenuProps>
     getFlagElement?: GetFlagElement
