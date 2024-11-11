@@ -64,6 +64,7 @@ export const Primary: StoryFn<typeof MuiTelInput> = (args) => {
         return <img {...imgProps} />
       }}
       forceCallingCode
+      focusOnSelectCountry
       defaultCountry="FR"
       preferredCountries={['FR']}
       onChange={handleChange}

@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { flagContainerClass } from '@components/Flag/Flag'
 import FlagButton, { flagButtonClass } from '@components/FlagButton/FlagButton'
 import {
@@ -107,8 +108,10 @@ const MuiTelInput = React.forwardRef(
     })
 
     const handleChangeCountry = (newCountry: MuiTelInputCountry) => {
-      closeMenu()
-      onCountryChange(newCountry)
+      ReactDOM.flushSync(() => {
+        closeMenu()
+        onCountryChange(newCountry)
+      })
 
       if (focusOnSelectCountry && inputRef.current) {
         inputRef.current.focus()
