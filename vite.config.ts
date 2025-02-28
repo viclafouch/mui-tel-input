@@ -49,6 +49,6 @@ export default defineConfig({
   plugins: [
     peerDepsExternal(),
     react(),
-    dts({ rollupTypes: true, exclude: ['/**/*.stories.tsx', '/**/*.test.tsx'] })
+    dts({ exclude: ['/**/*.stories.tsx', '/**/*.test.tsx'] })
   ]
 })

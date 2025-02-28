@@ -7,7 +7,6 @@ export function refToRefs(refs: (React.Ref<unknown> | undefined)[]) {
       if (typeof toRef === 'function') {
         toRef(refInstance)
       } else if (toRef && matchIsObject(toRef) && 'current' in toRef) {
-        // @ts-expect-error
         toRef.current = refInstance
       }
     })
