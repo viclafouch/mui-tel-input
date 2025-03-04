@@ -50,152 +50,149 @@ export { matchIsValidTel } from '@shared/helpers/valid-phone-number'
 
 export const textFieldClass = 'MuiTelInput-TextField'
 
-const MuiTelInput = React.forwardRef(
-  (props: MuiTelInputProps, propRef: MuiTelInputProps['ref']) => {
-    const {
-      forceCallingCode = false,
-      onlyCountries,
-      excludedCountries,
-      defaultCountry,
-      onDoubleClick,
-      onFocus,
-      onCopy,
-      onBlur,
-      value = '',
-      slotProps,
-      inputRef: inputRefFromProps,
-      disabled,
-      onChange,
-      disableDropdown,
-      disableFormatting = false,
-      focusOnSelectCountry,
-      langOfCountryName,
-      continents,
-      preferredCountries,
-      MenuProps,
-      className,
-      getFlagElement = getDefaultFlagElement,
-      unknownFlagElement = defaultUnknownFlagElement,
-      FlagIconButtonProps,
-      ...restTextFieldProps
-    } = props
-    const validDefaultCountry = forceCallingCode
-      ? getValidCountry(defaultCountry)
-      : defaultCountry
+const MuiTelInput = (props: MuiTelInputProps) => {
+  const {
+    forceCallingCode = false,
+    onlyCountries,
+    excludedCountries,
+    defaultCountry,
+    onDoubleClick,
+    onFocus,
+    onCopy,
+    onBlur,
+    value = '',
+    ref: propRef,
+    slotProps,
+    inputRef: inputRefFromProps,
+    disabled,
+    onChange,
+    disableDropdown,
+    disableFormatting = false,
+    focusOnSelectCountry,
+    langOfCountryName,
+    continents,
+    preferredCountries,
+    MenuProps,
+    className,
+    getFlagElement = getDefaultFlagElement,
+    unknownFlagElement = defaultUnknownFlagElement,
+    FlagIconButtonProps,
+    ...restTextFieldProps
+  } = props
+  const validDefaultCountry = forceCallingCode
+    ? getValidCountry(defaultCountry)
+    : defaultCountry
 
-    useMismatchProps(props)
+  useMismatchProps(props)
 
-    const {
-      onInputChange,
-      onCountryChange,
-      inputRef,
-      isoCode,
-      inputValue,
-      buildInputInfo
-    } = usePhoneDigits({
-      forceCallingCode,
-      defaultCountry: validDefaultCountry,
-      value: value ?? '',
-      onChange,
-      excludedCountries,
-      onlyCountries,
-      disableFormatting,
-      continents
+  const {
+    onInputChange,
+    onCountryChange,
+    inputRef,
+    isoCode,
+    inputValue,
+    buildInputInfo
+  } = usePhoneDigits({
+    forceCallingCode,
+    defaultCountry: validDefaultCountry,
+    value: value ?? '',
+    onChange,
+    excludedCountries,
+    onlyCountries,
+    disableFormatting,
+    continents
+  })
+
+  const { openMenu, anchorEl, anchorRef, closeMenu } = useAnchor({
+    disabled,
+    disableDropdown
+  })
+
+  const { handleDoubleClick, handleCopy, handleFocus } = useEvents({
+    onDoubleClick,
+    onCopy,
+    onFocus,
+    inputRef
+  })
+
+  const handleChangeCountry = (newCountry: MuiTelInputCountry) => {
+    ReactDOM.flushSync(() => {
+      closeMenu()
+      onCountryChange(newCountry)
     })
 
-    const { openMenu, anchorEl, anchorRef, closeMenu } = useAnchor({
-      disabled,
-      disableDropdown
-    })
-
-    const { handleDoubleClick, handleCopy, handleFocus } = useEvents({
-      onDoubleClick,
-      onCopy,
-      onFocus,
-      inputRef
-    })
-
-    const handleChangeCountry = (newCountry: MuiTelInputCountry) => {
-      ReactDOM.flushSync(() => {
-        closeMenu()
-        onCountryChange(newCountry)
-      })
-
-      if (focusOnSelectCountry && inputRef.current) {
-        inputRef.current.focus()
-      }
+    if (focusOnSelectCountry && inputRef.current) {
+      inputRef.current.focus()
     }
-
-    const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-      onBlur?.(event, buildInputInfo('blur'))
-    }
-
-    const isoCodeWithPlus = isoCode
-      ? `+${getCallingCodeOfCountry(isoCode)}`
-      : ''
-    const validInputValue = forceCallingCode
-      ? // We removed the isoCode but no necessarily the space after
-        removeOccurrence(inputValue, isoCodeWithPlus).trimStart()
-      : inputValue
-
-    return (
-      <>
-        <TextField
-          type="tel"
-          disabled={disabled}
-          value={validInputValue}
-          ref={refToRefs([propRef, anchorRef])}
-          onDoubleClick={handleDoubleClick}
-          inputRef={refToRefs([inputRef, inputRefFromProps])}
-          className={`${textFieldClass} ${className || ''}`}
-          onChange={onInputChange}
-          onBlur={handleBlur}
-          onFocus={handleFocus}
-          slotProps={{
-            htmlInput: {
-              onCopy: handleCopy,
-              ...slotProps?.htmlInput
-            },
-            input: {
-              startAdornment: (
-                <InputAdornment position="start" sx={{ flexShrink: 0 }}>
-                  <FlagButton
-                    isFlagsMenuOpened={Boolean(anchorEl)}
-                    isoCode={isoCode}
-                    forceCallingCode={forceCallingCode}
-                    onClick={openMenu}
-                    disabled={disabled}
-                    getFlagElement={getFlagElement}
-                    unknownFlagElement={unknownFlagElement}
-                    disableDropdown={Boolean(disableDropdown)}
-                    {...FlagIconButtonProps}
-                  />
-                </InputAdornment>
-              ),
-              ...slotProps?.input
-            }
-          }}
-          {...restTextFieldProps}
-        />
-        {!disableDropdown ? (
-          <FlagsMenu
-            onlyCountries={onlyCountries}
-            excludedCountries={excludedCountries}
-            continents={continents}
-            anchorEl={anchorEl}
-            isoCode={isoCode}
-            preferredCountries={preferredCountries}
-            onClose={closeMenu}
-            langOfCountryName={langOfCountryName}
-            onSelectCountry={handleChangeCountry}
-            getFlagElement={getFlagElement}
-            {...MenuProps}
-          />
-        ) : null}
-      </>
-    )
   }
-)
+
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    onBlur?.(event, buildInputInfo('blur'))
+  }
+
+  const isoCodeWithPlus = isoCode ? `+${getCallingCodeOfCountry(isoCode)}` : ''
+  const validInputValue = forceCallingCode
+    ? // We removed the isoCode but no necessarily the space after
+      removeOccurrence(inputValue, isoCodeWithPlus).trimStart()
+    : inputValue
+
+  return (
+    <>
+      <TextField
+        type="tel"
+        disabled={disabled}
+        value={validInputValue}
+        ref={refToRefs([propRef, anchorRef])}
+        onDoubleClick={handleDoubleClick}
+        inputRef={refToRefs([inputRef, inputRefFromProps])}
+        className={`${textFieldClass} ${className || ''}`}
+        onChange={onInputChange}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
+        slotProps={{
+          htmlInput: {
+            onCopy: handleCopy,
+            ...slotProps?.htmlInput
+          },
+          input: {
+            startAdornment: (
+              <InputAdornment position="start" sx={{ flexShrink: 0 }}>
+                <FlagButton
+                  isFlagsMenuOpened={Boolean(anchorEl)}
+                  isoCode={isoCode}
+                  forceCallingCode={forceCallingCode}
+                  onClick={openMenu}
+                  disabled={disabled}
+                  getFlagElement={getFlagElement}
+                  unknownFlagElement={unknownFlagElement}
+                  disableDropdown={Boolean(disableDropdown)}
+                  {...FlagIconButtonProps}
+                />
+              </InputAdornment>
+            ),
+            ...slotProps?.input
+          }
+        }}
+        {...restTextFieldProps}
+      />
+      {!disableDropdown ? (
+        <FlagsMenu
+          onlyCountries={onlyCountries}
+          excludedCountries={excludedCountries}
+          continents={continents}
+          anchorEl={anchorEl}
+          isoCode={isoCode}
+          preferredCountries={preferredCountries}
+          onClose={closeMenu}
+          langOfCountryName={langOfCountryName}
+          onSelectCountry={handleChangeCountry}
+          getFlagElement={getFlagElement}
+          {...MenuProps}
+        />
+      ) : null}
+    </>
+  )
+}
 
 export const classes = {
   textField: textFieldClass,
