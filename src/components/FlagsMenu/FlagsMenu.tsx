@@ -56,10 +56,12 @@ const FlagsMenu = ({
       open={Boolean(anchorEl)}
       id="select-country"
       className={`${menuClass} ${className || ''}`}
-      MenuListProps={{
-        role: 'listbox',
-        'aria-activedescendant': isoCode ? `country-${isoCode}` : '',
-        'aria-labelledby': 'select-country'
+      slotProps={{
+        list: {
+          role: 'listbox',
+          'aria-activedescendant': isoCode ? `country-${isoCode}` : '',
+          'aria-labelledby': 'select-country'
+        }
       }}
       {...restMenuProps}
     >

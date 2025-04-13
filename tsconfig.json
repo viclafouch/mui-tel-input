@@ -24,7 +24,7 @@
       "@components/*": ["components/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", ".storybook/**/*"],
   "exclude": ["vite.config.ts", "coverage", "dist"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import type { MuiTelInputCountry } from '@shared/constants/countries'
 import {
   fireEvent,
@@ -43,7 +42,6 @@ export function selectCountry(isoCode: MuiTelInputCountry): void {
 }
 
 export async function closeFlagsMenu(): Promise<void> {
-  // eslint-disable-next-line testing-library/no-node-access
   const backdrop = document.querySelector('.MuiBackdrop-root')
 
   if (backdrop) {

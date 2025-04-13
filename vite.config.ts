@@ -1,30 +1,31 @@
-import { defineConfig } from 'vitest/config'
-import react from '@vitejs/plugin-react'
+import { resolve } from 'node:path'
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import dts from 'vite-plugin-dts'
-
-const path = require('path')
+import { defineConfig } from 'vitest/config'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true
   },
-  resolve:{
-    alias:{
-      '@assets' : path.resolve(__dirname, './src/assets'),
-      '@shared' : path.resolve(__dirname, './src/shared'),
-      '@components' : path.resolve(__dirname, './src/components'),
-    },
+  resolve: {
+    alias: {
+      '@assets': resolve(__dirname, './src/assets'),
+      '@shared': resolve(__dirname, './src/shared'),
+      '@components': resolve(__dirname, './src/components')
+    }
   },
   build: {
     target: 'esnext',
     minify: true,
     lib: {
       formats: ['es'],
-      entry: path.resolve(__dirname, 'src/index.tsx'),
+      entry: resolve(__dirname, 'src/index.tsx'),
       name: 'Mui-tel-input',
-      fileName: format => `mui-tel-input.${format}.js`
+      fileName: (format) => {
+        return `mui-tel-input.${format}.js`
+      }
     },
     rollupOptions: {
       output: {
@@ -41,7 +42,7 @@ export default defineConfig({
           '@mui/material/Typography': 'Typography',
           '@mui/material/ListItemIcon': 'ListItemIcon',
           '@mui/material/ListItemText': 'ListItemText',
-          '@mui/material/colors': 'colors',
+          '@mui/material/colors': 'colors'
         }
       }
     }

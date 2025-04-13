@@ -14,8 +14,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'viclafouch', // Usually your GitHub org/user name.
-  projectName: 'mui-tel-input', // Usually your repo name.
+  organizationName: 'viclafouch',
+  projectName: 'mui-tel-input',
   deploymentBranch: 'gh-pages',
   trailingSlash: true,
 

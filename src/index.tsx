@@ -132,8 +132,7 @@ const MuiTelInput = (props: MuiTelInputProps) => {
 
   const isoCodeWithPlus = isoCode ? `+${getCallingCodeOfCountry(isoCode)}` : ''
   const validInputValue = forceCallingCode
-    ? // We removed the isoCode but no necessarily the space after
-      removeOccurrence(inputValue, isoCodeWithPlus).trimStart()
+    ? removeOccurrence(inputValue, isoCodeWithPlus).trimStart()
     : inputValue
 
   return (
@@ -152,6 +151,7 @@ const MuiTelInput = (props: MuiTelInputProps) => {
         slotProps={{
           htmlInput: {
             onCopy: handleCopy,
+            // eslint-disable-next-line @typescript-eslint/no-misused-spread
             ...slotProps?.htmlInput
           },
           input: {
@@ -170,6 +170,7 @@ const MuiTelInput = (props: MuiTelInputProps) => {
                 />
               </InputAdornment>
             ),
+            // eslint-disable-next-line @typescript-eslint/no-misused-spread
             ...slotProps?.input
           }
         }}
