@@ -465,6 +465,19 @@ describe('components/MuiTelInput', () => {
       await closeFlagsMenu()
       expect(screen.queryByRole('presentation')).toBeFalsy()
     })
+
+    test('should anchor to input element ignoring helper text', async () => {
+      const screen = render(<MuiTelWrapper helperText="helpertext" onlyCountries={['US', 'GB']} />);
+      const inputElement = getInputElement()
+      fireEvent.click(getButtonElement())
+
+      const inputRect = inputElement.getBoundingClientRect();
+      const menuRect = screen.getByRole('presentation').getBoundingClientRect();
+      const helperRect = screen.getByText('helpertext').getBoundingClientRect();
+
+      expect(menuRect.top).toBeGreaterThanOrEqual(inputRect.bottom);
+      expect(menuRect.bottom).toBeLessThanOrEqual(helperRect.top);
+    });
   })
 
   test('should display in correct format FR number', async () => {
