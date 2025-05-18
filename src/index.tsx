@@ -141,7 +141,7 @@ const MuiTelInput = (props: MuiTelInputProps) => {
         type="tel"
         disabled={disabled}
         value={validInputValue}
-        ref={refToRefs([propRef, anchorRef])}
+        ref={refToRefs([propRef])}
         onDoubleClick={handleDoubleClick}
         inputRef={refToRefs([inputRef, inputRefFromProps])}
         className={`${textFieldClass} ${className || ''}`}
@@ -170,6 +170,7 @@ const MuiTelInput = (props: MuiTelInputProps) => {
                 />
               </InputAdornment>
             ),
+            ref: anchorRef,
             // eslint-disable-next-line @typescript-eslint/no-misused-spread
             ...slotProps?.input
           }
