@@ -32,7 +32,6 @@ The callback gives you **2 parameters**:
 ### Example
 
 ```tsx
-
 const handleChange = (value, info) => {
   /**
   value: "+33123456789"
@@ -59,8 +58,50 @@ Sets the selected country on component mount
 ### Example
 
 ```tsx
-
 <MuiTelInput defaultCountry="DE" />
+```
+
+## `formatterPerCountry`
+
+- Type: `Partial<Record<MuiTelInputCountry, (value: string) => string>>`
+- Default: `undefined`
+
+Provide a custom formatter for specific countries to avoid using `libphonenumber-js`. The key is the ISO country code, and the value is a formatting function.
+
+### Example
+
+```tsx
+// Format the number to +1 (###) ###-#### for CA only
+const formatterPerCountry = {
+  CA: (value: string) => {
+    if (value.startsWith('+1') && value.length > 2) {
+      const digits = value.replace(/^\+1/, '').replace(/\D/g, '')
+      let formatted = '+1'
+
+      if (digits.length === 0) {
+        return formatted
+      }
+
+      if (digits.length > 0 && digits.length < 4) {
+        formatted += ` (${digits}`
+        return formatted
+      }
+
+      if (digits.length >= 4 && digits.length <= 6) {
+        formatted += ` (${digits.slice(0, 3)}) ${digits.slice(3)}`
+        return formatted
+      }
+
+      if (digits.length > 6) {
+        formatted += ` (${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`
+        return formatted
+      }
+    }
+    return value
+  }
+}
+
+<MuiTelInput formatterPerCountry={formatterPerCountry} />
 ```
 
 ## `forceCallingCode`

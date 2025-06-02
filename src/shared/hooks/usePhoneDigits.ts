@@ -10,10 +10,15 @@ import {
 import { removeOccurrence } from '@shared/helpers/string'
 import type { MuiTelInputInfo, MuiTelInputReason } from '../../index.types'
 
+type FormatterPerCountry = Partial<
+  Record<MuiTelInputCountry, (value: string) => string>
+>
+
 type UsePhoneDigitsParams = {
   value: string
   onChange?: (value: string, info: MuiTelInputInfo) => void
   defaultCountry?: MuiTelInputCountry
+  formatterPerCountry?: FormatterPerCountry
   forceCallingCode: boolean
   disableFormatting: boolean
   excludedCountries?: MuiTelInputCountry[]
@@ -97,6 +102,7 @@ export default function usePhoneDigits({
   value,
   onChange,
   defaultCountry,
+  formatterPerCountry,
   onlyCountries,
   excludedCountries,
   continents,
@@ -146,6 +152,17 @@ export default function usePhoneDigits({
 
   const typeNewValue = (inputValue: string): string => {
     asYouTypeRef.current.reset()
+    const currentCountry = state.isoCode
+
+    if (
+      formatterPerCountry &&
+      currentCountry &&
+      formatterPerCountry[currentCountry]
+    ) {
+      asYouTypeRef.current.input(inputValue)
+
+      return formatterPerCountry[currentCountry]!(inputValue)
+    }
 
     return asYouTypeRef.current.input(inputValue)
   }
