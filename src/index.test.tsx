@@ -451,17 +451,17 @@ describe('components/MuiTelInput', () => {
   describe('Flags Menu', () => {
     test('should open flags menu', () => {
       const screen = render(<MuiTelWrapper />)
-      expect(screen.queryByRole('presentation')).toBeFalsy()
+      expect(screen.queryByRole('listbox')).toBeFalsy()
       fireEvent.click(getButtonElement())
-      expect(screen.getByRole('presentation')).toBeTruthy()
+      expect(screen.getByRole('listbox')).toBeTruthy()
     })
 
     test('should close flags menu', async () => {
       const screen = render(<MuiTelWrapper />)
       fireEvent.click(getButtonElement())
-      expect(screen.getByRole('presentation')).toBeTruthy()
+      expect(screen.getByRole('listbox')).toBeTruthy()
       await closeFlagsMenu()
-      expect(screen.queryByRole('presentation')).toBeFalsy()
+      expect(screen.queryByRole('listbox')).toBeFalsy()
     })
 
     test('should anchor to input element ignoring helper text', () => {
@@ -472,7 +472,7 @@ describe('components/MuiTelInput', () => {
       fireEvent.click(getButtonElement())
 
       const inputRect = inputElement.getBoundingClientRect()
-      const menuRect = screen.getByRole('presentation').getBoundingClientRect()
+      const menuRect = screen.getByRole('listbox').getBoundingClientRect()
       const helperRect = screen.getByText('helpertext').getBoundingClientRect()
 
       expect(menuRect.top).toBeGreaterThanOrEqual(inputRect.bottom)
@@ -522,7 +522,35 @@ describe('components/MuiTelInput', () => {
     expectButtonIsFlagOf('FR')
   })
 
-  // https://github.com/viclafouch/mui-tel-input/issues/107
+  describe('shared calling codes', () => {
+    test('should preserve selected country when calling code is shared (#185)', async () => {
+      render(<MuiTelWrapper defaultCountry="US" />)
+      expectButtonIsFlagOf('US')
+      await selectCountry('CA')
+      expectButtonIsFlagOf('CA')
+      await typeInInputElement('6135551234')
+      expectButtonIsFlagOf('CA')
+    })
+
+    test('should preserve country in onChange info for shared calling codes (#181)', async () => {
+      const callbackOnChange = vi.fn()
+      render(<MuiTelWrapper defaultCountry="US" onChange={callbackOnChange} />)
+      await selectCountry('CA')
+      await typeInInputElement('6135551234')
+      const lastCall = callbackOnChange.mock.calls.at(-1)!
+      expect(lastCall[1].countryCode).toBe('CA')
+    })
+
+    test('should preserve selected country with forceCallingCode for shared codes (#190)', async () => {
+      render(
+        <MuiTelWrapper defaultCountry="GP" forceCallingCode disableFormatting />
+      )
+      expectButtonIsFlagOf('GP')
+      await typeInInputElement('690123456')
+      expectButtonIsFlagOf('GP')
+    })
+  })
+
   test('should reset clean correctly the value', async () => {
     render(<MuiTelWrapper defaultCountry="FR" disableFormatting />)
     const inputElement = getInputElement()

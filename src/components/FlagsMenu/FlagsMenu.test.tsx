@@ -136,14 +136,10 @@ describe('components/FlagsMenu', () => {
       />
     )
     const options = screen.getAllByRole('option')
-    const imgs = screen.getAllByRole('img')
 
-    expect(options[0]).toContainElement(imgs[0])
-    expect(imgs[0]).toHaveAttribute('alt', 'France')
-    expect(options[1]).toContainElement(imgs[1])
-    expect(imgs[1]).toHaveAttribute('alt', 'Belgium')
-    expect(options[2]).toContainElement(imgs[2])
-    expect(imgs[2]).toHaveAttribute('alt', 'Venezuela')
+    expect(options[0]).toHaveTextContent('France')
+    expect(options[1]).toHaveTextContent('Belgium')
+    expect(options[2]).toHaveTextContent('Venezuela')
   })
 
   test('should highlight preferred countries not excluded', () => {
@@ -158,11 +154,8 @@ describe('components/FlagsMenu', () => {
       />
     )
     const options = screen.getAllByRole('option')
-    const imgs = screen.getAllByRole('img')
 
-    expect(options[0]).toContainElement(imgs[0])
-    expect(imgs[0]).toHaveAttribute('alt', 'Belgium')
-    expect(options[1]).toContainElement(imgs[1])
-    expect(imgs[1]).toHaveAttribute('alt', 'Venezuela')
+    expect(options[0]).toHaveTextContent('Belgium')
+    expect(options[1]).toHaveTextContent('Venezuela')
   })
 })

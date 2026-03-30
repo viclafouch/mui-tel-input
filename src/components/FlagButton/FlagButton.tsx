@@ -37,20 +37,23 @@ const FlagButton = ({
     return getDisplayNames(langOfCountryName)
   }, [langOfCountryName])
 
+  const countryName = isoCode ? displayNames.of(isoCode) || '' : ''
+
   const flagElement = (
     <Flag isoCode={isoCode}>
       {isoCode
         ? getFlagElement(isoCode, {
-            countryName: displayNames.of(isoCode) || '',
+            countryName,
             isSelected: true,
-            imgProps: getDefaultImgProps({
-              isoCode,
-              countryName: displayNames.of(isoCode) || ''
-            })
+            imgProps: getDefaultImgProps({ isoCode, countryName })
           })
         : unknownFlagElement}
     </Flag>
   )
+
+  const ariaLabel = countryName
+    ? `${countryName}, Open flags menu`
+    : 'Open flags menu'
 
   return (
     <>
@@ -67,7 +70,7 @@ const FlagButton = ({
         </IconButton>
       ) : (
         <IconButton
-          aria-label="Open flags menu"
+          aria-label={ariaLabel}
           className={`${flagButtonClass} ${className || ''}`}
           aria-haspopup="listbox"
           sx={{ aspectRatio: '1 / 1' }}

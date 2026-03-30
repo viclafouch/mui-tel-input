@@ -5,7 +5,8 @@ import { COUNTRIES, type MuiTelInputCountry } from '@shared/constants/countries'
 import { matchIsArray } from '@shared/helpers/array'
 import {
   getCallingCodeOfCountry,
-  matchContinentsIncludeCountry
+  matchContinentsIncludeCountry,
+  matchIsSharedCallingCode
 } from '@shared/helpers/country'
 import { removeOccurrence } from '@shared/helpers/string'
 import type { MuiTelInputInfo, MuiTelInputReason } from '../../index.types'
@@ -122,10 +123,16 @@ export default function usePhoneDigits({
 
   const [previousValue, setPreviousValue] = React.useState(value)
 
-  const buildInputInfo = (reason: MuiTelInputReason): MuiTelInputInfo => {
+  const buildInputInfo = (
+    reason: MuiTelInputReason,
+    countryOverride?: MuiTelInputCountry | null
+  ): MuiTelInputInfo => {
     return {
       countryCallingCode: asYouTypeRef.current.getCallingCode() || null,
-      countryCode: asYouTypeRef.current.getCountry() || null,
+      countryCode:
+        countryOverride !== undefined
+          ? countryOverride
+          : asYouTypeRef.current.getCountry() || null,
       nationalNumber: asYouTypeRef.current.getNationalNumber(),
       numberType: asYouTypeRef.current.getNumber()?.getType() ?? null,
       numberValue: asYouTypeRef.current.getNumberValue() || null,
@@ -175,16 +182,30 @@ export default function usePhoneDigits({
 
     const formattedValue = typeNewValue(inputValue)
     const newCountryCode = asYouTypeRef.current.getCountry()
-    const country =
-      newCountryCode ||
-      (forceCallingCode
-        ? (state.isoCode as MuiTelInputCountry)
-        : previousCountryRef.current)
+    const previousCountry = previousCountryRef.current
+
+    let country: MuiTelInputCountry | null
+
+    if (newCountryCode) {
+      if (
+        previousCountry &&
+        matchIsSharedCallingCode(newCountryCode, previousCountry)
+      ) {
+        country = previousCountry
+      } else {
+        country = newCountryCode
+      }
+    } else if (forceCallingCode) {
+      country = state.isoCode as MuiTelInputCountry
+    } else {
+      country = previousCountry
+    }
+
     const numberValue = asYouTypeRef.current.getNumberValue() || ''
 
     previousCountryRef.current = country
 
-    const phoneInfo = buildInputInfo('input')
+    const phoneInfo = buildInputInfo('input', country)
 
     if (numberValue && (!country || !matchIsIsoCodeValid(country))) {
       onChange?.(numberValue, {
@@ -218,8 +239,16 @@ export default function usePhoneDigits({
         forceCallingCode,
         disableFormatting
       })
-      previousCountryRef.current = newState.isoCode
-      setState(newState)
+
+      const resolvedIsoCode =
+        previousCountryRef.current &&
+        newState.isoCode &&
+        matchIsSharedCallingCode(newState.isoCode, previousCountryRef.current)
+          ? previousCountryRef.current
+          : newState.isoCode
+
+      previousCountryRef.current = resolvedIsoCode
+      setState({ ...newState, isoCode: resolvedIsoCode })
     }
   }, [
     value,

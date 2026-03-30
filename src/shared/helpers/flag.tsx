@@ -18,8 +18,7 @@ const getDefaultImageSrc = (isoCode: MuiTelInputCountry) => {
 export const flagImgClass = 'MuiTelInput-FlagImg'
 
 export const getDefaultImgProps = ({
-  isoCode,
-  countryName
+  isoCode
 }: {
   isoCode: MuiTelInputCountry
   countryName: string
@@ -28,7 +27,7 @@ export const getDefaultImgProps = ({
     src: getDefaultImageSrc(isoCode),
     loading: 'lazy',
     width: 26,
-    alt: countryName,
+    alt: '',
     className: flagImgClass
   } satisfies React.ComponentPropsWithoutRef<'img'>
 }
@@ -46,7 +45,7 @@ export const defaultUnknownFlagElement = (
     src={unknownFlag}
     loading="lazy"
     width={26}
-    alt="unknown"
+    alt=""
     className={flagImgClass}
   />
 )

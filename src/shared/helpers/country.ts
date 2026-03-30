@@ -20,6 +20,16 @@ export function getCallingCodeOfCountry(isoCode: MuiTelInputCountry): string {
   return COUNTRIES[isoCode]?.[0] as string
 }
 
+export function matchIsSharedCallingCode(
+  countryA: MuiTelInputCountry,
+  countryB: MuiTelInputCountry
+): boolean {
+  return (
+    countryA !== countryB &&
+    getCallingCodeOfCountry(countryA) === getCallingCodeOfCountry(countryB)
+  )
+}
+
 export function getValidCountry(
   country?: MuiTelInputCountry
 ): MuiTelInputCountry {
