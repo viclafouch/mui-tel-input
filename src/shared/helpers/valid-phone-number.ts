@@ -1,4 +1,3 @@
-import type { MuiTelInputContinent } from 'index.types'
 import { AsYouType, isValidPhoneNumber } from 'libphonenumber-js'
 import type { MuiTelInputCountry } from '@shared/constants/countries'
 import {
@@ -6,6 +5,7 @@ import {
   getOnlyCountries,
   matchContinentsIncludeCountry
 } from '@shared/helpers/country'
+import type { MuiTelInputContinent } from '../../index.types'
 
 export function matchIsValidTel(
   text: string,
@@ -23,10 +23,12 @@ export function matchIsValidTel(
     return false
   }
 
-  if (options?.continents && options.continents.length > 0) {
-    if (!matchContinentsIncludeCountry(options.continents, country)) {
-      return false
-    }
+  if (
+    options?.continents &&
+    options.continents.length > 0 &&
+    !matchContinentsIncludeCountry(options.continents, country)
+  ) {
+    return false
   }
 
   if (options?.onlyCountries && options.onlyCountries.length > 0) {

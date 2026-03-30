@@ -1,11 +1,11 @@
 import React from 'react'
 import FlagMenuItem from '@components/FlagMenuItem/FlagMenuItem'
+import Menu, { type MenuProps } from '@mui/material/Menu'
 import type { MuiTelInputContinent } from '@shared/constants/continents'
 import { ISO_CODES, type MuiTelInputCountry } from '@shared/constants/countries'
 import { DEFAULT_LANG } from '@shared/constants/lang'
 import { filterCountries } from '@shared/helpers/country'
 import { getDisplayNames } from '@shared/helpers/intl'
-import Menu, { type MenuProps } from '@mui/material/Menu'
 import type { GetFlagElement } from '../../index.types'
 
 export type FlagsMenuProps = Partial<MenuProps> & {
@@ -39,6 +39,7 @@ const FlagsMenu = ({
   getFlagElement,
   ...restMenuProps
 }: FlagsMenuProps) => {
+  // eslint-disable-next-line no-restricted-syntax -- Intl.DisplayNames instantiation is expensive
   const displayNames = React.useMemo(() => {
     return getDisplayNames(langOfCountryName)
   }, [langOfCountryName])

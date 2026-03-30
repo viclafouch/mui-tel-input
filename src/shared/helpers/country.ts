@@ -67,7 +67,7 @@ export function sortAlphabeticallyCountryCodes(
   countryCodes: readonly MuiTelInputCountry[],
   displayNames: Intl.DisplayNames
 ): readonly MuiTelInputCountry[] {
-  return [...countryCodes].sort((countryCodeA, countryCodeB) => {
+  return countryCodes.toSorted((countryCodeA, countryCodeB) => {
     const countryA = displayNames.of(countryCodeA) as string
     const countryB = displayNames.of(countryCodeB) as string
 

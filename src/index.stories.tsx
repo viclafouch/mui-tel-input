@@ -1,8 +1,8 @@
 import React from 'react'
-import { ISO_CODES } from '@shared/constants/countries'
+import { action } from 'storybook/actions'
 import { Box, styled } from '@mui/material'
-import { action } from '@storybook/addon-actions'
-import type { Meta, StoryFn } from '@storybook/react'
+import { ISO_CODES } from '@shared/constants/countries'
+import type { Meta, StoryFn } from '@storybook/react-vite'
 import { classes, MuiTelInput, type MuiTelInputProps } from './index'
 
 export default {
@@ -46,7 +46,7 @@ export default {
 
 export const Primary: StoryFn<typeof MuiTelInput> = (args) => {
   const { value, ...rest } = args
-  const [state, setState] = React.useState<string | undefined>(undefined)
+  const [state, setState] = React.useState<string | undefined>()
 
   const handleChange = (
     ...argsChange: Parameters<NonNullable<MuiTelInputProps['onChange']>>
@@ -84,7 +84,7 @@ export const CustomizationByClassNameConstant: StoryFn<typeof MuiTelInput> = (
   args
 ) => {
   const { value, ...rest } = args
-  const [state, setState] = React.useState<string | undefined>(undefined)
+  const [state, setState] = React.useState<string | undefined>()
 
   const handleChange = (
     ...argsChange: Parameters<NonNullable<MuiTelInputProps['onChange']>>
@@ -103,7 +103,6 @@ export const CustomizationByClassNameConstant: StoryFn<typeof MuiTelInput> = (
   }
 `}</code>
       </pre>
-
       <WithStyledFlag
         {...rest}
         value={state}

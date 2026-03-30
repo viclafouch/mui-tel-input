@@ -29,22 +29,26 @@ export function useMismatchProps(props: MuiTelInputProps) {
   }, [onlyCountries, excludedCountries])
 
   React.useEffect(() => {
-    if (defaultCountry) {
-      if (excludedCountries && excludedCountries.includes(defaultCountry)) {
-        log(
-          `[mui-tel-input] Not expected to have the 'defaultCountry' (${defaultCountry}) prop excluded by the 'excludedCountries' prop`
-        )
-      }
+    if (
+      defaultCountry &&
+      excludedCountries &&
+      excludedCountries.includes(defaultCountry)
+    ) {
+      log(
+        `[mui-tel-input] Not expected to have the 'defaultCountry' (${defaultCountry}) prop excluded by the 'excludedCountries' prop`
+      )
     }
   }, [defaultCountry, excludedCountries])
 
   React.useEffect(() => {
-    if (defaultCountry) {
-      if (onlyCountries && !onlyCountries.includes(defaultCountry)) {
-        log(
-          `[mui-tel-input] Not expected to have a 'defaultCountry' prop (${defaultCountry}) and a 'onlyCountries' prop but without included the 'defaultCountry' (${defaultCountry})`
-        )
-      }
+    if (
+      defaultCountry &&
+      onlyCountries &&
+      !onlyCountries.includes(defaultCountry)
+    ) {
+      log(
+        `[mui-tel-input] Not expected to have a 'defaultCountry' prop (${defaultCountry}) and a 'onlyCountries' prop but without included the 'defaultCountry' (${defaultCountry})`
+      )
     }
   }, [defaultCountry, onlyCountries])
 

@@ -16,7 +16,10 @@ describe('helpers/intl', () => {
     })
 
     it('should return an instanceof Intl.DisplayNames in english in fallback', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
       expect(getDisplayNames('toto').resolvedOptions().locale).toBe('en')
+      expect(consoleSpy).toHaveBeenCalledTimes(1)
+      consoleSpy.mockRestore()
     })
   })
 })

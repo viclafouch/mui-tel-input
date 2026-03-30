@@ -1,9 +1,9 @@
 import React from 'react'
 import Flag from '@components/Flag/Flag'
-import { COUNTRIES, type MuiTelInputCountry } from '@shared/constants/countries'
-import { getDefaultImgProps } from '@shared/helpers/flag'
 import MenuItem, { type MenuItemProps } from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
+import { COUNTRIES, type MuiTelInputCountry } from '@shared/constants/countries'
+import { getDefaultImgProps } from '@shared/helpers/flag'
 import type { GetFlagElement } from '../../index.types'
 import { Styled } from './FlagsMenuItem.styled'
 

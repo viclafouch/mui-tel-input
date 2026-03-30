@@ -1,9 +1,9 @@
 import type { NumberType } from 'libphonenumber-js'
-import type { MuiTelInputContinent } from '@shared/constants/continents'
-import type { MuiTelInputCountry } from '@shared/constants/countries'
 import type { IconButtonProps } from '@mui/material/IconButton'
 import type { MenuProps } from '@mui/material/Menu'
 import type { TextFieldProps } from '@mui/material/TextField'
+import type { MuiTelInputContinent } from '@shared/constants/continents'
+import type { MuiTelInputCountry } from '@shared/constants/countries'
 
 type BaseTextFieldProps = Omit<
   TextFieldProps,
@@ -35,6 +35,7 @@ export type GetFlagElement = (
   }
 ) => MuiTelInputFlagElement
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- interface needed for consumer declaration merging
 export interface MuiTelInputInfo {
   countryCode: MuiTelInputCountry | null
   countryCallingCode: string | null

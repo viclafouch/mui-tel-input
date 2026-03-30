@@ -62,7 +62,7 @@ describe('components/FlagsMenu', () => {
       />
     )
     fireEvent.click(screen.getByText('France'))
-    expect(callback).toBeCalledTimes(1)
+    expect(callback).toHaveBeenCalledTimes(1)
     expect(callback).toHaveBeenLastCalledWith('FR')
   })
 

@@ -1,6 +1,6 @@
 import type React from 'react'
-import { putCursorAtEndOfInput } from '@shared/helpers/dom'
 import type { TextFieldProps } from '@mui/material'
+import { putCursorAtEndOfInput } from '@shared/helpers/dom'
 
 type Options = Pick<TextFieldProps, 'onDoubleClick' | 'onCopy' | 'onFocus'> & {
   inputRef: React.RefObject<HTMLInputElement | null>

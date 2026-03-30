@@ -1,21 +1,38 @@
-import hooksConfig from '@viclafouch/eslint-config-viclafouch/hooks.mjs'
-import importsConfig from '@viclafouch/eslint-config-viclafouch/imports.mjs'
-import baseConfig from '@viclafouch/eslint-config-viclafouch/index.mjs'
-import prettierConfig from '@viclafouch/eslint-config-viclafouch/prettier.mjs'
-import reactConfig from '@viclafouch/eslint-config-viclafouch/react.mjs'
-import typescriptConfig from '@viclafouch/eslint-config-viclafouch/typescript.mjs'
+// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
+import storybook from 'eslint-plugin-storybook'
+import {
+  hooksConfig,
+  importsConfig,
+  jsxA11yConfig,
+  prettierConfig,
+  reactConfig,
+  testingLibraryConfig,
+  typescriptConfig
+} from '@viclafouch/eslint-config-viclafouch'
 
 /**
  * @type {import("eslint").Linter.Config}
  */
 export default [
-  ...baseConfig,
+  { ignores: ['**/node_modules/**', '**/dist/**', '**/.docusaurus/**'] },
+  ...typescriptConfig,
   ...reactConfig,
   ...hooksConfig,
   ...importsConfig,
-  ...typescriptConfig,
+  ...jsxA11yConfig,
+  ...testingLibraryConfig,
   ...prettierConfig,
   {
-    ignores: ['**/node_modules/**', '**/dist/**', '**/.docusaurus/**']
-  }
+    rules: {
+      'unicorn/filename-case': 'off'
+    }
+  },
+  {
+    files: ['**/*.test.tsx', '**/*.test.ts', '**/testUtils/**'],
+    rules: {
+      'max-lines-per-function': 'off',
+      'testing-library/no-node-access': 'off'
+    }
+  },
+  ...storybook.configs['flat/recommended']
 ]

@@ -3,6 +3,10 @@ import { renderHook } from '@testing-library/react'
 import { useMismatchProps } from '../useMissmatchProps'
 
 describe('hooks/useMissmatchProps', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   test('should log.error when default country is included in excludedCountries', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     renderHook(() => {

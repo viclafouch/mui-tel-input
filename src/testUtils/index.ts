@@ -36,9 +36,12 @@ export async function typeInInputElement(
   return { result: inputElement.value }
 }
 
-export function selectCountry(isoCode: MuiTelInputCountry): void {
-  fireEvent.click(getButtonElement())
-  fireEvent.click(screen.getByTestId(`option-${isoCode}`))
+export async function selectCountry(
+  isoCode: MuiTelInputCountry
+): Promise<void> {
+  const user = userEvent.setup()
+  await user.click(getButtonElement())
+  await user.click(screen.getByTestId(`option-${isoCode}`))
 }
 
 export async function closeFlagsMenu(): Promise<void> {

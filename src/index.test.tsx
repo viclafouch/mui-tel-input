@@ -19,7 +19,7 @@ const MuiTelWrapper = ({
   onChange,
   ...rest
 }: React.ComponentProps<typeof MuiTelInput>) => {
-  const [state, setState] = React.useState<string | undefined>(undefined)
+  const [state, setState] = React.useState<string | undefined>()
 
   const handleChange = (newValue: string, info: MuiTelInputInfo) => {
     setState(newValue)
@@ -267,10 +267,10 @@ describe('components/MuiTelInput', () => {
       })
     })
 
-    test('should call the onChange callback when we select a different country', () => {
+    test('should call the onChange callback when we select a different country', async () => {
       const callbackOnChange = vi.fn(() => {})
       render(<MuiTelWrapper defaultCountry="FR" onChange={callbackOnChange} />)
-      selectCountry('BE')
+      await selectCountry('BE')
       expect(callbackOnChange).toHaveBeenCalledWith('+32', {
         countryCallingCode: '32',
         countryCode: 'BE',
@@ -281,10 +281,10 @@ describe('components/MuiTelInput', () => {
       })
     })
 
-    test('should not call the onChange callback prop when we select the same country', () => {
+    test('should not call the onChange callback prop when we select the same country', async () => {
       const callbackOnChange = vi.fn(() => {})
       render(<MuiTelWrapper defaultCountry="BE" onChange={callbackOnChange} />)
-      selectCountry('BE')
+      await selectCountry('BE')
       expect(callbackOnChange).not.toHaveBeenCalled()
     })
 
@@ -340,10 +340,10 @@ describe('components/MuiTelInput', () => {
   })
 
   describe('prop/focusOnSelectCountry', () => {
-    test('should auto focus when focusOnSelectCountry is true and select country', () => {
+    test('should auto focus when focusOnSelectCountry is true and select country', async () => {
       render(<MuiTelWrapper focusOnSelectCountry />)
-      selectCountry('FR')
-      // eslint-disable-next-line testing-library/no-node-access
+      await selectCountry('FR')
+
       expect(document.activeElement).toBe(getInputElement())
     })
   })
@@ -492,7 +492,7 @@ describe('components/MuiTelInput', () => {
     render(<MuiTelWrapper disableFormatting />)
     await typeInInputElement('+33626922631')
     expectButtonIsFlagOf('FR')
-    selectCountry('BE')
+    await selectCountry('BE')
     expect(getInputElement().value).toBe('+32626922631')
     expectButtonIsFlagOf('BE')
   })

@@ -9,6 +9,8 @@ import {
   menuItemClass
 } from '@components/FlagMenuItem/FlagMenuItem'
 import FlagsMenu, { menuClass } from '@components/FlagsMenu/FlagsMenu'
+import InputAdornment from '@mui/material/InputAdornment'
+import TextField from '@mui/material/TextField'
 import {
   getCallingCodeOfCountry,
   getValidCountry
@@ -24,8 +26,6 @@ import { useAnchor } from '@shared/hooks/useAnchor'
 import { useEvents } from '@shared/hooks/useEvents'
 import { useMismatchProps } from '@shared/hooks/useMissmatchProps'
 import usePhoneDigits from '@shared/hooks/usePhoneDigits'
-import InputAdornment from '@mui/material/InputAdornment'
-import TextField from '@mui/material/TextField'
 import type {
   MuiTelInputContinent,
   MuiTelInputCountry,
@@ -35,6 +35,7 @@ import type {
   MuiTelInputReason
 } from './index.types'
 
+// eslint-disable-next-line @typescript-eslint/no-deprecated -- Re-exported for backwards compatibility
 export { AsYouType, getNumberType } from 'libphonenumber-js'
 
 export type {
@@ -143,6 +144,7 @@ const MuiTelInput = (props: MuiTelInputProps) => {
         value={validInputValue}
         ref={refToRefs([propRef])}
         onDoubleClick={handleDoubleClick}
+        // eslint-disable-next-line react-hooks/refs -- refToRefs creates a callback ref, refs are not read during render
         inputRef={refToRefs([inputRef, inputRefFromProps])}
         className={`${textFieldClass} ${className || ''}`}
         onChange={onInputChange}

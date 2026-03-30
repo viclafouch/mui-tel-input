@@ -1,11 +1,11 @@
 import React from 'react'
 import Flag from '@components/Flag/Flag'
+import IconButton, { type IconButtonProps } from '@mui/material/IconButton'
 import type { MuiTelInputCountry } from '@shared/constants/countries'
 import { DEFAULT_LANG } from '@shared/constants/lang'
 import { getCallingCodeOfCountry } from '@shared/helpers/country'
 import { getDefaultImgProps } from '@shared/helpers/flag'
 import { getDisplayNames } from '@shared/helpers/intl'
-import IconButton, { type IconButtonProps } from '@mui/material/IconButton'
 import type { GetFlagElement } from '../../index.types'
 import { Styled } from './FlagButton.styled'
 
@@ -32,6 +32,7 @@ const FlagButton = ({
   className,
   ...iconButtonProps
 }: FlagButtonProps) => {
+  // eslint-disable-next-line no-restricted-syntax -- Intl.DisplayNames instantiation is expensive
   const displayNames = React.useMemo(() => {
     return getDisplayNames(langOfCountryName)
   }, [langOfCountryName])
