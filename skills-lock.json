@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "skills": {
+    "deep-dive": {
+      "source": "viclafouch/skills",
+      "sourceType": "github",
+      "computedHash": "f20826e481e0b07a95ce10a3afb632772fdb9e8801121694f74f65c786b9db5f"
+    },
+    "react-useeffect": {
+      "source": "viclafouch/skills",
+      "sourceType": "github",
+      "computedHash": "17353810bc34c55321a61ae22717656a88b5ccf215764dff871e2278fe90954c"
+    },
+    "update-deps": {
+      "source": "viclafouch/skills",
+      "sourceType": "github",
+      "computedHash": "808f90a35573f513c33f71fa71de58cb9feba2becbae097e06eb7dd2224141a0"
+    },
+    "web-design-guidelines": {
+      "source": "viclafouch/skills",
+      "sourceType": "github",
+      "computedHash": "1c3beb49ca8f86745378b60b955012ba403c0db391468a4ce360dc700d3b8918"
+    }
+  }
+}
