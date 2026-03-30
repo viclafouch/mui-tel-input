@@ -50,11 +50,9 @@ describe('components/MuiTelInput', () => {
 
   describe('props/inputRef', () => {
     test('should assign or call inputRef prop', () => {
-      // assign
       const ref = React.createRef<HTMLDivElement>()
       render(<MuiTelWrapper inputRef={ref} />)
       expect(ref.current).toBeTruthy()
-      // call
       const refCallback = vi.fn(() => {})
       render(<MuiTelWrapper inputRef={refCallback} />)
       expect(refCallback).toHaveBeenCalled()
@@ -533,17 +531,4 @@ describe('components/MuiTelInput', () => {
     await selectCountry('BE')
     expect(getInputElement().value).toBe('+32')
   })
-
-  /** Copy doesn't work in user-event@beta */
-  // test('should fire the onCopy prop', async () => {
-  //   const user = userEvent.setup({
-  //     writeToClipboard: true
-  //   })
-  //   const callback = vi.fn(() => {})
-  //   render(<MuiTelWrapper onCopy={callback} />)
-  //   const input = screen.getByRole('textbox')
-  //   fireEvent.doubleClick(input)
-  //   await user.copy()
-  //   expect(callback).toHaveBeenCalledTimes(1)
-  // })
 })

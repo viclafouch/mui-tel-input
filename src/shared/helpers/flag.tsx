@@ -4,7 +4,6 @@ import { FLAGS_SVG } from '@shared/constants/flags'
 import type { GetFlagElement, MuiTelInputCountry } from '../../index.types'
 
 const getDefaultImageSrc = (isoCode: MuiTelInputCountry) => {
-  // these 2 flags do not exist on flagpedia CDN
   if (isoCode === 'TA' || isoCode === 'AC') {
     return {
       TA: FLAGS_SVG.TA,
@@ -38,8 +37,7 @@ export const getDefaultFlagElement: GetFlagElement = (
   isoCode,
   { countryName }
 ) => {
-  // Alt is provided line 30
-  // eslint-disable-next-line jsx-a11y/alt-text
+  // eslint-disable-next-line jsx-a11y/alt-text -- alt is spread from getDefaultImgProps
   return <img {...getDefaultImgProps({ isoCode, countryName })} />
 }
 

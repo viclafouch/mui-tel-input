@@ -7,7 +7,7 @@ describe('helpers/valid-phone-number', () => {
       expect(matchIsValidTel('+33')).toBe(false)
     })
 
-    it('should return false for a value', () => {
+    it('should return true for a valid phone number', () => {
       expect(matchIsValidTel('+33626922635')).toBe(true)
     })
 
@@ -35,7 +35,7 @@ describe('helpers/valid-phone-number', () => {
       ).toBe(false)
     })
 
-    it('should return false for a non continent', () => {
+    it('should return false for an invalid number with continent filter', () => {
       expect(
         matchIsValidTel('1', {
           continents: ['NA']

@@ -62,4 +62,5 @@ const FlagMenuItem = ({
   )
 }
 
+// React.memo is justified: FlagMenuItem renders 240+ times in the country list dropdown
 export default React.memo(FlagMenuItem)

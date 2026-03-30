@@ -173,7 +173,6 @@ export default function usePhoneDigits({
         )
       : makeSureStartWithPlusOrEmpty(event.target.value)
 
-    // formatted : e.g: +33 6 26 92..
     const formattedValue = typeNewValue(inputValue)
     const newCountryCode = asYouTypeRef.current.getCountry()
     const country =
@@ -181,18 +180,15 @@ export default function usePhoneDigits({
       (forceCallingCode
         ? (state.isoCode as MuiTelInputCountry)
         : previousCountryRef.current)
-    // Not formatted : e.g: +336269226..
     const numberValue = asYouTypeRef.current.getNumberValue() || ''
 
     previousCountryRef.current = country
 
     const phoneInfo = buildInputInfo('input')
 
-    // Check if the country is excluded, or not part on onlyCountries, etc..
     if (numberValue && (!country || !matchIsIsoCodeValid(country))) {
       onChange?.(numberValue, {
         ...phoneInfo,
-        // we show the input value but without any formatting, or country..
         countryCode: null,
         countryCallingCode: null,
         nationalNumber: null
@@ -272,13 +268,11 @@ export default function usePhoneDigits({
     if (isoCode) {
       const callingCodeOfPreviousCountry = getCallingCodeOfCountry(isoCode)
       const callingCodeWithPlus = `+${callingCodeOfPreviousCountry}`
-      // if the input value start with wrong calling code, set it to empty string
       inputValueWithoutCallingCode = inputValue.startsWith(callingCodeWithPlus)
         ? removeOccurrence(inputValue, callingCodeWithPlus)
         : ''
     }
 
-    // replace the old calling code with the new one, keeping the rest of the number
     let newValue = `+${callingCode}${inputValueWithoutCallingCode}`
 
     if (!disableFormatting) {
