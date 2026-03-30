@@ -14,7 +14,14 @@ import {
  * @type {import("eslint").Linter.Config}
  */
 export default [
-  { ignores: ['**/node_modules/**', '**/dist/**', '**/.docusaurus/**'] },
+  {
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/.docusaurus/**',
+      '**/build/**'
+    ]
+  },
   ...typescriptConfig,
   ...reactConfig,
   ...hooksConfig,

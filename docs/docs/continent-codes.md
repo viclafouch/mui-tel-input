@@ -10,4 +10,3 @@ Below the list of continents code available. These codes can be used for the [`c
 | NA              | North America
 | OC              | Oceania
 | SA              | South America
-| OC              | Oceania

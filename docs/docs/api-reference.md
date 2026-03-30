@@ -40,6 +40,7 @@ const handleChange = (value, info) => {
     countryCallingCode: "33",
     countryCode: "FR",
     nationalNumber: "123456789",
+    numberType: "FIXED_LINE_OR_MOBILE",
     numberValue: "+33123456789",
     reason: "input"
   }
@@ -47,6 +48,32 @@ const handleChange = (value, info) => {
 }
 
 <MuiTelInput onChange={handleChange} />
+```
+
+## `onBlur`
+
+- Type: `(event: React.FocusEvent<HTMLInputElement>, info: MuiTelInputInfo) => void`
+- Default: `undefined`
+
+Callback fired when the input loses focus. Provides the same `info` object as `onChange`.
+
+### Example
+
+```tsx
+const handleBlur = (event, info) => {
+  /**
+  info: {
+    countryCallingCode: "33",
+    countryCode: "FR",
+    nationalNumber: "123456789",
+    numberType: "FIXED_LINE_OR_MOBILE",
+    numberValue: "+33123456789",
+    reason: "blur"
+  }
+  **/
+}
+
+<MuiTelInput onBlur={handleBlur} />
 ```
 
 ## `defaultCountry`
@@ -257,7 +284,7 @@ This prop let you to customize the `IconButton` component of the flag.
 ## `unknownFlagElement`
 
 - Type: `React.ReactNode`
-- Default: `<img src="base64.." loading="lazy" width={26} alt="unknown" />`
+- Default: `<img src="base64.." loading="lazy" width={26} alt="" />`
 
 This prop let you to customize the `unknown flag`, changed the `width` or `height`, use CDN or SVG component, etc..
 

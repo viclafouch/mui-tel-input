@@ -6,14 +6,16 @@ sidebar_position: 1
 
 ## Install
 ```bash
-npm install mui-tel-input --save
-```
-or you can use **yarn**
-```bash
-yarn add mui-tel-input
+npm install mui-tel-input
 ```
 
-We have completed installing the package.
+This package requires the following peer dependencies:
+
+- `@mui/material` >= 7.0.0
+- `@emotion/react` >= 11.13.0
+- `@emotion/styled` >= 11.13.0
+- `react` >= 18.0.0
+- `react-dom` >= 18.0.0
 
 ## Simple usage
 
@@ -43,13 +45,14 @@ Learn how to use MUI Tel Input with [Next.js](https://nextjs.org/).
 Once you have installed `MUI Tel Input` in your next.js project, it is important to transpile it as it is an ESM package first.
 
 ```js
+// next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
  transpilePackages: ['mui-tel-input'],
  // your config
 }
 
-module.exports = nextConfig
+export default nextConfig
 ```
 
 ## Congratulations !

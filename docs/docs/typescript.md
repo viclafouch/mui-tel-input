@@ -1,21 +1,23 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # TypeScript
 
 This package is written in **TypeScript**. So you don't need to create your own types. Here an example if you use **TypeScript**.
 
-**Nota bene**: Props are defined within the `MuiTelInputProps` interface.
+Props are defined within the `MuiTelInputProps` interface.
 
 ```tsx
 import React from 'react'
 import {
   MuiTelInput,
+  type MuiTelInputProps,
   type MuiTelInputCountry,
   type MuiTelInputInfo,
   type MuiTelInputContinent,
-  type MuiTelInputFlagElement
+  type MuiTelInputFlagElement,
+  type MuiTelInputReason
 } from 'mui-tel-input'
 
 const MyComponent = () => {
