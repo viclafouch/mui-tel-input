@@ -55,6 +55,10 @@ type ForceCallingCodeWithDefaultCountry =
       defaultCountry?: MuiTelInputCountry
     }
 
+type FormatterPerCountry = Partial<
+  Record<MuiTelInputCountry, (value: string) => string>
+>
+
 export type MuiTelInputProps = BaseTextFieldProps &
   ForceCallingCodeWithDefaultCountry & {
     excludedCountries?: MuiTelInputCountry[]
@@ -75,4 +79,5 @@ export type MuiTelInputProps = BaseTextFieldProps &
     getFlagElement?: GetFlagElement
     unknownFlagElement?: MuiTelInputFlagElement
     FlagIconButtonProps?: Partial<IconButtonProps>
+    formatterPerCountry?: FormatterPerCountry
   }

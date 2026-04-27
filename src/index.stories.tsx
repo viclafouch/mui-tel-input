@@ -55,6 +55,39 @@ export const Primary: StoryFn<typeof MuiTelInput> = (args) => {
     setState(argsChange[0])
   }
 
+  const formatterPerCountry = {
+    CA: (phoneNumberValue: string) => {
+      if (phoneNumberValue.length > 2) {
+        const digits = phoneNumberValue.replace(/^\+1/, '').replace(/\D/g, '')
+        let formatted = '+1'
+
+        if (digits.length === 0) {
+          return formatted
+        }
+
+        if (digits.length > 0 && digits.length < 4) {
+          formatted += ` (${digits}`
+
+          return formatted
+        }
+
+        if (digits.length >= 4 && digits.length <= 6) {
+          formatted += ` (${digits.slice(0, 3)}) ${digits.slice(3)}`
+
+          return formatted
+        }
+
+        if (digits.length > 6) {
+          formatted += ` (${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`
+
+          return formatted
+        }
+      }
+
+      return phoneNumberValue
+    }
+  }
+
   return (
     <MuiTelInput
       {...rest}
@@ -69,6 +102,7 @@ export const Primary: StoryFn<typeof MuiTelInput> = (args) => {
       defaultCountry="FR"
       preferredCountries={['FR']}
       onChange={handleChange}
+      formatterPerCountry={formatterPerCountry}
     />
   )
 }

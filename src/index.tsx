@@ -57,6 +57,7 @@ const MuiTelInput = (props: MuiTelInputProps) => {
     onlyCountries,
     excludedCountries,
     defaultCountry,
+    formatterPerCountry,
     onDoubleClick,
     onFocus,
     onCopy,
@@ -96,6 +97,7 @@ const MuiTelInput = (props: MuiTelInputProps) => {
   } = usePhoneDigits({
     forceCallingCode,
     defaultCountry: validDefaultCountry,
+    formatterPerCountry,
     value: value ?? '',
     onChange,
     excludedCountries,
