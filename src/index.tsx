@@ -109,6 +109,8 @@ const MuiTelInput = (props: MuiTelInputProps) => {
     disableDropdown
   })
 
+  const { input, htmlInput, ...restSlotProps } = slotProps ?? {}
+
   const { handleDoubleClick, handleCopy, handleFocus } = useEvents({
     onDoubleClick,
     onCopy,
@@ -154,7 +156,7 @@ const MuiTelInput = (props: MuiTelInputProps) => {
           htmlInput: {
             onCopy: handleCopy,
             // eslint-disable-next-line @typescript-eslint/no-misused-spread
-            ...slotProps?.htmlInput
+            ...htmlInput
           },
           input: {
             startAdornment: (
@@ -174,8 +176,9 @@ const MuiTelInput = (props: MuiTelInputProps) => {
             ),
             ref: anchorRef,
             // eslint-disable-next-line @typescript-eslint/no-misused-spread
-            ...slotProps?.input
-          }
+            ...input
+          },
+          ...restSlotProps
         }}
         {...restTextFieldProps}
       />
