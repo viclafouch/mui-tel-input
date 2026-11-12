@@ -8,6 +8,7 @@ import {
   expectButtonContainsCallingCode,
   expectButtonIsFlagOf,
   expectButtonNotIsFlagOf,
+  fireHistoryInput,
   getButtonElement,
   getInputElement,
   selectCountry,
@@ -548,6 +549,96 @@ describe('components/MuiTelInput', () => {
       expectButtonIsFlagOf('GP')
       await typeInInputElement('690123456')
       expectButtonIsFlagOf('GP')
+    })
+  })
+
+  describe('undo/redo', () => {
+    test('should not duplicate the number when undoing a paste after clearing', async () => {
+      render(<MuiTelWrapper />)
+      const inputElement = getInputElement()
+      await userEvent.click(inputElement)
+      await userEvent.paste('+33612345678')
+      await userEvent.clear(inputElement)
+      await userEvent.paste('+33612345678')
+      expect(inputElement.value).toBe('+33 6 12 34 56 78')
+      const undoEvent = fireHistoryInput('historyUndo')
+      expect(undoEvent.defaultPrevented).toBe(true)
+      expect(inputElement.value).toBe('')
+      fireHistoryInput('historyUndo')
+      expect(inputElement.value).toBe('+33 6 12 34 56 78')
+      fireHistoryInput('historyRedo')
+      expect(inputElement.value).toBe('')
+      fireHistoryInput('historyRedo')
+      expect(inputElement.value).toBe('+33 6 12 34 56 78')
+    })
+
+    test('should undo and redo with keyboard shortcuts', async () => {
+      render(<MuiTelWrapper />)
+      const inputElement = getInputElement()
+      await userEvent.click(inputElement)
+      await userEvent.paste('+33612345678')
+      await userEvent.clear(inputElement)
+      await userEvent.paste('+33612345678')
+      await userEvent.keyboard('{Control>}z{/Control}')
+      expect(inputElement.value).toBe('')
+      await userEvent.keyboard('{Meta>}z{/Meta}')
+      expect(inputElement.value).toBe('+33 6 12 34 56 78')
+      await userEvent.keyboard('{Control>}{Shift>}z{/Shift}{/Control}')
+      expect(inputElement.value).toBe('')
+      await userEvent.keyboard('{Control>}z{/Control}')
+      await userEvent.keyboard('{Control>}y{/Control}')
+      expect(inputElement.value).toBe('')
+    })
+
+    test('should call onChange with the restored value', async () => {
+      const callbackOnChange = vi.fn(() => {})
+      render(<MuiTelWrapper defaultCountry="FR" onChange={callbackOnChange} />)
+      await userEvent.click(getInputElement())
+      await userEvent.paste('+33612345678')
+      fireHistoryInput('historyUndo')
+      expect(callbackOnChange).toHaveBeenLastCalledWith(
+        '+33',
+        expect.objectContaining({ reason: 'input', countryCode: 'FR' })
+      )
+    })
+
+    test('should do nothing when there is no history', () => {
+      const callbackOnChange = vi.fn(() => {})
+      render(<MuiTelWrapper defaultCountry="FR" onChange={callbackOnChange} />)
+      callbackOnChange.mockClear()
+      const undoEvent = fireHistoryInput('historyUndo')
+      expect(undoEvent.defaultPrevented).toBe(true)
+      expect(getInputElement().value).toBe('+33')
+      expect(callbackOnChange).not.toHaveBeenCalled()
+    })
+
+    test('should drop redo entries after a new input', async () => {
+      render(<MuiTelWrapper defaultCountry="FR" />)
+      await typeInInputElement('6')
+      fireHistoryInput('historyUndo')
+      await typeInInputElement('7')
+      fireHistoryInput('historyRedo')
+      expect(getInputElement().value).toBe('+33 7')
+    })
+
+    test('should undo a country change', async () => {
+      render(<MuiTelWrapper defaultCountry="FR" />)
+      await typeInInputElement('6')
+      await selectCountry('BE')
+      expectButtonIsFlagOf('BE')
+      fireHistoryInput('historyUndo')
+      expect(getInputElement().value).toBe('+33 6')
+      expectButtonIsFlagOf('FR')
+    })
+
+    test('should keep the calling code hidden with forceCallingCode', async () => {
+      render(<MuiTelWrapper defaultCountry="FR" forceCallingCode />)
+      await userEvent.click(getInputElement())
+      await userEvent.paste('612345678')
+      await userEvent.clear(getInputElement())
+      fireHistoryInput('historyUndo')
+      expect(getInputElement().value).toBe('6 12 34 56 78')
+      expectButtonIsFlagOf('FR')
     })
   })
 
