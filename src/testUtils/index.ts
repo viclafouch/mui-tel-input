@@ -52,3 +52,16 @@ export async function closeFlagsMenu(): Promise<void> {
     await waitForElementToBeRemoved(backdrop)
   }
 }
+
+export function fireHistoryInput(
+  inputType: 'historyUndo' | 'historyRedo'
+): InputEvent {
+  const historyEvent = new InputEvent('beforeinput', {
+    inputType,
+    bubbles: true,
+    cancelable: true
+  })
+  fireEvent(getInputElement(), historyEvent)
+
+  return historyEvent
+}

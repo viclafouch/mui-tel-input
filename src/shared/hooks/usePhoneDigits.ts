@@ -9,6 +9,7 @@ import {
   matchIsSharedCallingCode
 } from '@shared/helpers/country'
 import { removeOccurrence } from '@shared/helpers/string'
+import { useInputHistory } from '@shared/hooks/useInputHistory'
 import type { MuiTelInputInfo, MuiTelInputReason } from '../../index.types'
 
 type UsePhoneDigitsParams = {
@@ -172,13 +173,13 @@ export default function usePhoneDigits({
       : `+${getCallingCodeOfCountry(country)}${inputValue}`
   }
 
-  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const applyInputValue = (rawInputValue: string): string => {
     const inputValue = forceCallingCode
       ? makeSureStartWithPlusIsoCode(
-          event.target.value,
+          rawInputValue,
           state.isoCode as MuiTelInputCountry
         )
-      : makeSureStartWithPlusOrEmpty(event.target.value)
+      : makeSureStartWithPlusOrEmpty(rawInputValue)
 
     const formattedValue = typeNewValue(inputValue)
     const newCountryCode = asYouTypeRef.current.getCountry()
@@ -219,15 +220,29 @@ export default function usePhoneDigits({
         isoCode: null,
         inputValue: numberValue
       })
-    } else {
-      const valueToSet = disableFormatting ? numberValue : formattedValue
-      onChange?.(valueToSet, phoneInfo)
-      setPreviousValue(valueToSet)
-      setState({
-        isoCode: country,
-        inputValue: valueToSet
-      })
+
+      return numberValue
     }
+
+    const valueToSet = disableFormatting ? numberValue : formattedValue
+    onChange?.(valueToSet, phoneInfo)
+    setPreviousValue(valueToSet)
+    setState({
+      isoCode: country,
+      inputValue: valueToSet
+    })
+
+    return valueToSet
+  }
+
+  const { recordValue, resetHistory } = useInputHistory({
+    initialValue: state.inputValue,
+    inputRef,
+    onRestore: applyInputValue
+  })
+
+  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    recordValue(applyInputValue(event.target.value))
   }
 
   React.useEffect(() => {
@@ -248,6 +263,7 @@ export default function usePhoneDigits({
           : newState.isoCode
 
       previousCountryRef.current = resolvedIsoCode
+      resetHistory(newState.inputValue)
       setState({ ...newState, isoCode: resolvedIsoCode })
     }
   }, [
@@ -255,7 +271,8 @@ export default function usePhoneDigits({
     previousValue,
     defaultCountry,
     forceCallingCode,
-    disableFormatting
+    disableFormatting,
+    resetHistory
   ])
 
   React.useEffect(() => {
@@ -272,6 +289,7 @@ export default function usePhoneDigits({
       asYouTypeRef.current.input(inputValue)
       previousCountryRef.current = asYouTypeRef.current.getCountry() || null
       onChange?.(inputValue, buildInputInfo('country'))
+      resetHistory(inputValue)
       setState({
         inputValue,
         isoCode
@@ -282,7 +300,8 @@ export default function usePhoneDigits({
     previousDefaultCountry,
     onChange,
     forceCallingCode,
-    disableFormatting
+    disableFormatting,
+    resetHistory
   ])
 
   const onCountryChange = (newCountry: MuiTelInputCountry): void => {
@@ -314,6 +333,7 @@ export default function usePhoneDigits({
       countryCode: newCountry
     })
     previousCountryRef.current = newCountry
+    recordValue(newValue)
     setPreviousValue(newValue)
     setState({
       isoCode: newCountry,
